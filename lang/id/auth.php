@@ -4,17 +4,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Language Lines
+    | Baris Bahasa untuk Autentikasi
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
+    | Baris bahasa berikut digunakan selama proses autentikasi untuk berbagai
+    | pesan yang perlu ditampilkan kepada pengguna. Anda bebas untuk mengubah
+    | baris bahasa ini sesuai dengan kebutuhan aplikasi Anda.
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Kredensial ini tidak cocok dengan data kami.',
+    'password' => 'Password yang diberikan salah.',
+    'throttle' => 'Terlalu banyak percobaan login. Silakan coba lagi dalam :seconds detik.',
 
 ];

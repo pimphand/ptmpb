@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('frontend.home');
 });
 
 Route::get('/dashboard', function () {
@@ -18,3 +18,10 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+//set locale
+Route::get('/lang/{locale}', function ($locale) {
+    // Simpan bahasa ke dalam sesi
+    \Illuminate\Support\Facades\Session::put('locale', $locale);
+    return redirect()->back();
+})->middleware('locale')->name('lang');
