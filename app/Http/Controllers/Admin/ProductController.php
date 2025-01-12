@@ -5,24 +5,35 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Models\Category;
+use App\Models\Image;
 use App\Models\Product;
+use App\Models\Sku;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        //
+        return view('admin.product',[
+            'title' => 'Product'
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        //
+        return view('admin.product_create',[
+            'title' => 'Tambah Produk',
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -30,7 +41,31 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+       return DB::transaction(function () use ($request) {
+            $product = (new Product)->create([
+                'name' => $request->name,
+                'category_id' => $request->category,
+            ]);
+
+            foreach ($request->name_sku as $key => $name_sku) {
+                $product->skus()->create([
+                    'name' => $name_sku,
+                    'description' => $request->description[$key],
+                    'packaging' => $request->packaging[$key],
+                    'application' => $request->application[$key],
+                ]);
+
+                if ($request->hasFile('image.'.$key)) {
+                    Image::create([
+                        'imaginable_id' => $product->skus->last()->id,
+                        'path' => $request->file('image.'.$key)->store('images/products','public'),
+                        'imaginable_type' => Sku::class,
+                    ]);
+                }
+            }
+
+            return response()->json(['message' => 'Produk berhasil ditambahkan']);
+        });
     }
 
     /**
@@ -60,8 +95,22 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product): \Illuminate\Http\JsonResponse
     {
-        //
+        $product->skus()->delete();
+        $product->delete();
+        return response()->json(['message' => 'Produk berhasil dihapus']);
+    }
+
+    /**
+     * Get all products
+     */
+    public function data(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $products = Product::whereLike('name', "%$request->search%")
+            ->with('category')
+            ->withCount('skus')
+            ->paginate(10);
+        return ProductResource::collection($products);
     }
 }

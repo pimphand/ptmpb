@@ -7,21 +7,34 @@ Route::get('/', function () {
     return view('frontend.home');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/about-us', [\App\Http\Controllers\Frontend\HomeController::class, 'about_us'])->name('about_us');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard',[\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+
+    //category
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+    Route::get('categories-data', [\App\Http\Controllers\Admin\CategoryController::class, 'data'])->name('categories.data');
+
+    //product
+    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+    Route::get('products-data', [\App\Http\Controllers\Admin\ProductController::class, 'data'])->name('products.data');
+
+    //blog
+    Route::resource('blogs', \App\Http\Controllers\Admin\BlogController::class);
+    Route::get('blogs-data', [\App\Http\Controllers\Admin\BlogController::class, 'data'])->name('blogs.data');
+
+    //blog category
+    Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class);
+    Route::get('blog-categories-data', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'data'])->name('blog-categories.data');
+
+    Route::resource('about-us', \App\Http\Controllers\Admin\AboutController::class);
 });
 
 require __DIR__.'/auth.php';
 
 //set locale
 Route::get('/lang/{locale}', function ($locale) {
-    // Simpan bahasa ke dalam sesi
     \Illuminate\Support\Facades\Session::put('locale', $locale);
     return redirect()->back();
 })->middleware('locale')->name('lang');

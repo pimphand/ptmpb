@@ -17,7 +17,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets')}}/images/favicon.png">
 
     <!-- PAGE TITLE HERE -->
-    <title>Build Template | Home Page Style 2</title>
+    <title>{{env('APP_NAME')}} - {{$title ?? 'Halaman Utama'}}</title>
 
     <!-- MOBILE SPECIFIC -->
     <meta name="viewport" content="width=device-width, initial-scale=1">

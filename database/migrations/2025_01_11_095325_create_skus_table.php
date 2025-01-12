@@ -25,6 +25,7 @@ return new class extends Migration
             $table->boolean('is_publish')->default(true);
             $table->string('packaging')->nullable();
             $table->string('application')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

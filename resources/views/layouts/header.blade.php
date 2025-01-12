@@ -23,20 +23,20 @@
         <div class="main-bar bg-white">
             <div class="container">
                 <div class="logo-header">
-                    <a href="index.html">
-                        <img src="{{asset('assets')}}/images/logo-dark.png" width="171" height="49" alt="" >
+                    <a href="/">
+                        <img src="{{asset('logo.png')}}" width="171" height="49" alt="" >
                     </a>
                 </div>
 
                 <!-- MAIN Vav -->
                 <div class="header-nav navbar-collapse collapse ">
                     <ul class=" nav navbar-nav">
-                        <li class="active">
-                            <a href="javascript:;">{{__('app.home')}}</a>
+                        <li class="">
+                            <a href="/">{{__('app.home')}}</a>
                         </li>
 
-                        <li>
-                            <a href="javascript:;">{{__('app.about_us')}}</a>
+                        <li class="{{request()->routeIs('about_us') ? 'active' : ''}}">
+                            <a href="{{route('about_us')}}">{{__('app.about_us')}}</a>
                         </li>
 
                         <li>
