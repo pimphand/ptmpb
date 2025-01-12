@@ -37,7 +37,11 @@ class AboutController extends Controller
     public function store(StoreAboutRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = [
-            'banner' => $request->file('banner')->store('images/about', 'public'),
+            'npwp' => $request->npwp,
+            'kumham_decree' => $request->kumham_decree,
+            'deed_of_establishment' => $request->deed_of_establishment,
+            'nib' => $request->nib,
+            'profile' => $request->hasFile('profile') ? $request->file('profile')->store('images/about', 'public') : '',
         ];
         About::create(array_merge($request->validated(), ['data' => $data]));
 
@@ -67,10 +71,15 @@ class AboutController extends Controller
      */
     public function update(UpdateAboutRequest $request, $id ): array
     {
-        $data = [
-            'banner' => $request->file('banner')->store('images/about', 'public'),
-        ];
         $about = About::find($id);
+        $data = [
+            'npwp' => $request->npwp,
+            'kumham_decree' => $request->kumham_decree,
+            'deed_of_establishment' => $request->deed_of_establishment,
+            'nib' => $request->nib,
+            'profile' => $request->hasFile('profile') ? $request->file('profile')->store('images/about', 'public') : $about->data['profile'],
+        ];
+
         $about->update(array_merge($request->validated(), ['data' => $data]));
 
         return [

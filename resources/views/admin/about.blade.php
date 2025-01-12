@@ -1,17 +1,8 @@
 @extends('admin.layouts.app')
 @section('content')
     <style>
-        #upload-area {
-            position: relative;
-            height: 250px;
-        }
-
         #files-preview-container img {
             margin: 5px;
-        }
-
-        #files-list-container {
-            margin-top: 15px;
         }
     </style>
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
@@ -71,12 +62,42 @@
                         <hr>
                         <span>Data</span>
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group mb-4">
-                                    <label class="label text-secondary fs-14">Banner <small>(1920x1080)</small> </label>
-                                    <input type="file" class="form-control text-dark" name="banner" placeholder="Enter Name">
+                                    <label class="label text-secondary fs-14">Akte Pendirian</label>
+                                    <input type="text" class="form-control text-dark" value="{{isset($about->data['deed_of_establishment']) ? $about->data['deed_of_establishment'] : ''}}" name="deed_of_establishment"
+                                           placeholder="Masukan Akte No Pendirian">
                                 </div>
                             </div>
+                            <div class="col-lg-6">
+                                <div class="form-group mb-4">
+                                    <label class="label text-secondary fs-14">SK Kumham RI</label>
+                                    <input type="text" class="form-control text-dark" value="{{isset($about->data['kumham_decree']) ? $about->data['kumham_decree'] : ''}}" name="kumham_decree"
+                                           placeholder="Masukan Akte No SK Kumham RI">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group mb-4">
+                                    <label class="label text-secondary fs-14">NPWP</label>
+                                    <input type="text" class="form-control text-dark" value="{{isset($about->data['npwp']) ? $about->data['npwp'] : ''}}" name="npwp"
+                                           placeholder="Masukan NPWP">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group mb-4">
+                                    <label class="label text-secondary fs-14">NIB</label>
+                                    <input type="text" class="form-control text-dark" value="{{isset($about->data['nib']) ? $about->data['nib'] : ''}}" name="nib"
+                                           placeholder="Masukan NIB">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group mb-4">
+                                    <label class="label text-secondary fs-14">Upload Profile Perusahaan</label>
+                                    <input type="file" class="form-control text-dark" name="profile"
+                                           placeholder="Masukan NIB">
+                                </div>
+                            </div>
+
                         </div>
                         <div class="col-lg-12">
                             <div class="d-flex flex-wrap gap-3">

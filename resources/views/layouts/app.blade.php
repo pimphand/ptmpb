@@ -13,8 +13,8 @@
     <meta name="description" content="">
 
     <!-- FAVICONS ICON -->
-    <link rel="icon" href="{{asset('assets')}}/images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets')}}/images/favicon.png">
+    <link rel="icon" href="{{asset('logo.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('logo.png')}}">
 
     <!-- PAGE TITLE HERE -->
     <title>{{env('APP_NAME')}} - {{$title ?? 'Halaman Utama'}}</title>

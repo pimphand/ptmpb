@@ -29,6 +29,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('blog-categories-data', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'data'])->name('blog-categories.data');
 
     Route::resource('about-us', \App\Http\Controllers\Admin\AboutController::class);
+
+    //banner
+    Route::resource('galleries', \App\Http\Controllers\Admin\GalleryController::class);
+    Route::get('galleries-data', [\App\Http\Controllers\Admin\GalleryController::class, 'data'])->name('galleries.data');
 });
 
 require __DIR__.'/auth.php';

@@ -1,19 +1,19 @@
 
 
-/*===================== 
-	Premery bg color 
+/*=====================
+	Premery bg color
 =====================*/
 
 ::selection {
-	background: #FFBC13;
+	background: #19a63f;
 }
 
 ::-moz-selection {
-	background: #FFBC13;
+	background: #19a63f;
 }
 
 ::-webkit-selection {
-	background: #FFBC13;
+	background: #19a63f;
 }
 
 
@@ -102,14 +102,14 @@ ol.list-num-count>li::before,
 .testimonial-grid-5 .testimonial-pic-block.radius-bx .testimonial-pic:after,
 .overlay-icon a:hover,
 .searchform input[type="submit"] {
-	background-color: #FFBC13;
+	background-color: #19a63f;
 }
 
 
 /* Premery hex buttons bg color*/
 
 .site-button {
-	background-color: #FFBC13;
+	background-color: #19a63f;
 }
 
 .site-button:hover,
@@ -122,13 +122,13 @@ ol.list-num-count>li::before,
 /* other hex buttons bg color*/
 
 .searchform input[type="submit"] {
-	background-color: #FFBC13;
+	background-color: #19a63f;
 }
 
 .searchform input[type="submit"]:hover,
 .searchform input[type="submit"]:focus,
 .searchform input[type="submit"]:active {
-	background-color: #FFBC13;
+	background-color: #19a63f;
 }
 
 
@@ -139,8 +139,8 @@ ol.list-num-count>li::before,
 }
 
 
-/*===================== 
-	Premery text color 
+/*=====================
+	Premery text color
 =====================*/
 
 
@@ -221,20 +221,20 @@ ol.comment-list li.comment .reply a,
 /*.masonry-filter.outline-style.has-bg > li a:active,
 .masonry-filter.outline-style.has-bg > li a:focus*/
  {
-	color: #FFBC13;
+	color: #19a63f;
 }
 
 @media only screen and (max-width:991px) {
 	.site-bg-primary .header-nav .nav>li:hover>a,
 	.site-bg-primary .header-nav .nav>li.active>a,
 	.site-bg-primary .header-nav .nav>li.current-menu-item>a {
-		color: #FFBC13;
+		color: #19a63f;
 	}
 }
 
 
-/*===================== 
-	Premery border color 
+/*=====================
+	Premery border color
 =====================*/
 
 
@@ -267,11 +267,11 @@ input[type=radio]+label:hover:before,
 .masonry-filter.outline-style.has-bg > li a:hover,
 ol.list-num-count.list-outline > li::before
  {
-	border-color: #FFBC13;
+	border-color: #19a63f;
 }
 
 
-/*===================== 
+/*=====================
 	Secondery bg hex color
  =====================*/
 

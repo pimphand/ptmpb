@@ -62,8 +62,8 @@
         </li>
 
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link">
-                <span class="material-symbols-outlined menu-icon">local_activity</span>
+            <a href="{{route('admin.galleries.index')}}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">gallery_thumbnail</span>
                 <span class="title">{{__('app.gallery')}}</span>
             </a>
         </li>
