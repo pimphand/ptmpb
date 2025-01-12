@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\About;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -18,5 +19,26 @@ class HomeController extends Controller
             'about' => About::first()
         ];
         return view('frontend.about_us',$data);
+    }
+
+    public function blog($id): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    {
+        $blog = Blog::whereSlug($id)->firstOrFail();
+
+        // Check if the user has already visited this blog recently
+        $lastViewed = session("blog_{$id}_viewed");
+
+        if (!$lastViewed || now()->diffInMinutes($lastViewed) > 1) {
+            // Set not spam and increment views
+            $blog->count += 1;
+            $blog->save();
+            // Store the current time in session to prevent spamming
+            session(["blog_{$id}_viewed" => now()]);
+        }
+
+        return view('frontend.blog.detail', [
+            'title' => 'Blog',
+            'blog' => $blog
+        ]);
     }
 }

@@ -17,7 +17,7 @@ class Blog extends Model
     /** @use HasFactory<BlogFactory> */
     use HasFactory, HasUuids;
 
-    protected $fillable = ['title', 'content', 'slug', 'user_id','is_publish','category_id','thumbnail'];
+    protected $fillable = ['title', 'content', 'slug', 'user_id','is_publish','category_id','thumbnail','count'];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

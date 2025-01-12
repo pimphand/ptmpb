@@ -68,7 +68,8 @@
                                         border-width:0px;">
                                         <span class="text-uppercase" style="font-family:'Roboto' ;">{{$banner->title}}</span>
                                     </div>
-
+                                    <br>
+                                    <br>
                                     <!-- LAYER NR. 3 [ for paragraph] -->
                                     <div class="tp-caption  tp-resizeme"
                                          id="slide-200-layer-3"
@@ -96,6 +97,7 @@
                                         font-weight: 500;
                                         color: rgba(255, 255, 255, 0.85);
                                         border-width:0px;">
+                                        <br>   <br>   <br>
                                         <span style="font-family:'Roboto';">{{$banner->description}}</span>
                                     </div>
 

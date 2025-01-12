@@ -45,21 +45,43 @@
                     <div class="widget recent-posts-entry-date">
                         <h4 class="widget-title">Resent Post</h4>
                         <div class="widget-post-bx">
+                            @php
+                                function getHariSingkat($tanggal) {
+                                     // Array mapping nama hari dalam bahasa Inggris ke bahasa Indonesia
+                                     $hariInggris = [
+                                         'Sun' => 'Minggu',
+                                         'Mon' => 'Senin',
+                                         'Tue' => 'Selasa',
+                                         'Wed' => 'Rabu',
+                                         'Thu' => 'Kamis',
+                                         'Fri' => 'Jumat',
+                                         'Sat' => 'Sabtu'
+                                     ];
 
+                                     // Mendapatkan nama hari dalam bahasa Inggris
+                                     $hari = date('D', strtotime($tanggal));
+
+                                     // Konversi ke nama hari dalam bahasa Indonesia
+                                     $hariIndonesia = $hariInggris[$hari];
+
+                                     // Mengambil 3 huruf pertama
+                                     return substr($hariIndonesia, 0, 3);
+                                 }
+                            @endphp
                             @foreach($blogs as $blog)
                                 <div class="bdr-light-blue widget-post clearfix  bdr-b-1 m-b10 p-b10">
                                     <div class="wt-post-date text-center text-uppercase text-white p-t5">
-                                        <strong>20</strong>
-                                        <span>Mar</span>
+                                        <strong>{{getHariSingkat($blog->created_at)}}</strong>
+                                        <span>{{date('M',strtotime($blog->created_at))}}</span>
                                     </div>
                                     <div class="wt-post-info">
                                         <div class="wt-post-header">
-                                            <h6 class="post-title"><a href="">Blog title first </a></h6>
+                                            <h6 class="post-title"><a href="{{route('blog',$blog->slug)}}">Blog title first </a></h6>
                                         </div>
                                         <div class="wt-post-meta">
                                             <ul>
                                                 <li class="post-author"><i class="fa fa-user"></i>By Admin</li>
-                                                <li class="post-comment"><i class="fa fa-comments"></i> 28</li>
+                                                <li class="post-comment"><i class="fa fa-comments"></i> </li>
                                             </ul>
                                         </div>
                                     </div>
