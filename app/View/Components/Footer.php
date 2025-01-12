@@ -1,13 +1,12 @@
 <?php
 
-namespace App\View\Components\Home;
+namespace App\View\Components;
 
-use App\Models\Gallery;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Slider extends Component
+class Footer extends Component
 {
     /**
      * Create a new component instance.
@@ -22,7 +21,8 @@ class Slider extends Component
      */
     public function render(): View|Closure|string
     {
-        $banners = Gallery::where('type', 'slide-banner')->get();
-        return view('components.home.slider',compact('banners'));
+        $blogs = \App\Models\Blog::latest()->limit(3)->get();
+
+        return view('components.footer', compact('blogs'));
     }
 }

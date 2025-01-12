@@ -25,8 +25,8 @@ class StoreGalleryRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'url' => ['required', 'string', 'max:255', 'url'],
-            'is_publish' => ['required', 'boolean'],
+            'url' => ['nullable', 'string', 'max:255', 'url'],
+            'is_publish' => ['nullable', 'boolean'],
         ];
     }
 }

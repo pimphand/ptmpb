@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('url')->nullable();
             $table->boolean('is_publish')->default(false);
+            $table->string('type')->default('gallery');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -45,6 +45,8 @@
                                 <th scope="col">{{__('app.name')}}</th>
                                 <th scope="col">{{__('app.categories')}}</th>
                                 <th scope="col">Thumbnail</th>
+                                <th scope="col">Url</th>
+
                                 <th scope="col">{{__('app.action')}}</th>
                             </tr>
                             </thead>
@@ -81,7 +83,7 @@
                 // Render data
                 $.each(data, function (key, value) {
                     let url = `{{ route('admin.galleries.destroy', ':id') }}`.replace(':id', value.id);
-                    let editUrl = `{{ route('admin.galleries.edit', ':id') }}`.replace(':id', value.id);
+                    let editUrl = `{{ route('admin.galleries.edit', ['gallery'=>':id']) }}`.replace(':id', value.id);
                     const row = `
                     <tr>
                         <td class="text-body">
@@ -91,11 +93,11 @@
                             </div>
                         </td>
                         <td class="text-body">${value.title}</td>
-                        <td class="text-body">${value.category.name}</td>
-
+                        <td class="text-body">${value.type}</td>
                         <td>
-                            <img src="{{asset('storage')}}/${value.thumbnail}" class="wh-87 rounded-3" alt="${value.title}">
+                            <img src="{{asset('storage')}}/${value.images.length > 0 ? value.images[0].path : 'Belum Ada foto'}" class="wh-100 rounded-3" alt="${value.images.length > 0 ? value.title : 'Belum Ada foto'}">
                         </td>
+                          <td class="text-body">${value.url ?? "-"}</td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
                                 <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="${editUrl}">
@@ -146,16 +148,5 @@
         // Initial load
         getData();
 
-        //edit
-        $('#dataTable').on('click', '.edit', function () {
-            const id = $(this).data('id');
-            const data = dataTable.find(item => item.id === id);
-            $('#form').attr('action', `{{ route('admin.galleries.update', ':id') }}`.replace(':id', id));
-            $('#id').val(data.id);
-            $('#name').val(data.name);
-            $('#description').val(data.description);
-            $('#staticBackdropLabel').text('Edit Category');
-            $('#staticBackdrop').modal('show');
-        });
     </script>
 @endpush

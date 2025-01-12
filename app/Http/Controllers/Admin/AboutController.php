@@ -19,7 +19,7 @@ class AboutController extends Controller
     {
         return view('admin.about', [
             'title' => 'About',
-            'about' => About::first()
+            'about' => About::find('9df277bb-6c87-4029-b9e7-36fcde971d8b')
         ]);
     }
 

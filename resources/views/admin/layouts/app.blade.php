@@ -189,6 +189,38 @@
             }
         });
     }
+
+    function deleteDataNoRedirect(url,name='') {
+        Swal.fire({
+            title: "Apakah Anda Yakin menghapus? " + name,
+            showCancelButton: true,
+            confirmButtonText: "Hapus",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: "DELETE",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        Toast.fire({
+                            icon: "success",
+                            title: response.message
+                        });
+                    },
+                    error: function(error) {
+                        Toast.fire({
+                            icon: "error",
+                            title: error.responseJSON.message
+                        });
+                    }
+                });
+            }
+        });
+    }
 </script>
 @stack('js')
 </body>

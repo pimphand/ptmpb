@@ -44,9 +44,9 @@
 
                         </li>
 
-                        <li>
-                            <a href="javascript:;">{{__('app.testimonials')}}</a>
-                        </li>
+{{--                        <li>--}}
+{{--                            <a href="javascript:;">{{__('app.testimonials')}}</a>--}}
+{{--                        </li>--}}
 
                         <li class="submenu-direction">
                             <a href="javascript:;">{{__('app.blog')}}</a>

@@ -13,7 +13,7 @@ class Gallery extends Model
     /** @use HasFactory<GalleryFactory> */
     use HasFactory, HasUuids;
 
-    protected $fillable = ['title', 'description', 'url', 'is_publish','code'];
+    protected $fillable = ['title', 'description', 'url', 'is_publish','code','type'];
 
     //boot method
     protected static function boot(): void

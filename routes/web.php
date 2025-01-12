@@ -33,6 +33,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     //banner
     Route::resource('galleries', \App\Http\Controllers\Admin\GalleryController::class);
     Route::get('galleries-data', [\App\Http\Controllers\Admin\GalleryController::class, 'data'])->name('galleries.data');
+
+    //image
+    Route::delete('image/{id}', [\App\Http\Controllers\Admin\GalleryController::class, 'delete'])->name('images.destroy');
+
 });
 
 require __DIR__.'/auth.php';
