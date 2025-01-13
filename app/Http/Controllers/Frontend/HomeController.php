@@ -47,7 +47,9 @@ class HomeController extends Controller
         $blogs = Blog::whereAny([
             'title' => $request->get('search'),
             'content' => $request->get('search')
-        ])->paginate(10);
+        ])
+            ->orderBy('count', 'desc')
+            ->paginate(6);
 
         return view('frontend.blog.list', [
             'title' => 'List Blog',

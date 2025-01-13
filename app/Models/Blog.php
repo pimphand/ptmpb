@@ -17,7 +17,7 @@ class Blog extends Model
     /** @use HasFactory<BlogFactory> */
     use HasFactory, HasUuids;
 
-    protected $fillable = ['title', 'content', 'slug', 'user_id','is_publish','category_id','thumbnail','count'];
+    protected $fillable = ['title', 'content', 'slug', 'user_id', 'is_publish', 'category_id', 'thumbnail', 'count', 'image'];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -36,7 +36,7 @@ class Blog extends Model
             $model->slug = Str::slug($model->title);
         });
 
-        static ::updating(function ($model) {
+        static::updating(function ($model) {
             $model->slug = Str::slug($model->title);
         });
     }

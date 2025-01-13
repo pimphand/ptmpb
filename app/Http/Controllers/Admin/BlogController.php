@@ -11,6 +11,7 @@ use App\Models\BlogCategory;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 
 class BlogController extends Controller
 {
@@ -29,7 +30,7 @@ class BlogController extends Controller
      */
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        return view('admin.blog_create',[
+        return view('admin.blog_create', [
             'title' => 'Tambah Blog',
             'categories' => BlogCategory::all(),
             'blog' => []
@@ -41,12 +42,24 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request): \Illuminate\Http\JsonResponse
     {
-        $data = $request->validated();
+        $image = ImageManager::imagick()->read($request->file('image'));
+
+        // Resize gambar dan simpan di images/blog/thumbnail
+        $thumbnailPath = $request->file('image')->storeAs('images/blog/thumbnail', 'thumbnail_' . time() . '.jpg', 'public');
+        $image->resize(410, 293); // Resize untuk thumbnail
+        $image->save(storage_path('app/public/' . $thumbnailPath));
+
+        // Simpan gambar asli di images/blog
+        $imagePath = $request->file('image')->storeAs('images/blog', 'image_' . time() . '.jpg', 'public');
+
         $data['user_id'] = auth()->id();
         $data['title'] = $request->name;
         $data['is_publish'] = true;
         $data['category_id'] = $request->category;
-        $data['thumbnail'] = $request->file('image')->store('images/blog', 'public');
+        $data['thumbnail'] = $thumbnailPath;
+        $data['image'] = $imagePath;
+
+        // Menyimpan data blog ke database
         Blog::create($data);
 
         return response()->json([
@@ -67,7 +80,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        return view('admin.blog_create',[
+        return view('admin.blog_create', [
             'title' => 'Edit Blog',
             'categories' => BlogCategory::all(),
             'blog' => $blog
@@ -113,7 +126,7 @@ class BlogController extends Controller
     public function data(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $blogs = Blog::with('category')
-            ->when($request->id,function ($query) use ($request){
+            ->when($request->id, function ($query) use ($request) {
                 $query->where('id', $request->id);
             })
             ->where('title', 'like', "%$request->search%")
