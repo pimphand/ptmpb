@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <p class="text-justify">
-                        {{$about->title}} <br>
+                        {{$about->title ?? ''}} <br>
                     </p>
                 </div>
                <h5>Program Kerja Sama
