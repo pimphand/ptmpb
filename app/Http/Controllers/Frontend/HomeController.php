@@ -18,7 +18,7 @@ class HomeController extends Controller
             'title' => 'Tentang Kami',
             'about' => About::first()
         ];
-        return view('frontend.about_us',$data);
+        return view('frontend.about_us', $data);
     }
 
     public function blog($id): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -39,6 +39,19 @@ class HomeController extends Controller
         return view('frontend.blog.detail', [
             'title' => 'Blog',
             'blog' => $blog
+        ]);
+    }
+
+    public function blogs(Request $request)
+    {
+        $blogs = Blog::whereAny([
+            'title' => $request->get('search'),
+            'content' => $request->get('search')
+        ])->paginate(10);
+
+        return view('frontend.blog.list', [
+            'title' => 'List Blog',
+            'blogs' => $blogs
         ]);
     }
 }

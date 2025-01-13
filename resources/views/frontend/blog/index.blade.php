@@ -5,7 +5,7 @@
         <div class="overlay-main bg-black opacity-07"></div>
         <div class="container">
             <div class="wt-bnr-inr-entry">
-                <h1 class="text-white">{{$blog->title}}</h1>
+                <h1 class="text-white">{{$title}}</h1>
             </div>
         </div>
     </div>
@@ -15,7 +15,9 @@
             <ul class="wt-breadcrumb breadcrumb-style-2">
                 <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
                 <li><a href="/blog"> Blog</a></li>
-                <li>{{$blog->title}}</li>
+                @if(isset($blog->title))
+                  <li>{{$blog->title ?? ''}}</li>
+                @endif
             </ul>
         </div>
     </div>

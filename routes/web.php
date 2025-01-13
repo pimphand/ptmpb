@@ -9,10 +9,11 @@ Route::get('/', function () {
 
 Route::get('/about-us', [\App\Http\Controllers\Frontend\HomeController::class, 'about_us'])->name('about_us');
 Route::get('/blog/{id}', [\App\Http\Controllers\Frontend\HomeController::class, 'blog'])->name('blog');
+Route::get('/blogs', [\App\Http\Controllers\Frontend\HomeController::class, 'blogs'])->name('blogs');
 
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard',[\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
     //category
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
@@ -38,10 +39,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     //image
     Route::delete('image/{id}', [\App\Http\Controllers\Admin\GalleryController::class, 'delete'])->name('images.destroy');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 //set locale
 Route::get('/lang/{locale}', function ($locale) {

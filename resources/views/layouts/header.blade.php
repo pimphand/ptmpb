@@ -49,7 +49,7 @@
 {{--                        </li>--}}
 
                         <li class="submenu-direction">
-                            <a href="javascript:;">{{__('app.blog')}}</a>
+                            <a href="{{ route('blogs') }}">{{__('app.blog')}}</a>
 
                         </li>
                         <li class="submenu-direction">
