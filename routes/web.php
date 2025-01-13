@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('frontend.home');
 });
 
-Route::get('/about-us', [\App\Http\Controllers\Frontend\HomeController::class, 'about_us'])->name('about_us');
+Route::get('/about-us', [\App\Http\Controllers\Frontend\HomeController::class, 'about_us'])->name('aboutUs');
 Route::get('/blog/{id}', [\App\Http\Controllers\Frontend\HomeController::class, 'blog'])->name('blog');
 Route::get('/blogs', [\App\Http\Controllers\Frontend\HomeController::class, 'blogs'])->name('blogs');
 

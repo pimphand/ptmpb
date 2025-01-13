@@ -24,7 +24,7 @@
             <div class="container">
                 <div class="logo-header">
                     <a href="/">
-                        <img src="{{asset('logo_.png')}}" width="171" height="49" alt="" >
+                        <img src="{{ asset('logo_.png') }}" width="171" height="49" alt="">
                     </a>
                 </div>
 
@@ -32,39 +32,40 @@
                 <div class="header-nav navbar-collapse collapse ">
                     <ul class=" nav navbar-nav">
                         <li class="">
-                            <a href="/">{{__('app.home')}}</a>
+                            <a href="/">{{ __('app.home') }}</a>
                         </li>
 
-                        <li class="{{request()->routeIs('about_us') ? 'active' : ''}}">
-                            <a href="{{route('about_us')}}">{{__('app.about_us')}}</a>
+                        <li class="{{ request()->routeIs('aboutUs') ? 'active' : '' }}">
+                            <a href="{{ route('aboutUs') }}">{{ __('app.about_us') }}</a>
                         </li>
 
                         <li>
-                            <a href="javascript:;">{{__('app.product')}}</a>
+                            <a href="javascript:;">{{ __('app.product') }}</a>
 
                         </li>
 
-{{--                        <li>--}}
-{{--                            <a href="javascript:;">{{__('app.testimonials')}}</a>--}}
-{{--                        </li>--}}
+                        {{--                        <li> --}}
+                        {{--                            <a href="javascript:;">{{__('app.testimonials')}}</a> --}}
+                        {{--                        </li> --}}
 
                         <li class="submenu-direction">
-                            <a href="{{ route('blogs') }}">{{__('app.blog')}}</a>
+                            <a href="{{ route('blogs') }}">{{ __('app.blog') }}</a>
 
                         </li>
                         <li class="submenu-direction">
-                            <a href="javascript:;">{{__('app.gallery')}}</a>
+                            <a href="javascript:;">{{ __('app.gallery') }}</a>
 
                         </li>
                         <li class="has-mega-menu ">
-                            <a href="javascript:;">{{__('app.contact_us')}}</a>
+                            <a href="javascript:;">{{ __('app.contact_us') }}</a>
                         </li>
                     </ul>
                 </div>
 
 
                 <!-- NAV Toggle Button -->
-                <button id="mobile-side-drawer" data-target=".header-nav" data-toggle="collapse" type="button" class="navbar-toggler collapsed">
+                <button id="mobile-side-drawer" data-target=".header-nav" data-toggle="collapse" type="button"
+                    class="navbar-toggler collapsed">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar icon-bar-first"></span>
                     <span class="icon-bar icon-bar-two"></span>
@@ -76,7 +77,8 @@
                     <form role="search" id="searchform" action="/search" method="get" class="radius-xl">
                         <div class="input-group">
                             <input value="" name="q" type="search" placeholder="Type to search">
-                            <span class="input-group-btn"><button type="button" class="search-btn"><i class="fa fa-search"></i></button></span>
+                            <span class="input-group-btn"><button type="button" class="search-btn"><i
+                                        class="fa fa-search"></i></button></span>
                         </div>
                     </form>
                 </div>
