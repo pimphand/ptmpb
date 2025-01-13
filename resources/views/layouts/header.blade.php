@@ -35,8 +35,8 @@
                             <a href="/">{{ __('app.home') }}</a>
                         </li>
 
-                        <li class="">
-                            <a href="/about-us">{{ __('app.about_us') }}</a>
+                        <li class="{{ request()->routeIs('about_us') ? 'active' : '' }}">
+                            <a href="{{ route('about_us') }}">{{ __('app.about_us') }}</a>
                         </li>
 
                         <li>
