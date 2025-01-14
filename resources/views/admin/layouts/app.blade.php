@@ -221,6 +221,15 @@
             }
         });
     }
+
+    $('.logout').click(function (e) {
+        e.preventDefault();
+        $.post("{{route('logout')}}", {
+            _token: "{{ csrf_token() }}"
+        }).done(function (response) {
+            window.location.href = "{{route('login')}}";
+        });
+    })
 </script>
 @stack('js')
 </body>

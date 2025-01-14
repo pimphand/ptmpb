@@ -46,7 +46,9 @@ class BlogController extends Controller
 
         // Resize gambar dan simpan di images/blog/thumbnail
         $thumbnailPath = $request->file('image')->storeAs('images/blog/thumbnail', 'thumbnail_' . time() . '.jpg', 'public');
-        $image->resize(410, 293); // Resize untuk thumbnail
+        $image->resize(410, 293, function ($constraint) {
+            $constraint->aspectRatio();
+        });
         $image->save(storage_path('app/public/' . $thumbnailPath));
 
         // Simpan gambar asli di images/blog

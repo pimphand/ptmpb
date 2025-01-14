@@ -31,18 +31,18 @@
             <div class="wt-divider bg-gray-dark"><i class="icon-dot c-square"></i></div>
             <div class="wt-box">
 
-                <div class="b-detail-social d-flex justify-content-between">
-                    <h4 class="tagcloud pull-left m-t5 m-b10">Share this Post:</h4>
-                    <div class="widget_social_inks">
-                        <ul class="social-icons social-md social-square social-dark m-b0">
-                            <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
-                            <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
-                            <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
-                            <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
-                            <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
-                        </ul>
-                    </div>
-                </div>
+{{--                <div class="b-detail-social d-flex justify-content-between">--}}
+{{--                    <h4 class="tagcloud pull-left m-t5 m-b10">Share this Post:</h4>--}}
+{{--                    <div class="widget_social_inks">--}}
+{{--                        <ul class="social-icons social-md social-square social-dark m-b0">--}}
+{{--                            <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>--}}
+{{--                            <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>--}}
+{{--                            <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>--}}
+{{--                            <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>--}}
+{{--                            <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>--}}
+{{--                        </ul>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
             </div>
             <div class="wt-divider bg-gray-dark"><i class="icon-dot c-square"></i></div>

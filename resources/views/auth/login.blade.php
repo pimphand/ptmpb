@@ -4,7 +4,13 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Link Of Bootstrap CSS File -->
 
+    @if (Auth::check())
+        <script>
+            window.location.href = "{{route('admin.dashboard')}}";
+        </script>
+    @endif
     <!-- Links Of CSS File -->
     <link rel="stylesheet" href="{{asset('admin')}}/assets/css/sidebar-menu.css">
     <link rel="stylesheet" href="{{asset('admin')}}/assets/css/simplebar.css">

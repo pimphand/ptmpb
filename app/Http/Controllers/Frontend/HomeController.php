@@ -42,13 +42,11 @@ class HomeController extends Controller
         ]);
     }
 
-    public function blogs(Request $request)
+    public function blogs(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
-        $blogs = Blog::whereAny([
-            'title' => $request->get('search'),
-            'content' => $request->get('search')
-        ])
-            ->orderBy('count', 'desc')
+        $blogs = Blog::whereLike('title', "%$request->search%")
+            ->orWhere('content', 'like', "%$request->search%")
+            ->orderBy('created_at', 'desc')
             ->paginate(6);
 
         return view('frontend.blog.list', [

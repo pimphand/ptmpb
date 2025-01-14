@@ -31,7 +31,7 @@
                 <!-- MAIN Vav -->
                 <div class="header-nav navbar-collapse collapse ">
                     <ul class=" nav navbar-nav">
-                        <li class="">
+                        <li class="{{ request()->routeIs(['home'])? 'active' : '' }}">
                             <a href="/">{{ __('app.home') }}</a>
                         </li>
 
@@ -48,9 +48,8 @@
                         {{--                            <a href="javascript:;">{{__('app.testimonials')}}</a> --}}
                         {{--                        </li> --}}
 
-                        <li class="submenu-direction">
+                        <li class="{{ request()->routeIs(['blogs', 'blog'])? 'active' : '' }}">
                             <a href="{{ route('blogs') }}">{{ __('app.blog') }}</a>
-
                         </li>
                         <li class="submenu-direction">
                             <a href="javascript:;">{{ __('app.gallery') }}</a>

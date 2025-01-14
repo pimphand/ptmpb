@@ -68,12 +68,19 @@
             </a>
         </li>
 
+        <li class="menu-item">
+            <a href="{{route('admin.contact.index')}}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">map</span>
+                <span class="title">Kontak</span>
+            </a>
+        </li>
+
 
         <li class="menu-item">
-            <a href="logout.html" class="menu-link">
+            <button href="javascript:void(0)" class="menu-link logout btn btn-info ">
                 <span class="material-symbols-outlined menu-icon">logout</span>
                 <span class="title">Logout</span>
-            </a>
+            </button>
         </li>
     </ul>
 </aside>

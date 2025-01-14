@@ -140,11 +140,7 @@ class GalleryController extends Controller
      */
     public function data(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $galleries = Gallery::with('images')
-            ->when($request->search, function ($query) use ($request) {
-                $query->whereAny(['title','type'], 'like', '%' . $request->search . '%');
-            })
-            ->paginate($request->input('page', 10));
+        $galleries = Gallery::with('images')->paginate(10);
         return GalleryResource::collection($galleries);
     }
 }

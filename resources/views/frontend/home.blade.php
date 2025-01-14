@@ -1,5 +1,9 @@
 @extends('layouts.app')
 @section('content')
+    @php
+      $blogs =   \App\Models\Blog::orderBy('created_at', 'desc')->limit(3)->get();
+    @endphp
+
     <!-- SLIDER START -->
     <x-home.slider></x-home.slider>
     <!-- SLIDER END -->
@@ -258,91 +262,48 @@
         <div class="container">
             <!-- TITLE -->
             <div class="section-head text-center">
-                <h2 class="text-uppercase">Latest blog post</h2>
+                <h2 class="text-uppercase">BLog Terbaru</h2>
                 <div class="wt-separator-outer">
                     <div class="wt-separator style-square">
                         <span class="separator-left site-bg-primary"></span>
                         <span class="separator-right site-bg-primary"></span>
                     </div>
                 </div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been tahe industry.</p>
+                <p></p>
             </div>
             <!-- TITLE -->
 
             <div class="section-content ">
                 <div class="row">
-                    <!-- COLUMNS 1 -->
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="blog-post latest-blog-1 date-style-3">
-                            <div class="wt-post-media wt-img-effect zoom-slow">
-                                <a href="blog-single.html"><img src="{{asset('assets')}}/images/blog/latest-blog/pic1.jpg" alt=""></a>
-                            </div>
-                            <div class="wt-post-info p-a30 p-b20 bg-white">
-                                <div class="wt-post-title ">
-                                    <h3 class="post-title"><a href="blog-single.html">Title of first blog post</a></h3>
+
+                    @foreach($blogs as $blog)
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="blog-post latest-blog-1 date-style-3">
+                                <div class="wt-post-media wt-img-effect zoom-slow">
+                                    <a href="{{route('blog',$blog->slug)}}"><img src="{{asset('storage/'.$blog->thumbnail)}}?t={{time()}}" alt="{{$blog->title}}"></a>
                                 </div>
-                                <div class="wt-post-meta ">
-                                    <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><strong>10 Dec</strong> <span> 2022</span></li>
-                                        <li class="post-author"><i class="fa fa-user"></i>By <a href="blog-single.html">John</a> </li>
-                                        <li class="post-comment"><i class="fa fa-comments"></i> <a href="blog-single.html">0 comment</a> </li>
-                                    </ul>
-                                </div>
-                                <div class="wt-post-text">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text since
-                                        the when an printer .</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- COLUMNS 2 -->
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="blog-post latest-blog-1 date-style-3">
-                            <div class="wt-post-media wt-img-effect zoom-slow">
-                                <a href="blog-single.html"><img src="{{asset('assets')}}/images/blog/latest-blog/pic2.jpg" alt=""></a>
-                            </div>
-                            <div class="wt-post-info p-a30 p-b20 bg-white">
-                                <div class="wt-post-title ">
-                                    <h3 class="post-title"><a href="blog-single.html">Title of first blog post</a></h3>
-                                </div>
-                                <div class="wt-post-meta ">
-                                    <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><strong>10 Dec</strong> <span> 2022</span></li>
-                                        <li class="post-author"><i class="fa fa-user"></i>By <a href="blog-single.html">John</a> </li>
-                                        <li class="post-comment"><i class="fa fa-comments"></i> <a href="blog-single.html">0 comment</a> </li>
-                                    </ul>
-                                </div>
-                                <div class="wt-post-text">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text since
-                                        the when an printer .</p>
+                                <div class="wt-post-info p-a30 p-b20 bg-white">
+                                    <div class="wt-post-title ">
+                                        <h3 class="post-title"><a href="{{route('blog',$blog->slug)}}">{{$blog->title}}</a></h3>
+                                    </div>
+                                    <div class="wt-post-meta ">
+                                        <ul>
+                                            <li class="post-date"><i class="fa fa-calendar"></i><strong>{{date('d M', strtotime($blog->created_at))}}</strong>
+                                                <span> {{date('Y', strtotime($blog->created_at))}}</span></li>
+                                            <li class="post-author"><i class="fa fa-user"></i><a href="{{route('blog', $blog->slug)}}">By <span>{{$blog->user->name}}</span></a>
+                                            </li>
+                                            <li class="post-comment"><i class="fa fa-comments"></i> <a href="{{route('blog', $blog->slug)}}">0</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="wt-post-text">
+                                        <p></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- COLUMNS 3 -->
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="blog-post latest-blog-1 date-style-3">
-                            <div class="wt-post-media wt-img-effect zoom-slow">
-                                <a href="blog-single.html"><img src="{{asset('assets')}}/images/blog/latest-blog/pic3.jpg" alt=""></a>
-                            </div>
-                            <div class="wt-post-info p-a30 p-b20 bg-white">
-                                <div class="wt-post-title ">
-                                    <h3 class="post-title"><a href="blog-single.html">Title of first blog post</a></h3>
-                                </div>
-                                <div class="wt-post-meta ">
-                                    <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><strong>10 Dec</strong> <span> 2022</span></li>
-                                        <li class="post-author"><i class="fa fa-user"></i>By <a href="blog-single.html">John</a> </li>
-                                        <li class="post-comment"><i class="fa fa-comments"></i> <a href="blog-single.html">0 comment</a> </li>
-                                    </ul>
-                                </div>
-                                <div class="wt-post-text">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text since
-                                        the when an printer .</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+
                 </div>
             </div>
         </div>
