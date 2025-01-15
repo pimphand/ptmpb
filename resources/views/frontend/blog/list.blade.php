@@ -6,26 +6,32 @@
                 <div class="blog-post blog-grid date-style-3">
 
                     <div class="wt-post-media wt-img-effect zoom-slow">
-                        <a href="{{route('blog', $blog->slug)}}"><img src="{{asset('storage/'.$blog->thumbnail)}}" alt=""></a>
+                        <a href="{{ route('blog', $blog->slug) }}"><img src="{{ asset('storage/' . $blog->thumbnail) }}"
+                                alt=""></a>
                     </div>
                     <div class="wt-post-info p-t30 ">
                         <div class="wt-post-title ">
-                            <h3 class="post-title"><a href="{{route('blog', $blog->slug)}}">{{$blog->title}}</a></h3>
+                            <h3 class="post-title"><a href="{{ route('blog', $blog->slug) }}">{{ $blog->title }}</a></h3>
                         </div>
                         <div class="wt-post-meta ">
                             <ul>
-                                <li class="post-date"><i class="fa fa-calendar"></i><strong>{{date('d M', strtotime($blog->created_at))}}</strong>
-                                    <span> {{date('Y', strtotime($blog->created_at))}}</span></li>
-                                <li class="post-author"><i class="fa fa-user"></i><a href="{{route('blog', $blog->slug)}}">By <span>{{$blog->user->name}}</span></a>
+                                <li class="post-date"><i
+                                        class="fa fa-calendar"></i><strong>{{ date('d M', strtotime($blog->created_at)) }}</strong>
+                                    <span> {{ date('Y', strtotime($blog->created_at)) }}</span>
                                 </li>
-                                <li class="post-comment"><i class="fa fa-comments"></i> <a href="{{route('blog', $blog->slug)}}">0</a>
+                                <li class="post-author"><i class="fa fa-user"></i><a
+                                        href="{{ route('blog', $blog->slug) }}">By <span>{{ $blog->user->name }}</span></a>
+                                </li>
+                                <li class="post-comment"><i class="fa fa-comments"></i> <a
+                                        href="{{ route('blog', $blog->slug) }}">{{ $blog->count }}</a>
                                 </li>
                             </ul>
                         </div>
 
                         <div class="clearfix">
                             <div class="wt-post-readmore pull-left">
-                                <a href="{{route('blog', $blog->slug)}}" title="READ MORE" rel="bookmark" class="site-button-link">
+                                <a href="{{ route('blog', $blog->slug) }}" title="READ MORE" rel="bookmark"
+                                    class="site-button-link">
                                     Baca Selengkapnya
                                 </a>
                             </div>
