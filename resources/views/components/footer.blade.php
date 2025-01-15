@@ -1,12 +1,13 @@
 <!-- FOOTER START -->
 <footer class="site-footer footer-light">
     <!-- COLL-TO ACTION START -->
-    <div class="call-to-action-wrap call-to-action-skew site-bg-primary bg-no-repeat" style="background-image:url(images/background/bg-4.png);">
+    <div class="call-to-action-wrap call-to-action-skew site-bg-primary bg-no-repeat"
+        style="background-image:url(images/background/bg-4.png);">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-7">
                     <div class="call-to-action-left p-tb20 p-r50">
-                        {{--                            <h4 class="text-uppercase m-b10">We are ready to build your dream tell us more about your project</h4>--}}
+                        {{--                            <h4 class="text-uppercase m-b10">We are ready to build your dream tell us more about your project</h4> --}}
                         <p>PT Mandalika Putra Bersama mendistribusikan Oli dan
                             Pelumas dalam jumlah besar bagi industri, pertambangan,
                             perusahaan logistic (perkapalan maupun trucking), dealer,
@@ -18,7 +19,7 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="call-to-action-right p-tb30">
                         <a href="/contact-us" class="site-button-secondry  m-r15 text-uppercase font-weight-600">
-                            Hubungi Kami  <i class="fa fa-angle-double-right"></i>
+                            Hubungi Kami <i class="fa fa-angle-double-right"></i>
                         </a>
                     </div>
                 </div>
@@ -35,7 +36,8 @@
                     <div class="widget widget_about">
                         <h4 class="widget-title">About Company</h4>
                         <div class="logo-footer clearfix p-b15">
-                            <a href="/"><img src="{{asset('logo_.png')}}" width="230" height="67" alt=""></a>
+                            <a href="/"><img src="{{ asset('logo_.png') }}" width="230" height="67"
+                                    alt=""></a>
                         </div>
 
                     </div>
@@ -46,37 +48,39 @@
                         <h4 class="widget-title">Resent Post</h4>
                         <div class="widget-post-bx">
                             @php
-                                function getHariSingkat($tanggal) {
-                                     // Array mapping nama hari dalam bahasa Inggris ke bahasa Indonesia
-                                     $hariInggris = [
-                                         'Sun' => 'Minggu',
-                                         'Mon' => 'Senin',
-                                         'Tue' => 'Selasa',
-                                         'Wed' => 'Rabu',
-                                         'Thu' => 'Kamis',
-                                         'Fri' => 'Jumat',
-                                         'Sat' => 'Sabtu'
-                                     ];
+                                function getHariSingkat($tanggal)
+                                {
+                                    // Array mapping nama hari dalam bahasa Inggris ke bahasa Indonesia
+                                    $hariInggris = [
+                                        'Sun' => 'Minggu',
+                                        'Mon' => 'Senin',
+                                        'Tue' => 'Selasa',
+                                        'Wed' => 'Rabu',
+                                        'Thu' => 'Kamis',
+                                        'Fri' => 'Jumat',
+                                        'Sat' => 'Sabtu',
+                                    ];
 
-                                     // Mendapatkan nama hari dalam bahasa Inggris
-                                     $hari = date('D', strtotime($tanggal));
+                                    // Mendapatkan nama hari dalam bahasa Inggris
+                                    $hari = date('D', strtotime($tanggal));
 
-                                     // Konversi ke nama hari dalam bahasa Indonesia
-                                     $hariIndonesia = $hariInggris[$hari];
+                                    // Konversi ke nama hari dalam bahasa Indonesia
+                                    $hariIndonesia = $hariInggris[$hari];
 
-                                     // Mengambil 3 huruf pertama
-                                     return substr($hariIndonesia, 0, 3);
-                                 }
+                                    // Mengambil 3 huruf pertama
+                                    return substr($hariIndonesia, 0, 3);
+                                }
                             @endphp
-                            @foreach($blogs as $blog)
+                            @foreach ($blogs as $blog)
                                 <div class="bdr-light-blue widget-post clearfix  bdr-b-1 m-b10 p-b10">
                                     <div class="wt-post-date text-center text-uppercase text-white p-t5">
-                                        <strong>{{getHariSingkat($blog->created_at)}}</strong>
-                                        <span>{{date('M',strtotime($blog->created_at))}}</span>
+                                        <strong>{{ getHariSingkat($blog->created_at) }}</strong>
+                                        <span>{{ date('M', strtotime($blog->created_at)) }}</span>
                                     </div>
                                     <div class="wt-post-info">
                                         <div class="wt-post-header">
-                                            <h6 class="post-title"><a href="{{route('blog',$blog->slug)}}">Blog title first </a></h6>
+                                            <h6 class="post-title"><a href="{{ route('blog', $blog->slug) }}">Blog title
+                                                    first </a></h6>
                                         </div>
                                         <div class="wt-post-meta">
                                             <ul>
@@ -112,10 +116,12 @@
                         <div class="newsletter-bx">
                             <form role="search" method="post">
                                 <div class="input-group">
-                                    <input name="news-letter" class="form-control" placeholder="ENTER YOUR EMAIL" type="text">
+                                    <input name="news-letter" class="form-control" placeholder="ENTER YOUR EMAIL"
+                                        type="text">
                                     <span class="input-group-btn">
-                                            <button type="submit" class="site-button"><i class="fa fa-paper-plane-o"></i></button>
-                                        </span>
+                                        <button type="submit" class="site-button"><i
+                                                class="fa fa-paper-plane-o"></i></button>
+                                    </span>
                                 </div>
                             </form>
                         </div>
@@ -134,57 +140,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-
-                <div class="col-lg-3 col-md-6 col-sm-6 p-tb20">
-                    <div class="wt-icon-box-wraper left  bdr-1 bdr-gray-dark p-tb15 p-lr10 clearfix">
-                        <div class="icon-md text-secondry">
-                            <span class="iconmoon-travel"></span>
-                        </div>
-                        <div class="icon-content">
-                            <h5 class="wt-tilte text-uppercase m-b0">Address</h5>
-                            <p>No.123 Chalingt Gates, Supper market New York</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 p-tb20">
-                    <div class="wt-icon-box-wraper left  bdr-1 bdr-gray-dark p-tb15 p-lr10 clearfix ">
-                        <div class="icon-md text-secondry">
-                            <span class="iconmoon-smartphone-1"></span>
-                        </div>
-                        <div class="icon-content">
-                            <h5 class="wt-tilte text-uppercase m-b0">Phone</h5>
-                            <p class="m-b0">+41 555 888 9585</p>
-                            <p>+41 555 888 9585</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 p-tb20">
-                    <div class="wt-icon-box-wraper left  bdr-1 bdr-gray-dark p-tb15 p-lr10 clearfix">
-                        <div class="icon-md text-secondry">
-                            <span class="iconmoon-fax"></span>
-                        </div>
-                        <div class="icon-content">
-                            <h5 class="wt-tilte text-uppercase m-b0">Fax</h5>
-                            <p class="m-b0">FAX: (123) 123-4567</p>
-                            <p>FAX: (123) 123-4567</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 p-tb20">
-                    <div class="wt-icon-box-wraper left  bdr-1 bdr-gray-dark p-tb15 p-lr10 clearfix">
-                        <div class="icon-md text-secondry">
-                            <span class="iconmoon-email"></span>
-                        </div>
-                        <div class="icon-content">
-                            <h5 class="wt-tilte text-uppercase m-b0">Email</h5>
-                            <p class="m-b0">info@demo.com</p>
-                            <p>info@demo1234.com</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </div>
     </div>
     <!-- FOOTER COPYRIGHT -->
@@ -194,11 +149,12 @@
         <div class="container p-t30">
             <div class="row">
                 <div class="wt-footer-bot-left">
-                    <span class="copyrights-text">© {{date('Y')}} {{env('APP_NAME')}}. All Rights Reserved. Designed By <a target="_blank" href="https://www.instagram.com/f.damri_/">DmptDev</a>.</span>
+                    <span class="copyrights-text">© {{ date('Y') }} {{ env('APP_NAME') }}. All Rights Reserved.
+                        Designed By <a target="_blank" href="https://www.instagram.com/f.damri_/">DmptDev</a>.</span>
                 </div>
                 <div class="wt-footer-bot-right">
                     <ul class="copyrights-nav pull-right">
-                        <li><a href="javascript:void(0);">Terms  & Condition</a></li>
+                        <li><a href="javascript:void(0);">Terms & Condition</a></li>
                         <li><a href="javascript:void(0);">Privacy Policy</a></li>
                         <li><a href="contact-1.html">Contact Us</a></li>
                     </ul>
