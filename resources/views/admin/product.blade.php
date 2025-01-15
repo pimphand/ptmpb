@@ -83,6 +83,7 @@
                 // Render data
                 $.each(data, function (key, value) {
                     let url = `{{ route('admin.products.destroy', ':id') }}`.replace(':id', value.id);
+                    let urlEdit = `{{ route('admin.products.edit', ':id') }}`.replace(':id', value.id);
                     const row = `
                     <tr>
                         <td class="text-body">
@@ -99,9 +100,9 @@
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
-                                <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" data-id="${value.id}">
+                                <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" href="${urlEdit}" data-id="">
                                     <i class="material-symbols-outlined fs-16 text-body">edit</i>
-                                </button>
+                                </a>
                                 <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" onclick="deleteData('${url}','${value.name}')">
                                     <i class="material-symbols-outlined fs-16 text-danger">delete</i>
                                 </button>

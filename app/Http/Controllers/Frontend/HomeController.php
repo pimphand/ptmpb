@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
+use App\Imports\ProductImport;
 use App\Models\About;
 use App\Models\Blog;
+use App\Models\Sku;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -53,5 +57,25 @@ class HomeController extends Controller
             'title' => 'List Blog',
             'blogs' => $blogs
         ]);
+    }
+
+    public function upload(Request $request)
+    {
+//        Excel::import(new ProductImport(), $request->file);
+    }
+
+    public function productData(Request $request)
+    {
+        $skus = Sku::when($request->category, function ($query, $category) {
+            return $query->whereHas('product', function ($query) use ($category) {
+                $query->where('category_id', $category);
+            });
+        })->when($request->search, function ($query, $search) {
+            return $query->where('name', 'like', "%$search%");
+        })->with('product.category')
+            ->orderBy('created_at', 'desc')
+            ->paginate($request->length ?? 10);
+
+        return ProductResource::collection($skus);
     }
 }

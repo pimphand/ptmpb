@@ -79,9 +79,13 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Product $product): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
-        //
+        return view('admin.product_create',[
+            'title' => 'Tambah Produk',
+            'categories' => Category::all(),
+            'product' => $product
+        ]);
     }
 
     /**
@@ -89,7 +93,34 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        return DB::transaction(function () use ($request, $product) {
+            $product->update([
+                'name' => $request->name,
+                'category_id' => $request->category,
+            ]);
+
+            foreach ($request->name_sku as $key => $name_sku) {
+                $sku = $product->skus()->updateOrCreate([
+                    'id' => isset($request->sku_id[$key]) ? $request->sku_id[$key] : null,
+                ],[
+                    'name' => $name_sku,
+                    'description' => $request->description[$key],
+                    'packaging' => $request->packaging[$key],
+                    'application' => $request->application[$key],
+                ]);
+
+                if ($request->hasFile('image.'.$key)) {
+                    Image::updateOrCreate([
+                        'imaginable_id' => $sku->id,
+                        'imaginable_type' => Sku::class,
+                    ],[
+                        'path' => $request->file('image.'.$key)->store('images/products','public'),
+                    ]);
+                }
+            }
+
+            return response()->json(['message' => 'Produk berhasil diperbarui']);
+        });
     }
 
     /**

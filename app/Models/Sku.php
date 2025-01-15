@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\SkuFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Sku extends Model
 {
-    /** @use HasFactory<\Database\Factories\SkuFactory> */
+    /** @use HasFactory<SkuFactory> */
     use HasFactory, HasUuids;
-    protected $fillable = ['name', 'price', 'code', 'product_id','description','application','packaging'];
+    protected $fillable = ['name', 'price', 'code', 'product_id','description','application','packaging','performance','stock','is_publish','weight','width','height','depth'];
 
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -26,7 +27,7 @@ class Sku extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->code = 'SKU'.$model->product_id.'-'.time();
+            $model->code = 'SKU'.'-'.rand(1000, 9999).'-'.rand(1000, 9999);
         });
     }
 }
