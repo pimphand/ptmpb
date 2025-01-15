@@ -1,23 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="wt-bnr-inr overlay-wraper" style="background-image:url();">
-        <div class="overlay-main bg-black opacity-07"></div>
-        <div class="container">
-            <div class="wt-bnr-inr-entry">
-                <h1 class="text-white">{{$title}}</h1>
-            </div>
-        </div>
-    </div>
+    <x-banner :title="$title"></x-banner>
+
     <div class="section-full p-t80 p-b50">
         <div class="container">
             <div class="row">
 
                 <!-- LEFT PART START -->
                 <div class="col-lg-8 col-md-12">
-
-                   @yield('blog-content')
-
+                    @yield('blog-content')
                 </div>
                 <!-- LEFT PART END -->
 

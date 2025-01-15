@@ -14,8 +14,8 @@
         <div class="search-bx">
             <form role="search" method="get" action="{{ route('blogs') }}">
                 <div class="input-group">
-                    <input name="search" type="text" class="form-control" placeholder="Masukan kata kunci">
-                    value="{{ request()->search }}">
+                    <input name="search" type="text" class="form-control" placeholder="Masukan kata kunci"
+                        value="{{ request()->search }}">
                     <span class="input-group-btn">
                         <button type="submit" class="site-button">
                             <i class="fa fa-search"></i>

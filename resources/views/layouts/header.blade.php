@@ -1,21 +1,9 @@
 <!-- HEADER START -->
 <header class="site-header header-style-1 mobile-sider-drawer-menu">
-    <div class="top-bar bg-secondry">
+    <div class="top-bar text-white" style="background-color: #fff;">
         <div class="container">
             <div class="wt-topbar-right">
-                <ul class="list-unstyled e-p-bx">
-                    <li><i class="fa fa-envelope"></i>mail@thewebmax.com</li>
-                    <li><i class="fa fa-phone"></i>(654) 321-7654</li>
-                </ul>
-                <ul class="social-bx list-inline">
-                    <li><a href="javascript:void(0);" class="fa fa-facebook"></a></li>
-                    <li><a href="javascript:void(0);" class="fa fa-twitter"></a></li>
-                    <li><a href="javascript:void(0);" class="fa fa-linkedin"></a></li>
-                    <li><a href="javascript:void(0);" class="fa fa-rss"></a></li>
-                    <li><a href="javascript:void(0);" class="fa fa-youtube"></a></li>
-                    <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
-                    <li><a href="javascript:void(0);" class="fa fa-instagram"></a></li>
-                </ul>
+
             </div>
         </div>
     </div>
@@ -31,7 +19,7 @@
                 <!-- MAIN Vav -->
                 <div class="header-nav navbar-collapse collapse ">
                     <ul class=" nav navbar-nav">
-                        <li class="{{ request()->routeIs(['home'])? 'active' : '' }}">
+                        <li class="{{ request()->routeIs(['home']) ? 'active' : '' }}">
                             <a href="/">{{ __('app.home') }}</a>
                         </li>
 
@@ -48,7 +36,7 @@
                         {{--                            <a href="javascript:;">{{__('app.testimonials')}}</a> --}}
                         {{--                        </li> --}}
 
-                        <li class="{{ request()->routeIs(['blogs', 'blog'])? 'active' : '' }}">
+                        <li class="{{ request()->routeIs(['blogs', 'blog']) ? 'active' : '' }}">
                             <a href="{{ route('blogs') }}">{{ __('app.blog') }}</a>
                         </li>
                         <li class="submenu-direction">
