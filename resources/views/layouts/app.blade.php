@@ -118,11 +118,6 @@
 
     </div>
 
-
-
-
-
-
     <!-- JAVASCRIPT  FILES ========================================= -->
     <script src="{{ asset('assets') }}/js/jquery-3.6.1.min.js"></script><!-- JQUERY.MIN JS -->
     <script src="{{ asset('assets') }}/js/popper.min.js"></script><!-- POPPER.MIN JS -->
