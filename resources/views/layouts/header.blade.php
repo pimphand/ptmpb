@@ -27,9 +27,8 @@
                             <a href="{{ route('about_us') }}">{{ __('app.about_us') }}</a>
                         </li>
 
-                        <li>
-                            <a href="javascript:;">{{ __('app.product') }}</a>
-
+                        <li class="{{ request()->routeIs(['products', 'product']) ? 'active' : '' }}">
+                            <a href="{{ route('products') }}">{{ __('app.product') }}</a>
                         </li>
 
                         {{--                        <li> --}}

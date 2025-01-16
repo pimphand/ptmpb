@@ -24,7 +24,7 @@ class Banner extends Component
      */
     public function render(): View|Closure|string
     {
-        $banner = Gallery::where("title", $this->title)->first();
+        $banner = Gallery::where("type", 'banner')->first();
         return view('components.banner', [
             'title' => $this->title,
             'banner' => $banner ?? []

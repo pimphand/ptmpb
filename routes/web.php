@@ -10,6 +10,9 @@ Route::get('/', function () {
 Route::get('/about-us', [\App\Http\Controllers\Frontend\HomeController::class, 'about_us'])->name('about_us');
 Route::get('/blog/{id}', [\App\Http\Controllers\Frontend\HomeController::class, 'blog'])->name('blog');
 Route::get('/blogs', [\App\Http\Controllers\Frontend\HomeController::class, 'blogs'])->name('blogs');
+Route::get('/products', [\App\Http\Controllers\Frontend\HomeController::class, 'products'])->name('products');
+Route::get('/products-data', [\App\Http\Controllers\Frontend\HomeController::class, 'listProduct'])->name('listProduct');
+
 
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {

@@ -10,7 +10,7 @@ class Sku extends Model
 {
     /** @use HasFactory<\Database\Factories\SkuFactory> */
     use HasFactory, HasUuids;
-    protected $fillable = ['name', 'price', 'code', 'product_id','description','application','packaging'];
+    protected $fillable = ['name', 'price', 'code', 'product_id', 'description', 'application', 'packaging'];
 
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -19,14 +19,14 @@ class Sku extends Model
 
     public function images(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphMany(Image::class, 'imaginable');
     }
 
     public static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->code = 'SKU'.$model->product_id.'-'.time();
+            $model->code = 'SKU' . $model->product_id . '-' . time();
         });
     }
 }

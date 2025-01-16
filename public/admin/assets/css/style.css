@@ -12,7 +12,7 @@ This files table contents are outlined below>>>>>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 :root,
 [data-bs-theme=light] {
-  --bs-blue: #0d6efd;
+  --bs-blue: #19a63f;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
   --bs-pink: #d63384;
@@ -733,7 +733,7 @@ progress {
  */
 :root,
 [data-bs-theme=light] {
-  --bs-blue: #0d6efd;
+  --bs-blue: #19a63f;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
   --bs-pink: #d63384;
