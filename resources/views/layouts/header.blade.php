@@ -31,10 +31,6 @@
                             <a href="{{ route('products') }}">{{ __('app.product') }}</a>
                         </li>
 
-                        {{--                        <li> --}}
-                        {{--                            <a href="javascript:;">{{__('app.testimonials')}}</a> --}}
-                        {{--                        </li> --}}
-
                         <li class="{{ request()->routeIs(['blogs', 'blog']) ? 'active' : '' }}">
                             <a href="{{ route('blogs') }}">{{ __('app.blog') }}</a>
                         </li>
@@ -42,8 +38,8 @@
                             <a href="javascript:;">{{ __('app.gallery') }}</a>
 
                         </li>
-                        <li class="has-mega-menu ">
-                            <a href="javascript:;">{{ __('app.contact_us') }}</a>
+                        <li class="{{ request()->routeIs(['contact']) ? 'active' : '' }}">
+                            <a href="{{route('contact')}}">{{ __('app.contact_us') }}</a>
                         </li>
                     </ul>
                 </div>

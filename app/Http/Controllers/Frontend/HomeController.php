@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Message;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Sku;
@@ -101,7 +102,7 @@ class HomeController extends Controller
 
     public function saveOrder(Request $request)
     {
-        $order = Order::create([
+        Order::create([
             'data' => $request->buyerInfo,
             'items' => $request->orderDetails,
         ]);
@@ -109,5 +110,37 @@ class HomeController extends Controller
         return [
             'status' => 'success',
         ];
+    }
+
+    public function contact()
+    {
+        return view('frontend.contact', [
+            'title' => 'Kontak',
+            'contact' => About::where('type', 'contact')->first()
+        ]);
+    }
+
+    public function saveContact(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'message' => 'required'
+        ],[
+            'name.required' => 'Nama harus diisi',
+            'email.required' => 'Email harus diisi',
+            'email.email' => 'Email tidak valid',
+            'message.required' => 'Pesan harus diisi'
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'message' => $request->message
+        ];
+
+        Message::create($data);
+
+        return redirect()->back()->with('success', 'Pesan berhasil dikirim');
     }
 }

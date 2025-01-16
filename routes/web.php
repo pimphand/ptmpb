@@ -19,9 +19,8 @@ Route::get('/products', [\App\Http\Controllers\Frontend\HomeController::class, '
 Route::get('/products-data', [\App\Http\Controllers\Frontend\HomeController::class, 'listProduct'])->name('listProduct');
 Route::get('/checkout', [\App\Http\Controllers\Frontend\HomeController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [\App\Http\Controllers\Frontend\HomeController::class, 'saveOrder']);
-
-
-
+Route::get('/contact', [\App\Http\Controllers\Frontend\HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [\App\Http\Controllers\Frontend\HomeController::class, 'saveContact']);
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
@@ -53,6 +52,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     //contact
     Route::get('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'contact'])->name('contact.index');
+    Route::post('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'storeContact'])->name('contact.store');
+
 });
 
 require __DIR__ . '/auth.php';

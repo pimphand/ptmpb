@@ -96,36 +96,10 @@
                     </div>
                 </div>
                 <!-- USEFUL LINKS -->
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="widget widget_services">
-                        <h4 class="widget-title">Useful links</h4>
-                        <ul>
-                            <li><a href="about-1.html">About</a></li>
-                            <li><a href="faq-1.html">FAQ</a></li>
-                            <li><a href="career.html">Career</a></li>
-                            <li><a href="our-team.html">Our Team</a></li>
-                            <li><a href="services.html">Services</a></li>
-                            <li><a href="gallery-grid-1.html">Gallery</a></li>
-                        </ul>
-                    </div>
-                </div>
+
                 <!-- NEWSLETTER -->
                 <div class="col-lg-3 col-md-6">
-                    <div class="widget widget_newsletter">
-                        <h4 class="widget-title">Newsletter</h4>
-                        <div class="newsletter-bx">
-                            <form role="search" method="post">
-                                <div class="input-group">
-                                    <input name="news-letter" class="form-control" placeholder="ENTER YOUR EMAIL"
-                                        type="text">
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="site-button"><i
-                                                class="fa fa-paper-plane-o"></i></button>
-                                    </span>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+
                     <!-- SOCIAL LINKS -->
                     <div class="widget widget_social_inks">
                         <h4 class="widget-title">Social Links</h4>
@@ -164,3 +138,9 @@
     </div>
 </footer>
 <!-- FOOTER END -->
+@php
+$contact = \App\Models\About::where('type', 'contact')->first();
+@endphp
+<a href="https://wa.me/{{$contact->data['phone']}}" target="_blank" class="whatsapp-button">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+</a>

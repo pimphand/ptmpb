@@ -22,15 +22,6 @@ class AboutController extends Controller
             'about' => About::find('9df277bb-6c87-4029-b9e7-36fcde971d8b')
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -48,22 +39,6 @@ class AboutController extends Controller
         return response()->json([
             'message' => 'Data berhasil disimpan'
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(About $about)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(About $about)
-    {
-        //
     }
 
     /**

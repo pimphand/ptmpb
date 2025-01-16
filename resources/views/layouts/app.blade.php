@@ -94,6 +94,29 @@
             color: #999;
             pointer-events: none;
         }
+
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px; /* Jarak dari bawah */
+            right: 20px; /* Jarak dari kanan */
+            z-index: 1000; /* Pastikan tombol berada di atas elemen lain */
+            background-color: #25d366; /* Warna hijau khas WhatsApp */
+            border-radius: 50%;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .whatsapp-button img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1); /* Sedikit pembesaran saat hover */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
     </style>
 
 </head>
@@ -111,10 +134,7 @@
         <!-- CONTENT END -->
 
         <x-footer></x-footer>
-
-
         <!-- SCROLL TOP BUTTON -->
-        <button class="scroltop"><span class=" iconmoon-house relative" id="btn-vibrate"></span>Top</button>
 
     </div>
 
@@ -143,11 +163,22 @@
 
     <!-- REVOLUTION SLIDER SCRIPT FILES -->
     <script src="{{ asset('assets') }}/js/rev-script-2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-    @stack('js')
 
     <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
         const cartKey = "shoppingCart";
 
         // Fungsi untuk mengambil keranjang belanja dari localStorage
@@ -182,11 +213,7 @@
             `);
             });
 
-            $(".wcmenucart-count").text(totalQty);
-            $(".delete-item").on("click", function() {
-                const id = $(this).closest(".nav-cart-item").data("id");
-                deleteCartItem(id);
-            });
+            $(".wcmenucart-count").text(cart.length);
         }
 
         // Pasang event listener untuk tombol hapus
@@ -228,6 +255,9 @@
         // Render keranjang belanja saat halaman dimuat
         renderCart();
     </script>
+
+    @stack('js')
+
 </body>
 
 </html>

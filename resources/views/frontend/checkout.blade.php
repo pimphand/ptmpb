@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $contact = \App\Models\About::where('type', 'contact')->first();
+    @endphp
     <style>
         #list-order {
             max-height: 400px;
@@ -160,12 +163,27 @@
     <script>
         //get cart items from local storage
         cartItemData()
+        let cartItems = JSON.parse(localStorage.getItem('shoppingCart'));
 
         function cartItemData() {
-            let cartItems = JSON.parse(localStorage.getItem('shoppingCart'));
-
+            let cartItems = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+            if (cartItems.length == 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Keranjang belanja masih kosong!',
+                    //clicking outside the modal will also close it
+                    allowOutsideClick: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('products') }}";
+                    }
+                });
+            }
             //get list order element
             let listOrder = document.getElementById('list-order');
+            //clear list order
+            listOrder.innerHTML = '';
 
             //loop through cart items and display them in the list order
             cartItems.forEach(item => {
@@ -173,12 +191,12 @@
                 li.classList.add('cart-item', 'clearfix');
                 li.innerHTML = `
                     <div class="cart-item-image">
-                        <img src="${item.image}" alt="${item.name}" width="150">
+                        <img src="${item.image}" alt="${item.name}" width="80">
                     </div>
                     <div class="cart-item-info">
                         <span class="cart-item-name">${item.name}</span>
-                        <input class="qty form-control" type="id" value="${item.qty}" hidden>
-                        <input class="qty form-control" type="qty" value="${item.qty}" data-id="${item.id}">
+                        <input class="form-control" type="number" value="${item.qty}" hidden>
+                        <input class="qty form-control" type="text" value="${item.qty}" data-id="${item.id}" onchange="updateQty(this)">
                     </div>
                     <div class="cart-item-actions">
                         <a href="javascript:void(0);" class="deleted" onclick="deleteCartItem('${item.id}')">
@@ -224,7 +242,6 @@
             });
 
             // Add buyer's information
-            const buyerInfo = document.querySelector('form').elements;
             const fullName = $('#name').val() || 'N/A';
             const companyName = $('#company').val() || 'N/A';
             const whatsappNumber = $('#whatsapp').val() || 'N/A';
@@ -235,7 +252,7 @@
                 `\nInformasi Pembeli:\nNama Lengkap: ${fullName}\nPerusahaan: ${companyName}\nWhatsApp: ${whatsappNumber}\nEmail: ${companyEmail}\nAddress: ${fullAddress}`;
 
             // WhatsApp URL format to send message
-            let whatsappURL = `https://wa.me/6281249101538?text=${encodeURIComponent(orderDetails)}`;
+            let whatsappURL = `https://wa.me/{{$contact->data['phone']}}?text=${encodeURIComponent(orderDetails)}`;
 
             $.ajax({
                 type: "post",
@@ -253,11 +270,13 @@
                 },
                 dataType: "json",
                 success: function(response) {
-
+                    Toast.fire({
+                        icon: "success",
+                        title: "Data berhasil disimpan"
+                    });
                 }
             });
 
-            // Redirect to WhatsApp with the order details
             window.open(whatsappURL, '_blank');
         }
     </script>
