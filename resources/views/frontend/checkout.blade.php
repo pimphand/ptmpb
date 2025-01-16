@@ -87,46 +87,49 @@
                     </div>
 
                     <div class="wt-box">
-                        <form>
 
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Nama Lengkap</label>
-                                        <input type="text" class="form-control" placeholder="First Name">
-                                    </div>
-                                </div>
-
+                        <div class="row">
+                            <div class="col-md-12 col-sm-6">
                                 <div class="form-group">
-                                    <label>Nama Perusahaan</label>
-                                    <input type="text" class="form-control" placeholder="Company Name">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Nomor Whatsapp</label>
-                                        <input type="text" class="form-control" placeholder="Enter Phone Number">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Email Perusahaan</label>
-                                        <input type="email" class="form-control" placeholder="Enter email">
-                                    </div>
+                                    <label>Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="name"
+                                        placeholder="masukan nama lengkap">
                                 </div>
                             </div>
-
 
                             <div class="form-group">
-                                <label>Address</label>
-                                <input type="text" class="form-control m-b30" placeholder="Address 1">
+                                <label>Nama Perusahaan</label>
+                                <input type="text" class="form-control" id="company"
+                                    placeholder="masukan nama perusahaan">
                             </div>
-                            <button type="submit" value="submit" class="site-button">Save and Deliver Here</button>
 
-                        </form>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Nomor Whatsapp</label>
+                                    <input type="text" class="form-control" id="whatsapp"
+                                        placeholder="masukan nomor whatsapp">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Email Perusahaan</label>
+                                    <input type="email" class="form-control" id="email"
+                                        placeholder="masukan email perusahaan">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Alamat Lengkap</label>
+                            <input type="text" class="form-control m-b30" id="address"
+                                placeholder="masukan alamat lengkap">
+                        </div>
+                        <button type="submit" value="submit" class="site-button" onclick="sendToWhatsApp()">Save and
+                            Deliver Here</button>
+
                     </div>
                 </div>
 
@@ -175,7 +178,8 @@
                     </div>
                     <div class="cart-item-info">
                         <span class="cart-item-name">${item.name}</span>
-                        <input class="qty form-control" type="number" value="${item.qty}" data-id="${item.id}">
+                        <input class="qty form-control" type="id" value="${item.qty}" hidden>
+                        <input class="qty form-control" type="qty" value="${item.qty}" data-id="${item.id}">
                     </div>
                     <div class="cart-item-actions">
                         <a href="javascript:void(0);" class="deleted" onclick="deleteCartItem('${item.id}')">
@@ -207,6 +211,35 @@
             //update local storage
             localStorage.setItem('shoppingCart', JSON.stringify(cartItems));
             cartItemData();
+        }
+
+        // Send data to WhatsApp
+        function sendToWhatsApp() {
+            let cartItems = JSON.parse(localStorage.getItem('shoppingCart'));
+            let orderDetails = 'Order Details:\n\n';
+
+            // Loop through the cart items and format them for WhatsApp
+            cartItems.forEach(item => {
+                orderDetails +=
+                    `\nKategori: ${item.category}\nProduk : ${item.name}\nMerek: ${item.brand}\nJumlah: ${item.qty}\n\n`;
+            });
+
+            // Add buyer's information
+            const buyerInfo = document.querySelector('form').elements;
+            const fullName = $('#name').val() || 'N/A';
+            const companyName = $('#company').val() || 'N/A';
+            const whatsappNumber = $('#whatsapp').val() || 'N/A';
+            const companyEmail = $('#email').val() || 'N/A';
+            const fullAddress = $('#address').val() || 'N/A';
+
+            orderDetails +=
+                `\nInformasi Pembeli:\nNama Lengkap: ${fullName}\nPerusahaan: ${companyName}\nWhatsApp: ${whatsappNumber}\nEmail: ${companyEmail}\nAddress: ${fullAddress}`;
+
+            // WhatsApp URL format to send message
+            let whatsappURL = `https://wa.me/6281249101538?text=${encodeURIComponent(orderDetails)}`;
+
+            // Redirect to WhatsApp with the order details
+            window.open(whatsappURL, '_blank');
         }
     </script>
 @endpush
