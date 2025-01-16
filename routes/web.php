@@ -18,6 +18,8 @@ Route::get('/blogs', [\App\Http\Controllers\Frontend\HomeController::class, 'blo
 Route::get('/products', [\App\Http\Controllers\Frontend\HomeController::class, 'products'])->name('products');
 Route::get('/products-data', [\App\Http\Controllers\Frontend\HomeController::class, 'listProduct'])->name('listProduct');
 Route::get('/checkout', [\App\Http\Controllers\Frontend\HomeController::class, 'checkout'])->name('checkout');
+Route::post('/checkout', [\App\Http\Controllers\Frontend\HomeController::class, 'saveOrder']);
+
 
 
 

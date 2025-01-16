@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Sku;
 use Illuminate\Http\Request;
@@ -96,5 +97,17 @@ class HomeController extends Controller
         return view('frontend.checkout', [
             'title' => 'Checkout'
         ]);
+    }
+
+    public function saveOrder(Request $request)
+    {
+        $order = Order::create([
+            'data' => $request->buyerInfo,
+            'items' => $request->orderDetails,
+        ]);
+
+        return [
+            'status' => 'success',
+        ];
     }
 }

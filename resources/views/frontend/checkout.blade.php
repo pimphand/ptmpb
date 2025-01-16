@@ -127,8 +127,7 @@
                             <input type="text" class="form-control m-b30" id="address"
                                 placeholder="masukan alamat lengkap">
                         </div>
-                        <button type="submit" value="submit" class="site-button" onclick="sendToWhatsApp()">Save and
-                            Deliver Here</button>
+                        <button type="submit" value="submit" class="site-button" onclick="sendToWhatsApp()">Simpan</button>
 
                     </div>
                 </div>
@@ -237,6 +236,26 @@
 
             // WhatsApp URL format to send message
             let whatsappURL = `https://wa.me/6281249101538?text=${encodeURIComponent(orderDetails)}`;
+
+            $.ajax({
+                type: "post",
+                url: "{{ route('checkout') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    buyerInfo: {
+                        fullName: fullName,
+                        companyName: companyName,
+                        whatsappNumber: whatsappNumber,
+                        companyEmail: companyEmail,
+                        fullAddress: fullAddress
+                    },
+                    orderDetails: cartItems
+                },
+                dataType: "json",
+                success: function(response) {
+
+                }
+            });
 
             // Redirect to WhatsApp with the order details
             window.open(whatsappURL, '_blank');
