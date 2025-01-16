@@ -109,7 +109,7 @@
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
-                                <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" href="${urlEdit}">
+                                <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" href="${urlEdit}" data-id="">
                                     <i class="material-symbols-outlined fs-16 text-body">edit</i>
                                 </a>
                                 <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" onclick="deleteData('${url}','${value.name}')">

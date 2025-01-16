@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class Category extends Model
 {
     use HasUuids;
-    protected $fillable = ['name', 'description','slug'];
+    protected $fillable = ['name', 'description'];
 
     /*
      * boot
@@ -17,13 +17,13 @@ class Category extends Model
     protected static function boot(): void
     {
         parent::boot();
-        static::creating(function ($model) {
-            $model->slug = Str::slug($model->name);
-        });
+//        static::creating(function ($model) {
+//            $model->slug = Str::slug($model->name);
+//        });
 
-        static ::updating(function ($model) {
-            $model->slug = Str::slug($model->name);
-        });
+//        static ::updating(function ($model) {
+//            $model->slug = Str::slug($model->name);
+//        });
     }
     public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

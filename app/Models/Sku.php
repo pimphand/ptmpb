@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\SkuFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Sku extends Model
 {
-    /** @use HasFactory<\Database\Factories\SkuFactory> */
+    /** @use HasFactory<SkuFactory> */
     use HasFactory, HasUuids;
     protected $fillable = ['name', 'price', 'code', 'product_id', 'description', 'application', 'packaging'];
 

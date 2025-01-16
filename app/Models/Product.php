@@ -25,12 +25,12 @@ class Product extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->slug = Str::slug($model->name);
+            $model->slug = Str::slug($model->name. '-' . $model->category->name) . '-' . rand(1000, 9999);
         });
-
-        static ::updating(function ($model) {
-            $model->slug = Str::slug($model->name);
-        });
+//
+//        static ::updating(function ($model) {
+//            $model->slug = Str::slug($model->name);
+//        });
     }
 
     public function skus(): \Illuminate\Database\Eloquent\Relations\HasMany
