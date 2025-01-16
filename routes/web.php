@@ -17,6 +17,7 @@ Route::get('/blog/{id}', [\App\Http\Controllers\Frontend\HomeController::class, 
 Route::get('/blogs', [\App\Http\Controllers\Frontend\HomeController::class, 'blogs'])->name('blogs');
 Route::get('/products', [\App\Http\Controllers\Frontend\HomeController::class, 'products'])->name('products');
 Route::get('/products-data', [\App\Http\Controllers\Frontend\HomeController::class, 'listProduct'])->name('listProduct');
+Route::get('/checkout', [\App\Http\Controllers\Frontend\HomeController::class, 'checkout'])->name('checkout');
 
 
 

@@ -87,6 +87,14 @@ class HomeController extends Controller
         })
             ->orderBy('created_at', 'desc')
             ->paginate(6);
+
         return view('frontend.list-product', compact('products'));
+    }
+
+    public function checkout(Request $request)
+    {
+        return view('frontend.checkout', [
+            'title' => 'Checkout'
+        ]);
     }
 }

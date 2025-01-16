@@ -58,15 +58,34 @@
                     <span class="icon-bar icon-bar-three"></span>
                 </button>
                 <!-- SITE Search -->
-                <div id="search">
-                    <span class="close"></span>
-                    <form role="search" id="searchform" action="/search" method="get" class="radius-xl">
-                        <div class="input-group">
-                            <input value="" name="q" type="search" placeholder="Type to search">
-                            <span class="input-group-btn"><button type="button" class="search-btn"><i
-                                        class="fa fa-search"></i></button></span>
+                <div class="extra-nav">
+                    <div class="extra-cell"></div>
+                    <div class="extra-cell">
+                        <a href="javascript:;" class="wt-cart cart-btn dropdown-toggle" title="Your Cart"
+                            id="ID-MSG_dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="link-inner">
+                                <span class="woo-cart-total"> </span>
+                                <span class="woo-cart-count">
+                                    <span class="shopping-bag wcmenucart-count">0</span>
+                                </span>
+                            </span>
+                        </a>
+
+                        <div class="dropdown-menu cart-dropdown-item-wraper" style="">
+                            <div class="nav-cart-content">
+
+                                <div class="nav-cart-items p-a15" id="listCart">
+
+                                </div>
+
+                                <div class="nav-cart-action p-a15 clearfix">
+                                    <a class="site-button btn-block" style="width: 100%;"
+                                        href="{{ route('checkout') }}" type="button">Checkout</a>
+                                </div>
+                            </div>
                         </div>
-                    </form>
+
+                    </div>
                 </div>
             </div>
         </div>

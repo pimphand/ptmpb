@@ -55,6 +55,15 @@
         rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Crete+Round:400,400i&amp;subset=latin-ext" rel="stylesheet">
     <style>
+        #listCart {
+            max-height: 400px;
+            /* Sesuaikan tinggi yang diinginkan */
+            overflow-y: auto;
+            /* Membuat scroll vertikal */
+            padding-right: 10px;
+            /* Menambahkan ruang untuk scrollbar */
+        }
+
         .pagination-1 {
             list-style: none;
             display: flex;
@@ -166,6 +175,88 @@
 
 
     @stack('js')
+
+    <script>
+        const cartKey = "shoppingCart";
+
+        // Fungsi untuk mengambil keranjang belanja dari localStorage
+        function getCart() {
+            const cart = localStorage.getItem(cartKey);
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        // Fungsi untuk menampilkan keranjang belanja di halaman
+        function renderCart() {
+            const cart = getCart();
+            const $listCart = $("#listCart");
+            $listCart.empty();
+
+            let totalQty = 0;
+
+            cart.forEach((item) => {
+                totalQty += item.qty;
+
+                $listCart.append(`
+                <div class="nav-cart-item clearfix" data-id="${item.id}">
+                    <div class="nav-cart-item-image">
+                        <a href="#"><img src="${item.image}" alt="${item.name}"></a>
+                    </div>
+                    <div class="nav-cart-item-desc">
+                        <a href="#">${item.name}</a>
+                        <div>Merk: ${item.brand}</div>
+                        <div>Kategori: ${item.category}</div>
+                        <button class="delete-item btn btn-danger btn-sm" style="width:100%;">Hapus</button>
+                    </div>
+                </div>
+            `);
+            });
+
+            $(".wcmenucart-count").text(totalQty);
+            $(".delete-item").on("click", function() {
+                const id = $(this).closest(".nav-cart-item").data("id");
+                deleteCartItem(id);
+            });
+        }
+
+        // Pasang event listener untuk tombol hapus
+        $(".delete-item").on("click", function() {
+            const id = $(this).closest(".nav-cart-item").data("id");
+            deleteCartItem(id);
+        });
+
+        function deleteCartItem(id) {
+            let cart = getCart();
+            cart = cart.filter((item) => item.id !== id);
+            saveCart(cart);
+            renderCart();
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem(cartKey, JSON.stringify(cart));
+        }
+
+
+
+        // Fungsi untuk menambahkan item ke keranjang
+        function addToCart(item) {
+            const cart = getCart();
+            const existingItem = cart.find((cartItem) => cartItem.id === item.id);
+
+            if (existingItem) {
+                // Jika item sudah ada, tambahkan qty
+                existingItem.qty += item.qty;
+            } else {
+                // Jika item belum ada, tambahkan ke keranjang
+                cart.push(item);
+            }
+
+            saveCart(cart);
+            renderCart();
+        }
+
+        // Render keranjang belanja saat halaman dimuat
+        renderCart();
+    </script>
 </body>
 
 </html>

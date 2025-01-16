@@ -183,6 +183,24 @@
                                 currentFilters.merk);
                         }
                     });
+
+                    // Pasang event handler untuk klik tombol "add_to_cart"
+                    $('#product-list .add_to_cart').off('click').on('click', function(e) {
+                        e.preventDefault();
+                        const id = $(this).data('id');
+                        const name = $(this).data('name');
+                        const category = $(this).data('category');
+                        const image = $(this).data('image');
+                        const brand = $(this).data('product');
+                        addToCart({
+                            id,
+                            name,
+                            category,
+                            image,
+                            brand,
+                            qty: 1
+                        });
+                    });
                 }
             });
         }
