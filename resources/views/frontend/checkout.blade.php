@@ -94,14 +94,16 @@
                             <div class="col-md-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="name" placeholder="masukan nama lengkap">
+                                    <input type="text" class="form-control" id="name"
+                                        placeholder="masukan nama lengkap">
                                     <div id="nameError" class="error-message" style="display:none; color: red;"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Nama Perusahaan</label>
-                                <input type="text" class="form-control" id="company" placeholder="masukan nama perusahaan">
+                                <input type="text" class="form-control" id="company"
+                                    placeholder="masukan nama perusahaan">
                                 <div id="companyError" class="error-message" style="display:none; color: red;"></div>
                             </div>
                         </div>
@@ -110,14 +112,16 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label>Nomor Whatsapp</label>
-                                    <input type="text" class="form-control" id="whatsapp" placeholder="contoh : 628123456789">
+                                    <input type="text" class="form-control" id="whatsapp"
+                                        placeholder="contoh : 628123456789">
                                     <div id="whatsappError" class="error-message" style="display:none; color: red;"></div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label>Email Perusahaan</label>
-                                    <input type="email" class="form-control" id="email" placeholder="masukan email perusahaan">
+                                    <input type="email" class="form-control" id="email"
+                                        placeholder="masukan email perusahaan">
                                     <div id="emailError" class="error-message" style="display:none; color: red;"></div>
                                 </div>
                             </div>
@@ -322,7 +326,7 @@
                 `\nInformasi Pembeli:\nNama Lengkap: ${fullName}\nPerusahaan: ${companyName}\nWhatsApp: ${whatsappNumber}\nEmail: ${companyEmail}\nAlamat: ${fullAddress}`;
 
             // Format URL WhatsApp untuk mengirim pesan
-            let whatsappURL = `https://wa.me/{{$contact->data['phone']}}?text=${encodeURIComponent(orderDetails)}`;
+            let whatsappURL = `https://wa.me/{{ $contact->data['phone'] }}?text=${encodeURIComponent(orderDetails)}`;
 
             // Kirim data ke server (pastikan data checkout route di server Anda benar)
             $.ajax({
@@ -341,9 +345,25 @@
                 },
                 dataType: "json",
                 success: function(response) {
-                    Toast.fire({
+                    Swal.fire({
                         icon: 'success',
-                        title: 'Data berhasil disimpan.'
+                        title: 'Berhasil!',
+                        text: 'Pesanan Anda telah kami terima. Kami akan segera menghubungi Anda.'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Hapus keranjang belanja dari local storage
+                            localStorage.removeItem('shoppingCart');
+                            //remove li #list-order
+                            $('#list-order').html('');
+
+                            const fields = ['name', 'company', 'whatsapp', 'email', 'address'];
+                            fields.forEach(field => {
+                                $('#' + field).val('');
+                            });
+
+                            // Redirect ke halaman produk
+                            window.location.href = "{{ route('products') }}";
+                        }
                     });
                 },
                 error: function(xhr, status, error) {
@@ -357,6 +377,5 @@
             // Buka WhatsApp dengan detail pesanan
             window.open(whatsappURL, '_blank');
         }
-
     </script>
 @endpush
