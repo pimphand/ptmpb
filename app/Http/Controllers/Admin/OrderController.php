@@ -23,7 +23,13 @@ class OrderController extends Controller
 
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $order->update([
+            'is_folow_up' => 1
+        ]);
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     /**
@@ -31,7 +37,7 @@ class OrderController extends Controller
      */
     public function data(\Illuminate\Http\Request $request)
     {
-        $orders = Order::when($request->search,function ($query) use ($request){
+        $orders = Order::when($request->search, function ($query) use ($request) {
             $query->where('items', 'like', "%{$request->search}%")
                 ->orWhere('data', 'like', "%{$request->search}%");
         })
