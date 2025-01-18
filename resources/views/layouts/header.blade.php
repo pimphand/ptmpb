@@ -34,9 +34,8 @@
                         <li class="{{ request()->routeIs(['blogs', 'blog']) ? 'active' : '' }}">
                             <a href="{{ route('blogs') }}">{{ __('app.blog') }}</a>
                         </li>
-                        <li class="submenu-direction">
-                            <a href="javascript:;">{{ __('app.gallery') }}</a>
-
+                        <li class="{{ request()->routeIs(['gallery']) ? 'active' : '' }}">
+                            <a href="{{route('gallery')}}">{{ __('app.gallery') }}</a>
                         </li>
                         <li class="{{ request()->routeIs(['contact']) ? 'active' : '' }}">
                             <a href="{{route('contact')}}">{{ __('app.contact_us') }}</a>

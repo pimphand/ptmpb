@@ -233,8 +233,6 @@
             localStorage.setItem(cartKey, JSON.stringify(cart));
         }
 
-
-
         // Fungsi untuk menambahkan item ke keranjang
         function addToCart(item) {
             const cart = getCart();
@@ -250,6 +248,11 @@
 
             saveCart(cart);
             renderCart();
+
+            Toast.fire({
+                icon: "success",
+                title: "Data berhasil disimpan"
+            });
         }
 
         // Render keranjang belanja saat halaman dimuat

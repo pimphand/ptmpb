@@ -26,10 +26,17 @@
                         <input type="text" class="form-control" id="search" placeholder="Search here">
                         <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
                     </form>
-                    <a href="{{ route('admin.products.create') }}" type="button"
-                        class="btn btn-primary text-white py-2 px-4 fw-semibold">
-                        {{ __('app.add') }} {{ __('app.product') }}
-                    </a>
+                    <div class="btn-group" role="group" aria-label="Product Actions">
+                        <a href="{{ route('admin.products.create') }}" type="button"
+                           class="btn btn-primary text-white py-2 px-4 fw-semibold">
+                            {{ __('app.add') }} {{ __('app.product') }}
+                        </a>
+                        <a href="{{ route('admin.products.create') }}" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                           class="btn btn-secondary text-white py-2 px-4 fw-semibold ml-2">
+                            Upload Produk
+                        </a>
+                    </div>
+
                 </div>
 
                 <div class="default-table-area style-two default-table-width">
@@ -71,6 +78,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Produk</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="upload" action="{{route('admin.products.upload')}}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                           <input type="file" name="file" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger text-white" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary text-white" id="uploadBtn">Simapan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 
 @push('js')
@@ -167,6 +200,46 @@
             $('#description').val(data.description);
             $('#staticBackdropLabel').text('Edit Category');
             $('#staticBackdrop').modal('show');
+        });
+
+        $('#uploadBtn').click(function (e) {
+            e.preventDefault();
+            let formData = new FormData($('#upload')[0]);
+
+            //add if format has id
+            if ($('[name="id"]').val()) {
+                formData.append('_method', 'PUT');
+            }
+
+            $('.error-message').remove();
+            $('.is-invalid').removeClass('is-invalid');
+
+            $.ajax({
+                url: $('#upload').attr('action'),
+                type: "POST",
+                data: formData,
+                processData: false, // Jangan memproses data
+                contentType: false, // Jangan set tipe konten
+                success: function(response) {
+                    $('#staticBackdrop').modal('hide');
+                    $('#upload')[0].reset();
+                    Toast.fire({
+                        icon: "success",
+                        title: response.message
+                    });
+                    getData()
+                },
+                error: function(error) {
+                    let errors = error.responseJSON.errors;
+                    // Loop untuk menampilkan pesan error
+                    $.each(errors, function(key, value) {
+                        $(`[name="${key}"]`).addClass('is-invalid');
+                        $(`[name="${key}"]`).after(
+                            `<span class="error-message text-danger">${value[0]}</span>`
+                        );
+                    });
+                }
+            });
         });
     </script>
 @endpush

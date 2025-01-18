@@ -42,6 +42,12 @@
                 <span class="title">{{__('app.blog')}}</span>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="{{route('admin.orders.index')}}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">shopping_cart</span>
+                <span class="title">Order</span>
+            </a>
+        </li>
 
         <li class="menu-title small text-uppercase">
             <span class="menu-title-text">{{__('app.company')}}</span>
@@ -55,9 +61,9 @@
         </li>
 
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link">
+            <a href="{{route('admin.messages.index')}}" class="menu-link">
                 <span class="material-symbols-outlined menu-icon">handshake</span>
-                <span class="title">{{__('app.testimonials')}}</span>
+                <span class="title">Pesan</span>
             </a>
         </li>
 
@@ -74,7 +80,6 @@
                 <span class="title">Kontak</span>
             </a>
         </li>
-
 
         <li class="menu-item">
             <button href="javascript:void(0)" class="menu-link logout btn btn-info ">

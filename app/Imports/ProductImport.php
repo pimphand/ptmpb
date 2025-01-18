@@ -33,10 +33,12 @@ class ProductImport implements ToCollection, WithHeadingRow
                 'name' => $row['merk'],
             ]);
 
-            Sku::create([
+            Sku::updateOrCreate([
                 'product_id' => $product->id,
-                'performance' => $row['kinerja'],
                 'name' => $row['nama_produk'],
+            ],[
+                'performance' => $row['kinerja'],
+
                 'packaging' => $row['kemasan'],
             ]);
         }

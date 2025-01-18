@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ProductImport;
 use App\Models\About;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Image;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Sku;
+use App\Rules\IndonesianPhoneNumber;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -140,7 +144,27 @@ class HomeController extends Controller
         ];
 
         Message::create($data);
-
         return redirect()->back()->with('success', 'Pesan berhasil dikirim');
+    }
+
+    public function teams(Request $request)
+    {
+        $teams = \App\Models\Team::limit(5)->get();
+        return view('components.home.team', [
+            'title' => 'Tim Kami',
+            'teams' => $teams
+        ]);
+    }
+
+    public function gallery(Request $request)
+    {
+        $galleries = Image::with('gallery')->whereHas('gallery', function ($query) {
+            $query->where('type', 'gallery');
+        })->paginate(8);
+        return view('frontend.gallery', [
+            'title' => 'Gallery',
+            'galleries' => $galleries
+        ]);
+
     }
 }

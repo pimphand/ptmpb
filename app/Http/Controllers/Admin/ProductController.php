@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Imports\ProductImport;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Sku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -32,7 +34,8 @@ class ProductController extends Controller
     {
         return view('admin.product_create',[
             'title' => 'Tambah Produk',
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'product' =>[]
         ]);
     }
 
@@ -143,5 +146,19 @@ class ProductController extends Controller
             ->withCount('skus')
             ->paginate(10);
         return ProductResource::collection($products);
+    }
+
+    /**
+     * Upload product
+     */
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new ProductImport(), request()->file('file'));
+
+        return response()->json(['message' => 'Produk berhasil diupload']);
     }
 }

@@ -90,48 +90,45 @@
                     </div>
 
                     <div class="wt-box">
-
                         <div class="row">
                             <div class="col-md-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="name"
-                                        placeholder="masukan nama lengkap">
+                                    <input type="text" class="form-control" id="name" placeholder="masukan nama lengkap">
+                                    <div id="nameError" class="error-message" style="display:none; color: red;"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Nama Perusahaan</label>
-                                <input type="text" class="form-control" id="company"
-                                    placeholder="masukan nama perusahaan">
+                                <input type="text" class="form-control" id="company" placeholder="masukan nama perusahaan">
+                                <div id="companyError" class="error-message" style="display:none; color: red;"></div>
                             </div>
-
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label>Nomor Whatsapp</label>
-                                    <input type="text" class="form-control" id="whatsapp"
-                                        placeholder="masukan nomor whatsapp">
+                                    <input type="text" class="form-control" id="whatsapp" placeholder="contoh : 628123456789">
+                                    <div id="whatsappError" class="error-message" style="display:none; color: red;"></div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label>Email Perusahaan</label>
-                                    <input type="email" class="form-control" id="email"
-                                        placeholder="masukan email perusahaan">
+                                    <input type="email" class="form-control" id="email" placeholder="masukan email perusahaan">
+                                    <div id="emailError" class="error-message" style="display:none; color: red;"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group m-b30">
                             <label>Alamat Lengkap</label>
-                            <input type="text" class="form-control m-b30" id="address"
-                                placeholder="masukan alamat lengkap">
+                            <input type="text" class="form-control" id="address" placeholder="masukan alamat lengkap">
+                            <div id="addressError" class="error-message" style="display:none; color: red;"></div>
                         </div>
                         <button type="submit" value="submit" class="site-button" onclick="sendToWhatsApp()">Simpan</button>
-
                     </div>
                 </div>
 
@@ -230,30 +227,104 @@
             cartItemData();
         }
 
-        // Send data to WhatsApp
         function sendToWhatsApp() {
             let cartItems = JSON.parse(localStorage.getItem('shoppingCart'));
-            let orderDetails = 'Order Details:\n\n';
 
-            // Loop through the cart items and format them for WhatsApp
-            cartItems.forEach(item => {
-                orderDetails +=
-                    `\nKategori: ${item.category}\nProduk : ${item.name}\nMerek: ${item.brand}\nJumlah: ${item.qty}\n\n`;
+            // Validasi: Cek apakah cart kosong
+            if (!cartItems || cartItems.length === 0) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Keranjang kosong. Silakan tambahkan produk ke keranjang sebelum melanjutkan.'
+                });
+                return;
+            }
+
+            // Validasi: Pastikan semua kolom diisi
+            let isValid = true;
+            const fields = ['name', 'company', 'whatsapp', 'email', 'address'];
+            fields.forEach(field => {
+                const value = $('#' + field).val();
+                if (!value || value.trim() === '') {
+                    $('#' + field + 'Error').text('Harap isi kolom ini.').show();
+                    isValid = false;
+                } else {
+                    $('#' + field + 'Error').hide();
+                }
             });
 
-            // Add buyer's information
-            const fullName = $('#name').val() || 'N/A';
-            const companyName = $('#company').val() || 'N/A';
-            const whatsappNumber = $('#whatsapp').val() || 'N/A';
-            const companyEmail = $('#email').val() || 'N/A';
-            const fullAddress = $('#address').val() || 'N/A';
+            // Validasi: Pastikan fullName, companyName, dan fullAddress diisi
+            const fullName = $('#name').val();
+            const companyName = $('#company').val();
+            const fullAddress = $('#address').val();
+
+            if (!fullName || fullName.trim() === '') {
+                $('#nameError').text('Nama Lengkap harus diisi.').show();
+                isValid = false;
+            } else {
+                $('#nameError').hide();
+            }
+
+            if (!companyName || companyName.trim() === '') {
+                $('#companyError').text('Nama Perusahaan harus diisi.').show();
+                isValid = false;
+            } else {
+                $('#companyError').hide();
+            }
+
+            if (!fullAddress || fullAddress.trim() === '') {
+                $('#addressError').text('Alamat Lengkap harus diisi.').show();
+                isValid = false;
+            } else {
+                $('#addressError').hide();
+            }
+
+            if (!isValid) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Harap isi semua kolom yang diperlukan.'
+                });
+                return;
+            }
+
+            // Validasi: Cek apakah email valid
+            const email = $('#email').val();
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (email !== 'N/A' && !emailPattern.test(email)) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Harap masukkan alamat email yang valid.'
+                });
+                return;
+            }
+
+            // Validasi: Cek apakah nomor WhatsApp dimulai dengan '62'
+            const whatsappNumber = $('#whatsapp').val();
+            if (whatsappNumber !== 'N/A' && !whatsappNumber.startsWith('62')) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Nomor WhatsApp harus dimulai dengan 62.'
+                });
+                return;
+            }
+
+            let orderDetails = 'Detail Pesanan:\n\n';
+
+            // Loop untuk menampilkan item dalam keranjang ke format WhatsApp
+            cartItems.forEach(item => {
+                orderDetails +=
+                    `\nKategori: ${item.category}\nProduk: ${item.name}\nMerek: ${item.brand}\nJumlah: ${item.qty}\n\n`;
+            });
+
+            // Menambahkan informasi pembeli
+            const companyEmail = email || 'N/A';
 
             orderDetails +=
-                `\nInformasi Pembeli:\nNama Lengkap: ${fullName}\nPerusahaan: ${companyName}\nWhatsApp: ${whatsappNumber}\nEmail: ${companyEmail}\nAddress: ${fullAddress}`;
+                `\nInformasi Pembeli:\nNama Lengkap: ${fullName}\nPerusahaan: ${companyName}\nWhatsApp: ${whatsappNumber}\nEmail: ${companyEmail}\nAlamat: ${fullAddress}`;
 
-            // WhatsApp URL format to send message
+            // Format URL WhatsApp untuk mengirim pesan
             let whatsappURL = `https://wa.me/{{$contact->data['phone']}}?text=${encodeURIComponent(orderDetails)}`;
 
+            // Kirim data ke server (pastikan data checkout route di server Anda benar)
             $.ajax({
                 type: "post",
                 url: "{{ route('checkout') }}",
@@ -271,13 +342,21 @@
                 dataType: "json",
                 success: function(response) {
                     Toast.fire({
-                        icon: "success",
-                        title: "Data berhasil disimpan"
+                        icon: 'success',
+                        title: 'Data berhasil disimpan.'
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Terjadi kesalahan saat mengirim data: ' + error
                     });
                 }
             });
 
+            // Buka WhatsApp dengan detail pesanan
             window.open(whatsappURL, '_blank');
         }
+
     </script>
 @endpush

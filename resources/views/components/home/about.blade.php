@@ -1,12 +1,13 @@
 @php
     $about = \App\Models\About::find('9df277bb-6c87-4029-b9e7-36fcde971d8b');
+    $pictures = \App\Models\Gallery::where('type', 'about-pic')->first();
 @endphp
 <div class="section-full p-t80 p-b50 bg-gray">
     <div class="container">
         <div class="row">
             <div class="col-lg-5 col-md-8 m-b30">
                 <div class="about-com-pic">
-                    <img src="{{asset('assets')}}/images/about-pic.jpg" alt="" class="img-responsive">
+                    <img src="{{$pictures?asset('storage/'.$pictures->images[0]->path) :asset('team/about-pic.jpg')}}" alt="" class="img-responsive">
                 </div>
             </div>
             <div class="col-lg-7 col-md-12 m-b30">

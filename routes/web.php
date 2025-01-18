@@ -22,6 +22,10 @@ Route::post('/checkout', [\App\Http\Controllers\Frontend\HomeController::class, 
 Route::get('/contact', [\App\Http\Controllers\Frontend\HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [\App\Http\Controllers\Frontend\HomeController::class, 'saveContact']);
 
+Route::get('/home-teams', [\App\Http\Controllers\Frontend\HomeController::class, 'teams'])->name('home-teams');
+Route::get('/gallery', [\App\Http\Controllers\Frontend\HomeController::class, 'gallery'])->name('gallery');
+
+
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
@@ -32,6 +36,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     //product
     Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
     Route::get('products-data', [\App\Http\Controllers\Admin\ProductController::class, 'data'])->name('products.data');
+    Route::post('products-upload', [\App\Http\Controllers\Admin\ProductController::class, 'upload'])->name('products.upload');
 
     //blog
     Route::resource('blogs', \App\Http\Controllers\Admin\BlogController::class);
@@ -54,6 +59,15 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'contact'])->name('contact.index');
     Route::post('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'storeContact'])->name('contact.store');
 
+    //message
+    Route::get('messages', [\App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages.index');
+    Route::get('messages-data', [\App\Http\Controllers\Admin\MessageController::class, 'data'])->name('messages.data');
+
+    //order
+    Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
+    Route::put('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('orders.update');
+
+    Route::get('orders-data', [\App\Http\Controllers\Admin\OrderController::class, 'data'])->name('orders.data');
 });
 
 require __DIR__ . '/auth.php';

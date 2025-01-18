@@ -26,9 +26,7 @@
                         <input type="text" class="form-control" id="search" placeholder="Search here">
                         <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
                     </form>
-                    <a href="{{route('admin.galleries.create')}}" type="button" class="btn btn-primary text-white py-2 px-4 fw-semibold">
-                        {{__('app.add')}} {{$title}}
-                    </a>
+
                 </div>
 
                 <div class="default-table-area style-two default-table-width">
@@ -43,11 +41,9 @@
                                     </div>
                                 </th>
                                 <th scope="col">{{__('app.name')}}</th>
-                                <th scope="col">{{__('app.categories')}}</th>
-                                <th scope="col">Thumbnail</th>
-                                <th scope="col">Url</th>
-
-                                <th scope="col">{{__('app.action')}}</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Pesan</th>
+{{--                                <th scope="col">{{__('app.action')}}</th>--}}
                             </tr>
                             </thead>
                             <tbody id="dataTable"></tbody>
@@ -73,7 +69,7 @@
     <script>
         let dataTable = [];
         function getData(page = 1, query = '') {
-            $.get(`{{ route('admin.galleries.data') }}?page=${page}&search=${query}`, function (response) {
+            $.get(`{{ route('admin.messages.data') }}?page=${page}&search=${query}`, function (response) {
                 const { data, meta, links } = response;
                 dataTable = data;
                 // Clear table and pagination
@@ -82,8 +78,6 @@
 
                 // Render data
                 $.each(data, function (key, value) {
-                    let url = `{{ route('admin.galleries.destroy', ':id') }}`.replace(':id', value.id);
-                    let editUrl = `{{ route('admin.galleries.edit', ['gallery'=>':id']) }}`.replace(':id', value.id);
                     const row = `
                     <tr>
                         <td class="text-body">
@@ -92,27 +86,16 @@
                                 <label class="position-relative top-2 ms-1" for="_${value.id}">${key + 1}</label>
                             </div>
                         </td>
-                        <td class="text-body">${value.title}</td>
-                        <td class="text-body">${value.type}</td>
-                        <td>
-                            <img src="{{asset('storage')}}/${value.images.length > 0 ? value.images[0].path : 'Belum Ada foto'}" class="wh-100 rounded-3" alt="${value.images.length > 0 ? value.title : 'Belum Ada foto'}">
-                        </td>
-                          <td class="text-body">${value.url ?? "-"}</td>
-                       <td>
-                            <div class="d-flex align-items-center gap-1">
-                                <!-- Edit button -->
-                                <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="${editUrl}">
-                                    <i class="material-symbols-outlined fs-16 text-body">edit</i>
-                                </a>
-
-                                <!-- Delete button -->
-                                ${value.type != 'about-pic' ? `
-                                <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" onclick="deleteData('${url}', '${value.title}')">
-                                    <i class="material-symbols-outlined fs-16 text-danger">delete</i>
-                                </button>
-                                ` : ''}
-                            </div>
-                        </td>
+                        <td class="text-body">${value.email}</td>
+                        <td class="text-body">${value.name}</td>
+                        <td class="text-body">${value.message}</td>
+<!--                        <td>-->
+<!--                            <div class="d-flex align-items-center gap-1">-->
+<!--                                <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="javascript:void(0)">-->
+<!--                                    <i class="material-symbols-outlined fs-16 text-body">call</i> Folow Up-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                        </td>-->
                     </tr>
                 `;
                     $('#dataTable').append(row);
@@ -152,6 +135,5 @@
         });
         // Initial load
         getData();
-
     </script>
 @endpush
