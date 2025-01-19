@@ -170,7 +170,8 @@ class HomeController extends Controller
 
     public function product($product,$sku): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
-        $sku = Sku::where('code', $sku)->firstOrFail();
+        $sku = Sku::with('images')->where('code', $sku)->firstOrFail();
+//        dd($sku);
         return view('frontend.product', [
             'title' => 'Detail Product',
             'product' => $sku->product,

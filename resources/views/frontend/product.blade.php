@@ -12,7 +12,6 @@
         </div>
     </div>
     <div class="section-full p-t80 p-b50">
-
         <!-- PRODUCT DETAILS -->
         <div class="container woo-entry">
             <div class="row m-b30">
@@ -22,204 +21,27 @@
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
                                      style="transform: translate3d(-1098px, 0px, 0px); transition: all; width: 4026px;">
-                                    <div class="owl-item cloned" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-3.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-3.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
+
+                                    @foreach($sku->images as $image)
+                                        <div class="owl-item cloned active"  style="width: 366px;">
+                                            <div class="item">
+                                                <div class="mfp-gallery">
+                                                    <div class="wt-box">
+                                                        <div class="wt-thum-bx wt-img-overlay1 ">
+                                                            <img src="{{asset('storage/'.$image->path)}}" alt="">
+                                                            <div class="overlay-bx">
+                                                                <div class="overlay-icon">
+                                                                    <a class="mfp-link" href="{{asset('storage/'.$image->path)}}">
+                                                                        <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="owl-item cloned" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-4.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-4.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item cloned" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-5.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-5.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item active" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-1.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-1.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-2.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-2.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-3.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-3.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-4.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-4.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-5.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-5.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item cloned" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-1.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-1.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item cloned" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-2.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-2.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item cloned" style="width: 366px;">
-                                        <div class="item">
-                                            <div class="mfp-gallery">
-                                                <div class="wt-box">
-                                                    <div class="wt-thum-bx wt-img-overlay1 ">
-                                                        <img src="images/products/pic-3.jpg" alt="">
-                                                        <div class="overlay-bx">
-                                                            <div class="overlay-icon">
-                                                                <a class="mfp-link" href="images/products/pic-3.jpg">
-                                                                    <i class="fa fa-arrows-alt wt-icon-box-xs"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="owl-nav">
@@ -237,41 +59,16 @@
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
                                      style="transform: translate3d(0px, 0px, 0px); transition: all; width: 464px;">
-                                    <div class="owl-item active current" style="width: 87.75px; margin-right: 5px;">
-                                        <div class="item">
-                                            <div class="wt-media">
-                                                <img src="images/products/thumb/pic1.jpg" alt="">
+                                    @foreach($sku->images as $image2)
+                                        <div class="owl-item active current" style="width: 87.75px; margin-right: 5px;">
+                                            <div class="item">
+                                                <div class="wt-media">
+                                                    <img src="{{asset('storage/'.$image2->path)}}" alt="">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="owl-item active" style="width: 87.75px; margin-right: 5px;">
-                                        <div class="item">
-                                            <div class="wt-media">
-                                                <img src="images/products/thumb/pic2.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item active" style="width: 87.75px; margin-right: 5px;">
-                                        <div class="item">
-                                            <div class="wt-media">
-                                                <img src="images/products/thumb/pic3.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item active" style="width: 87.75px; margin-right: 5px;">
-                                        <div class="item">
-                                            <div class="wt-media">
-                                                <img src="images/products/thumb/pic4.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="owl-item" style="width: 87.75px; margin-right: 5px;">
-                                        <div class="item">
-                                            <div class="wt-media">
-                                                <img src="images/products/thumb/pic5.jpg" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="owl-nav disabled">
@@ -375,7 +172,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 m-b30">
                         <div class="wt-box wt-product-box">
                             <div class="wt-thum-bx wt-img-overlay1 wt-img-effect zoom">
-                                <img src="{{asset('storage/'.$related->path)}}" alt="">
+                                <img src="{{asset('storage/'.$related?->image?->path)}}" alt="">
                                 <div class="overlay-bx">
                                     <div class="overlay-icon">
                                         <a href="javascript:void(0);">
