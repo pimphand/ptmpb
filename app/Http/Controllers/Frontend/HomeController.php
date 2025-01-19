@@ -167,4 +167,23 @@ class HomeController extends Controller
         ]);
 
     }
+
+    public function product($product,$sku): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    {
+        $sku = Sku::where('code', $sku)->firstOrFail();
+        return view('frontend.product', [
+            'title' => 'Detail Product',
+            'product' => $sku->product,
+            'sku' => $sku,
+            'relateds' =>  Sku::where('product_id', $sku->product_id)
+                ->where('id', '!=', $sku->id)
+                ->orWhereHas('product', function ($query) use ($sku) {
+                    $query->where('category_id', $sku->product->category_id);
+                })
+                ->whereHas('images')
+                ->inRandomOrder()
+                ->limit(4)
+                ->get()
+        ]);
+    }
 }

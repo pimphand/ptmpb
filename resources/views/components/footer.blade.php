@@ -141,6 +141,6 @@
 @php
 $contact = \App\Models\About::where('type', 'contact')->first();
 @endphp
-<a href="https://wa.me/{{$contact->data['phone']}}" target="_blank" class="whatsapp-button">
+<a href="https://wa.me/{{$contact->data['phone']}}?text=" target="_blank" class="whatsapp-button">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
 </a>

@@ -9,7 +9,7 @@
                 @endif
                 <div class="overlay-bx">
                     <div class="overlay-icon">
-                        <a href="javascript:void(0);" class="add_to_cart" data-id="{{ $product->id }}"
+                        <a href="javascript:void(0)" class="add_to_cart" data-id="{{ $product->id }}"
                             data-name="{{ $product->name }}" data-category="{{ $product->product->category->name }}"
                             data-product="{{ $product->product->name }}"
                             @if (isset($product->images) && count($product->images) > 0) data-image="{{ asset('storage/' . $product->images[0]->path) }}"
@@ -23,21 +23,23 @@
             <div class="wt-info  text-center">
                 <div class="p-a10 bg-white">
                     <h4 class="wt-title">
-                        <a href="javascript:;">{{ $product->name }}</a>
+                        <a href="{{route('product',['brand' => $product->product->name,'slug' => $product->code])}}">{{ $product->name }}</a>
                     </h4>
                     <span class="price">
                         {{ $product->product->name }} <br>
-
                         {{ $product->product->category->name }}
                     </span>
                     <div class="p-t10">
                         <button class="site-button add_to_cart m-r15" type="button" data-id="{{ $product->id }}"
                             data-name="{{ $product->name }}" data-category="{{ $product->product->category->name }}"
                             data-product="{{ $product->product->name }}"
-                            @if (isset($product->images) && count($product->images) > 0) data-image="{{ asset('storage/' . $product->images[0]->path) }}"
+                            @if (isset($product->images) && count($product->images) > 0)
+                                    data-image="{{ asset('storage/' . $product->images[0]->path) }}"
                             @else
-                              data-image="{{ asset('assets/images/products/pic-1.jpg') }}" @endif>Tambah
-                            Ke Keranjang <i class="fa fa-angle-double-right"></i></button>
+                                    data-image="{{ asset('assets/images/products/pic-1.jpg') }}"
+                            @endif>
+                            Tambah Ke Keranjang <i class="fa fa-angle-double-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -124,7 +124,9 @@
                                                 </label>
                                             </div>
                                             <div id="files-preview-container"
-                                                 class="d-flex justify-content-center align-items-center flex-wrap gap-3 position-absolute top-50 start-50 translate-middle"></div>
+                                                 class="d-flex justify-content-center align-items-center flex-wrap gap-3 position-absolute top-50 start-50 translate-middle">
+
+                                            </div>
                                         </div>
                                         <div id="files-list-container" class="mt-3 text-center"></div>
                                     </div>
@@ -188,12 +190,17 @@
                                                     </label>
                                                 </div>
                                                 <div id="files-preview-container"
-                                                     class="d-flex justify-content-center align-items-center flex-wrap gap-3 position-absolute top-50 start-50 translate-middle"></div>
+                                                     class="d-flex justify-content-center align-items-center flex-wrap gap-3 position-absolute top-50 start-50 translate-middle">
+                                                    @if($sku->image)
+                                                        <img src="{{asset('storage/'.$sku->image->path)}}" alt="">
+                                                    @endif
+                                                </div>
                                             </div>
                                             <div id="files-list-container" class="mt-3 text-center"></div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
                             @endforeach
                         @endif
 

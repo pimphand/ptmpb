@@ -23,6 +23,11 @@ class Sku extends Model
         return $this->morphMany(Image::class, 'imaginable');
     }
 
+    public function image(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(Image::class, 'imaginable');
+    }
+
     public static function boot()
     {
         parent::boot();
