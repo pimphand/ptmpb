@@ -12,6 +12,24 @@
     <meta name="robots" content="index, follow">
     <meta name="description"
         content="Mandalika Putra Bersama adalah toko oli terpercaya di Garut. Menyediakan berbagai jenis oli berkualitas untuk kendaraan Anda.">
+
+
+    <!-- Open Graph untuk Facebook dan WhatsApp -->
+    <meta property="og:title" content="Mandalika Putra Bersama - Toko Oli Terpercaya di Garut">
+    <meta property="og:description"
+        content="Mandalika Putra Bersama menyediakan oli berkualitas untuk kendaraan Anda di Garut. Kunjungi kami untuk produk terbaik!">
+    <meta property="og:image" content="https://mandalikaputrabersama.com/images/logo.png">
+    <meta property="og:url" content="https://mandalikaputrabersama.com">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mandalika Putra Bersama - Toko Oli Terpercaya di Garut">
+    <meta name="twitter:description"
+        content="Mandalika Putra Bersama menyediakan oli berkualitas untuk kendaraan Anda di Garut. Kunjungi kami untuk produk terbaik!">
+    <meta name="twitter:image" content="https://mandalikaputrabersama.com/images/logo.png">
+    <meta name="twitter:site" content="@mandalikaputra">
+
     <!-- FAVICONS ICON -->
     <link rel="icon" href="{{ asset('logo.png') }}" type="image/x-icon">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('logo.png') }}">
