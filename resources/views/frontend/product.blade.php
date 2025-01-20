@@ -55,29 +55,30 @@
                 <div class="col-md-12 p-b30">
                     <div class="wt-tabs border border-top bg-tabs">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#web-design-19" aria-selected="true"
-                                    role="tab">Deskripsi</a>
-                            </li>
+
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" data-bs-toggle="tab" href="#graphic-design-19" aria-selected="false"
                                     tabindex="-1" role="tab">Spesifikasi</a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div id="web-design-19" class="tab-pane active" role="tabpanel">
-                                <div class="p-a10 text-justify">
-                                    {{ $sku->description }}
-                                </div>
-                            </div>
-                            <div id="graphic-design-19" class="tab-pane" role="tabpanel">
+
+                            <div id="graphic-design-19" class="tab-pane active" role="tabpanel">
                                 <table class="table table-bordered table-striped m-b0">
                                     <tbody>
+                                        <tr>
+                                            <td><strong>Deskripsi</strong></td>
+                                            <td>
+                                                <div class="p-a10 text-justify">
+                                                    {{ $sku->description }}
+                                                </div>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td><strong>Minimal Order</strong></td>
                                             <td>{{ $sku->application ?? '-' }}</td>
                                         </tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <td><strong>Berat</strong></td>
                                             <td>{{ $sku->weight ?? '-' }}</td>
                                         </tr>
@@ -88,7 +89,7 @@
                                         <tr>
                                             <td><strong>Panjang</strong></td>
                                             <td>{{ $sku->height ?? '-' }}</td>
-                                        </tr>
+                                        </tr> --}}
                                         <tr>
                                             <td><strong>Kemasan</strong></td>
                                             <td>{{ $sku->packaging ?? '-' }}</td>
