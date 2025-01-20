@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use Coderflex\Laravisit\Concerns\CanVisit;
+use Coderflex\Laravisit\Concerns\HasVisits;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Product extends Model
+class Product extends Model implements CanVisit
 {
     /** @use HasFactory<ProductFactory> */
     use HasFactory, HasUuids;
+    use HasVisits;
 
     protected $fillable = ['name', 'description', 'price', 'category_id', 'file'];
 

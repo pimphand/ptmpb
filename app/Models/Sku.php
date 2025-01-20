@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use Coderflex\Laravisit\Concerns\CanVisit;
+use Coderflex\Laravisit\Concerns\HasVisits;
 use Database\Factories\SkuFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sku extends Model
+class Sku extends Model implements CanVisit
 {
     /** @use HasFactory<SkuFactory> */
     use HasFactory, HasUuids;
+    use HasVisits;
+
     protected $fillable = ['name', 'price', 'code', 'product_id', 'description', 'application', 'packaging'];
 
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo

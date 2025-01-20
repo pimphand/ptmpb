@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Coderflex\Laravisit\Concerns\CanVisit;
+use Coderflex\Laravisit\Concerns\HasVisits;
 use Database\Factories\BlogFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,11 +14,11 @@ use Illuminate\Support\Str;
  * @method static whereAny(string[] $array, mixed $request)
  * @method static create(mixed $validated)
  */
-class Blog extends Model
+class Blog extends Model implements CanVisit
 {
     /** @use HasFactory<BlogFactory> */
     use HasFactory, HasUuids;
-
+    use HasVisits;
     protected $fillable = ['title', 'content', 'slug', 'user_id', 'is_publish', 'category_id', 'thumbnail', 'count', 'image'];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

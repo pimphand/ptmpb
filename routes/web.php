@@ -7,10 +7,6 @@ Route::get('/', function () {
     return view('frontend.home');
 })->name('home');
 
-Route::get('/upload', function () {
-    return view('welcome');
-})->name('home');
-
 Route::get('/about-us', [\App\Http\Controllers\Frontend\HomeController::class, 'about_us'])->name('about_us');
 Route::post('/upload', [\App\Http\Controllers\Frontend\HomeController::class, 'upload'])->name('upload');
 Route::get('/blog/{id}', [\App\Http\Controllers\Frontend\HomeController::class, 'blog'])->name('blog');

@@ -161,6 +161,7 @@ class HomeController extends Controller
         $galleries = Image::with('gallery')->whereHas('gallery', function ($query) {
             $query->where('type', 'gallery');
         })->paginate(8);
+
         return view('frontend.gallery', [
             'title' => 'Gallery',
             'galleries' => $galleries
@@ -170,7 +171,7 @@ class HomeController extends Controller
     public function product($product, $sku): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         $sku = Sku::with('images')->where('code', $sku)->firstOrFail();
-        //        dd($sku);
+        $sku->visit()->hourlyIntervals()->withIp();
         return view('frontend.product', [
             'title' => 'Detail Product',
             'product' => $sku->product,
