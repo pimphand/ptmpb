@@ -7,18 +7,16 @@
     <!-- META -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="keywords" content="">
-    <meta name="author" content="">
-    <meta name="robots" content="">
-    <meta name="description" content="">
-
+    <meta name="keywords" content="Mandalikaputrabersama, Mandalika Putra Bersama, Garut, Oli Garut, Toko Oli di Garut">
+    <meta name="author" content="Mandalika Putra Bersama">
+    <meta name="robots" content="index, follow">
+    <meta name="description"
+        content="Mandalika Putra Bersama adalah toko oli terpercaya di Garut. Menyediakan berbagai jenis oli berkualitas untuk kendaraan Anda.">
     <!-- FAVICONS ICON -->
     <link rel="icon" href="{{ asset('logo.png') }}" type="image/x-icon">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('logo.png') }}">
-
     <!-- PAGE TITLE HERE -->
     <title>{{ env('APP_NAME') }} - {{ $title ?? 'Halaman Utama' }}</title>
-
     <!-- MOBILE SPECIFIC -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -97,10 +95,14 @@
 
         .whatsapp-button {
             position: fixed;
-            bottom: 20px; /* Jarak dari bawah */
-            right: 20px; /* Jarak dari kanan */
-            z-index: 1000; /* Pastikan tombol berada di atas elemen lain */
-            background-color: #25d366; /* Warna hijau khas WhatsApp */
+            bottom: 20px;
+            /* Jarak dari bawah */
+            right: 20px;
+            /* Jarak dari kanan */
+            z-index: 1000;
+            /* Pastikan tombol berada di atas elemen lain */
+            background-color: #25d366;
+            /* Warna hijau khas WhatsApp */
             border-radius: 50%;
             padding: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -113,10 +115,10 @@
         }
 
         .whatsapp-button:hover {
-            transform: scale(1.1); /* Sedikit pembesaran saat hover */
+            transform: scale(1.1);
+            /* Sedikit pembesaran saat hover */
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
-
     </style>
 
 </head>
