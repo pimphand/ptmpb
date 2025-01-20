@@ -130,7 +130,7 @@ class HomeController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'message' => 'required'
-        ],[
+        ], [
             'name.required' => 'Nama harus diisi',
             'email.required' => 'Email harus diisi',
             'email.email' => 'Email tidak valid',
@@ -165,13 +165,12 @@ class HomeController extends Controller
             'title' => 'Gallery',
             'galleries' => $galleries
         ]);
-
     }
 
-    public function product($product,$sku): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function product($product, $sku): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         $sku = Sku::with('images')->where('code', $sku)->firstOrFail();
-//        dd($sku);
+        //        dd($sku);
         return view('frontend.product', [
             'title' => 'Detail Product',
             'product' => $sku->product,
