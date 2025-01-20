@@ -2,11 +2,7 @@
     @php
         $populers = \App\Models\Blog::orderBy('count', 'desc')->limit(3)->get();
         $old = \App\Models\Blog::orderBy('created_at', 'asc')->limit(3)->get();
-        $galleries = \App\Models\Image::whereHas('gallery', function ($q) {
-            $q->where('type', 'gallery');
-        })
-            ->limit(10)
-            ->get();
+        $galleries = \App\Models\Image::whereHas('gallery')->limit(10)->get();
     @endphp
     <!-- 13. SEARCH -->
     <div class="widget bg-white ">
@@ -105,13 +101,15 @@
         <h4 class="widget-title">Gallery Kami</h4>
         <ul>
             @foreach ($galleries as $gallery)
-                <li>
-                    <div class="wt-post-thum">
-                        <a href="{{ asset('storage/' . $gallery->path) }}" class="mfp-link"><img
-                                src="{{ asset('storage/' . $gallery->path) }}" alt="">
-                        </a>
-                    </div>
-                </li>
+                @if ($gallery->gallery && $gallery->gallery->type == 'gallery')
+                    <li>
+                        <div class="wt-post-thum">
+                            <a href="{{ asset('storage/' . $gallery->path) }}" class="mfp-link"><img
+                                    src="{{ asset('storage/' . $gallery->path) }}" alt="">
+                            </a>
+                        </div>
+                    </li>
+                @endif
             @endforeach
 
         </ul>

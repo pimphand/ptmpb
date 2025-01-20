@@ -11,10 +11,17 @@ class Image extends Model
     /** @use HasFactory<\Database\Factories\ImageFactory> */
     use HasFactory, HasUuids;
 
-    protected $fillable = ['path', 'imaginable_id', 'imaginable_type','id'];
+    protected $fillable = ['path', 'imaginable_id', 'imaginable_type', 'id'];
 
     public function gallery()
     {
         return $this->morphTo('imaginable', 'imaginable_type', 'imaginable_id');
+    }
+
+    public function scopeIsGallery($query)
+    {
+        return $query->whereHas('gallery', function ($query) {
+            $query->where('type', 'gallery');
+        });
     }
 }
