@@ -50,7 +50,7 @@
                             <div class="col-lg-6 col-sm-6">
                                 <div class="form-group mb-4">
                                     <label class="label text-secondary">Nama Blog</label>
-                                    <input type="text" name="name" class="form-control h-55"
+                                    <input type="text" name="name" id="name" class="form-control h-55"
                                         placeholder="Masukan Nama Blog">
                                 </div>
                             </div>
@@ -58,8 +58,8 @@
                             <div class="col-lg-6 col-sm-6">
                                 <div class="form-group mb-4">
                                     <label class="label text-secondary">Kategori Blog</label>
-                                    <select class="form-select form-control h-55" aria-label="Default select example"
-                                        name="category">
+                                    <select class="form-select form-control h-55" id="category"
+                                        aria-label="Default select example" name="category">
                                         <option selected="">Pilih Kategori Blog</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -153,9 +153,7 @@
             });
         });
 
-        function delay(number) {
 
-        }
 
         function getData() {
             //redirect to the previous
@@ -164,7 +162,8 @@
             }, 1500);
         }
         @if ($blog)
-
+            $('#name').val('{{ $blog->title }}');
+            $('#category').val('{{ $blog->category_id }}');
             const previewContainer = $('#upload-area').find('#files-preview-container');
             const imgPreview = `
                     <div class="preview-container" style="width: 290px; position: relative;">
