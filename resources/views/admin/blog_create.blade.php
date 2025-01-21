@@ -164,29 +164,22 @@
             }, 1500);
         }
         @if ($blog)
-            $.get(`{{ route('admin.blogs.show', $blog->id) }}`, function(response) {
 
-                $('input[name="name"]').val(response.title);
-                $('select[name="category"]').val(response.category_id);
-                $('textarea[name="content"]').val();
-
-                const previewContainer = $('#upload-area').find('#files-preview-container');
-                const imgPreview = `
+            const previewContainer = $('#upload-area').find('#files-preview-container');
+            const imgPreview = `
                     <div class="preview-container" style="width: 290px; position: relative;">
-                        <img src="{{ asset('storage') }}/${response.thumbnail}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; border: 2px solid #ddd; border-radius: 5px;">
+                        <img src="{{ asset('storage') }}/{{ $blog->thumbnail }}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; border: 2px solid #ddd; border-radius: 5px;">
                     </div>`;
-                previewContainer.append(imgPreview);
-
-                tinymce.init({
-                    selector: 'textarea',
-                    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                    setup: (editor) => {
-                        editor.on('init', () => {
-                            editor.setContent(response.content);
-                        });
-                    },
-                });
+            previewContainer.append(imgPreview);
+            tinymce.init({
+                selector: 'textarea',
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                setup: (editor) => {
+                    editor.on('init', () => {
+                        editor.setContent(`{!! $blog->content !!}`);
+                    });
+                },
             });
         @else
             tinymce.init({
