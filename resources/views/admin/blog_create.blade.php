@@ -177,7 +177,7 @@
                 toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
             });
 
-            tinyMCE.activeEditor.setContent('{!! $blog->content !!}');
+            tinymce.activeEditor.setContent('{!! $blog->content !!}');
         @else
             tinymce.init({
                 selector: 'textarea',
