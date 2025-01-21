@@ -73,7 +73,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group mb-4">
                                     <label class="label text-secondary fs-14">Deskripsi Blog</label>
-                                    <textarea rows="3" class="form-control" name="content" placeholder="masukan deskripsi blog">{!! $blog->content !!}</textarea>
+                                    <textarea rows="3" class="form-control" name="content" placeholder="masukan deskripsi blog"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -176,6 +176,8 @@
                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                 toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
             });
+
+            tinyMCE.activeEditor.setContent('{!! $blog->content !!}');
         @else
             tinymce.init({
                 selector: 'textarea',
