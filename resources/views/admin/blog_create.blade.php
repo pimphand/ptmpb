@@ -154,8 +154,6 @@
             });
         });
 
-
-
         function getData() {
             //redirect to the previous
             setTimeout(function() {
