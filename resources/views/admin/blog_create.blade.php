@@ -122,7 +122,8 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('tiny.js') }}" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
     <script>
         $(document).ready(function() {
 
