@@ -179,6 +179,7 @@
                 //set Default value
                 setup: function(editor) {
                     editor.on('init', function() {
+                        console.log(`{!! $blog->content !!}`);
                         editor.setContent(`{!! $blog->content !!}`);
                     });
                 }
