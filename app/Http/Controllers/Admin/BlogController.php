@@ -60,6 +60,7 @@ class BlogController extends Controller
         $data['category_id'] = $request->category;
         $data['thumbnail'] = $thumbnailPath;
         $data['image'] = $imagePath;
+        $data['content'] = $request->content;
 
         // Menyimpan data blog ke database
         Blog::create($data);
