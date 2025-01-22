@@ -14,21 +14,25 @@
         content="Mandalika Putra Bersama adalah toko oli terpercaya di Garut. Menyediakan berbagai jenis oli berkualitas untuk kendaraan Anda.">
 
 
-    <!-- Open Graph untuk Facebook dan WhatsApp -->
-    <meta property="og:title" content="Mandalika Putra Bersama - Toko Oli Terpercaya di Garut">
-    <meta property="og:description"
-        content="Mandalika Putra Bersama menyediakan oli berkualitas untuk kendaraan Anda di Garut. Kunjungi kami untuk produk terbaik!">
-    <meta property="og:image" content="{{ asset('logo.png') }}">
-    <meta property="og:url" content="https://mandalikaputrabersama.com">
-    <meta property="og:type" content="website">
+    @if (isset($title) && $title == 'Blog')
+        @stack('meta')
+    @else
+        <!-- Open Graph untuk Facebook dan WhatsApp -->
+        <meta property="og:title" content="Mandalika Putra Bersama - Distributor  Oli Terpercaya di Indonesia">
+        <meta property="og:description"
+            content="Mandalika Putra Bersama menyediakan oli berkualitas untuk kendaraan Anda di Indonesia. Kunjungi kami untuk produk terbaik!">
+        <meta property="og:image" content="{{ asset('logo.png') }}">
+        <meta property="og:url" content="https://mandalikaputrabersama.com">
+        <meta property="og:type" content="website">
 
-    <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Mandalika Putra Bersama - Toko Oli Terpercaya di Garut">
-    <meta name="twitter:description"
-        content="Mandalika Putra Bersama menyediakan oli berkualitas untuk kendaraan Anda di Garut. Kunjungi kami untuk produk terbaik!">
-    <meta name="twitter:image" content="{{ asset('logo.png') }}">
-    <meta name="twitter:site" content="@mandalikaputra">
+        <!-- Twitter Cards -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Mandalika Putra Bersama - Distributor  Oli Terpercaya di Indonesia">
+        <meta name="twitter:description"
+            content="Mandalika Putra Bersama menyediakan oli berkualitas untuk kendaraan Anda di Indonesia. Kunjungi kami untuk produk terbaik!">
+        <meta name="twitter:image" content="{{ asset('logo.png') }}">
+        <meta name="twitter:site" content="@mandalikaputra">
+    @endif
 
     <!-- FAVICONS ICON -->
     <link rel="icon" href="{{ asset('logo.png') }}" type="image/x-icon">

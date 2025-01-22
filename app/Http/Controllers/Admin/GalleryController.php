@@ -102,6 +102,7 @@ class GalleryController extends Controller
                         'imaginable_id' => $gallery->id,
                         'imaginable_type' => $gallery->getMorphClass(),
                         'path' => $image->store('galleries', 'public'),
+                        'gallery_type' => $request->type
                     ]);
                 }
             }
