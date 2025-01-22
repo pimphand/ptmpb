@@ -158,9 +158,7 @@ class HomeController extends Controller
 
     public function gallery(Request $request)
     {
-        $galleries = Image::whereHas('gallery', function ($query) {
-            $query->where('type', 'gallery');
-        })->paginate(8);
+        $galleries = Image::where('gallery_type', 'gallery')->paginate(8);
 
         return view('frontend.gallery', [
             'title' => 'Gallery',
