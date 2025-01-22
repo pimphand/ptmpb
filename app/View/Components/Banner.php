@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Models\Gallery;
+use App\Models\Image;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -11,6 +12,7 @@ class Banner extends Component
 {
 
     protected $title;
+    protected $banner;
     /**
      * Create a new component instance.
      */
@@ -24,10 +26,8 @@ class Banner extends Component
      */
     public function render(): View|Closure|string
     {
-        $banner = Gallery::where("type", 'banner')->first();
         return view('components.banner', [
             'title' => $this->title,
-            'banner' => $banner ?? []
         ]);
     }
 }

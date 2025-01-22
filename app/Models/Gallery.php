@@ -13,7 +13,7 @@ class Gallery extends Model
     /** @use HasFactory<GalleryFactory> */
     use HasFactory, HasUuids;
 
-    protected $fillable = ['title', 'description', 'url', 'is_publish','code','type'];
+    protected $fillable = ['title', 'description', 'url', 'is_publish', 'code', 'type'];
 
     //boot method
     protected static function boot(): void
@@ -31,5 +31,9 @@ class Gallery extends Model
     public function images(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(Image::class, 'imaginable');
+    }
+    public function image(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(Image::class, 'imaginable');
     }
 }

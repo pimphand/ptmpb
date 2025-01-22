@@ -2,7 +2,7 @@
     @php
         $populers = \App\Models\Blog::orderBy('count', 'desc')->limit(3)->get();
         $old = \App\Models\Blog::orderBy('created_at', 'asc')->limit(3)->get();
-        $galleries = \App\Models\Image::whereHas('gallery')->limit(10)->get();
+        $galleries = \App\Models\Image::where('gallery_type', 'gallery')->limit(10)->get();
     @endphp
     <!-- 13. SEARCH -->
     <div class="widget bg-white ">

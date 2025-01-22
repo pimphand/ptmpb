@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('images', function (Blueprint $table) {
-            $table->boolean('gallery_type')->nullable()->after('path');
+            $table->string('gallery_type')->nullable()->after('path');
         });
     }
 

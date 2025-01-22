@@ -1,5 +1,9 @@
+@php
+    $banner = \App\Models\Image::where('gallery_type', 'banner')->first();
+@endphp
+
 <div class="wt-bnr-inr overlay-wraper"
-    @if ($banner) style="background-image:url({{ asset('storage/' . $banner->images[0]->path) }});" @ @endif>
+    @if ($banner) style="background-image:url({{ asset('storage/' . $banner->path) }});" @ @endif>
     <div class="overlay-main bg-black opacity-07"></div>
     <div class="container">
         <div class="wt-bnr-inr-entry">
