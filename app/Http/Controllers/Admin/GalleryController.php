@@ -52,7 +52,8 @@ class GalleryController extends Controller
                 Image::create([
                     'path' => $image->store('galleries', 'public'),
                     'imaginable_id' => $gallery->id,
-                    'imaginable_type' => $gallery->getMorphClass()
+                    'imaginable_type' => $gallery->getMorphClass(),
+                    'gallery_type' => $request->type
                 ]);
             }
 
