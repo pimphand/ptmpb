@@ -15,7 +15,7 @@ class Image extends Model
 
     public function gallery()
     {
-        return $this->morphTo();
+        return $this->morphTo('imaginable');
     }
 
     public function scopeIsGallery($query)
