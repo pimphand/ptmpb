@@ -15,6 +15,8 @@ class Sku extends Model implements CanVisit
     use HasFactory, HasUuids;
     use HasVisits;
 
+    protected $primaryKey = 'id';
+    protected $primaryKeyType = 'string';
     protected $fillable = ['name', 'price', 'code', 'product_id', 'description', 'application', 'packaging'];
 
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo

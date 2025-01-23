@@ -12,9 +12,7 @@ use App\Models\Message;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Sku;
-use App\Rules\IndonesianPhoneNumber;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
