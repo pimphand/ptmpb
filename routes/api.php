@@ -9,6 +9,7 @@ Route::get('/user', function (Request $request) {
 
 
 Route::post('login', [App\Http\Controllers\Api\AuthController::class, 'login']);
+Route::get('banners', [App\Http\Controllers\Api\BannerController::class, 'banner']);
 
 //middleware group
 Route::group(['middleware' => 'auth:sanctum'], function () {
