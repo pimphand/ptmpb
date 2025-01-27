@@ -15,6 +15,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $sku = Sku::with('image')
+            ->whereHas('image')
             ->when($request->name, function ($query, $name) {
                 return $query->where("name", "like", "%" . $name . "%");
             })
@@ -28,6 +29,14 @@ class ProductController extends Controller
     public function show($id)
     {
         $sku = Sku::find($id)->load(['product', 'product.category', 'image']);
-        return new SkuResource($sku);
+        $recomended = Sku::with('image')
+            ->whereHas('image')
+            ->where('id', '!=', $id)
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+        return SkuResource::make($sku)->additional([
+            'recomended' => SkuResource::collection($recomended)
+        ]);
     }
 }
