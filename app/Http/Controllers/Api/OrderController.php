@@ -57,6 +57,12 @@ class OrderController extends Controller
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:skus,id',
             'items.*.quantity' => 'required|integer',
+        ],[
+            'items.*.product_id.exists' => "Produk tidak ditemukan",
+            'items.*.quantity.integer' => "Jumlah harus berupa angka",
+            'items.*.quantity.required' => "Jumlah harus diisi",
+            'items.*.product_id.required' => "Produk harus diisi",
+            'customer_id.required' => "Customer harus diisi",
         ]);
 
         if ($validate->fails()) {
