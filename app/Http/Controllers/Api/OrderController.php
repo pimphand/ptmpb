@@ -34,9 +34,7 @@ class OrderController extends Controller
                         ->orWhere('address', 'like', "%$customer%")
                         ->orWhere('phone', 'like', "%$customer%");
                 });
-            })->when($request->customer, function ($query) {
-                return $query->with('customer');
-            })
+            })->with('customer')
             ->orderBy("id", "desc")
             ->paginate(10);
         return OrderResource::collection($order);
@@ -57,7 +55,7 @@ class OrderController extends Controller
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:skus,id',
             'items.*.quantity' => 'required|integer',
-        ],[
+        ], [
             'items.*.product_id.exists' => "Produk tidak ditemukan",
             'items.*.quantity.integer' => "Jumlah harus berupa angka",
             'items.*.quantity.required' => "Jumlah harus diisi",
