@@ -46,6 +46,7 @@
                                     <th scope="col">Nama Perusahaan</th>
                                     <th scope="col">whatsapp</th>
                                     <th scope="col">Item</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">{{ __('app.action') }}</th>
                                 </tr>
                             </thead>
@@ -86,6 +87,22 @@
                 $('#dataTable').empty();
                 $('#pagination').empty();
 
+                const status = {
+                    'pending': 'primary',
+                    'proses': 'warning',
+                    'success': 'success',
+                    'cancel': 'danger',
+                    'done': 'success'
+                };
+
+                const statusId = {
+                    'pending': 'Pending',
+                    'proses': 'Proses',
+                    'success': 'Selesai',
+                    'cancel': 'Batal',
+                    'done': 'Selesai'
+                };
+
                 // Render data
                 $.each(data, function(key, value) {
                     const row = `
@@ -96,7 +113,9 @@
                                 <label class="position-relative top-2 ms-1" for="_${value.id}">${key + 1}</label>
                             </div>
                         </td>
-                        <td class="text-body">${value.data.fullName}</td>
+                        <td class="text-body">${value.data.fullName} <br>
+                           <a href="${value.sales.id}" class="text-${value.sales.name ? "success": ''}"> Sales : ${value.sales.name ?? "-"}</a>
+                        </td>
                         <td class="text-body">${value.data.companyEmail}</td>
                         <td class="text-body">${value.data.companyName}</td>
                         <td class="text-body">${value.data.whatsappNumber}</td>
@@ -111,26 +130,18 @@
                                     <div id="collapseThree-${value.id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <ul class="list-group">
-                                                ${value.items.map(item => `
-                                                                                        <li class="list-group-item">${item.name} - ${item.qty} pcs
-                                                                                               <br>
-                                                                                               <small class="text-muted">Merek: ${item.brand}</small>
-                                                                                                <br>
-                                                                                               <small class="text-muted">Kategori: ${item.category}</small>
-                                                                                        </li>
-                                                                                    `).join('')}
+                                                ${value.items.map(item => `<li class="list-group-item">${item.name} - ${item.qty} pcs<br><small class="text-muted">Merek: ${item.brand}</small><br>small class="text-muted">Kategori: ${item.category}</small></li>`).join('')}
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
+                        <td class="text-body ">
+                            <button style="color:#fff" class="editStatus btn btn-${status[value.status]}" data-id="${value.id}" data-status="${value.status}">${statusId[value.status] ?? "-"} </button>
+                        </td>
                         <td>
-                            ${value.is_folow_up ? `Sudah di Folow Up` : `
-                                                                    <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 folow-up" data-id="${value.id}" data-whatsapp="${value.data.whatsappNumber}" href="javascript:void(0)">
-                                                                        <i class="material-symbols-outlined fs-16 text-body">call</i> Folow Up
-                                                                    </a>
-                                                                `}
+                            ${value.is_folow_up ? `Sudah di Folow Up` : `<a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 folow-up" data-id="${value.id}" data-whatsapp="${value.data.whatsappNumber}" href="javascript:void(0)"><i class="material-symbols-outlined fs-16 text-body">call</i> Folow Up </a>`}
                         </td>
                     </tr>
                 `;
@@ -226,6 +237,51 @@
                 }
             });
 
+        });
+        $(document).ready(function() {
+            $('#dataTable').on('click', '.editStatus', async function(e) {
+                let status = $(this).data('status');
+                let id = $(this).data('id');
+                let url = "{{ route('admin.orders.updateStatus', ':id') }}".replace(':id', id);
+                const {
+                    value: pending,
+                    isConfirmed
+                } = await Swal.fire({
+                    title: "Select field validation",
+                    input: "select",
+                    inputOptions: {
+                        "pending": "Pending",
+                        "process": "Proses",
+                        "done": "Selesai",
+                        "cancel": "Batal"
+                    },
+                    inputPlaceholder: "Pilih Status",
+                    showCancelButton: true,
+                    inputValue: status, // Set the default value to the current status
+                    inputValidator: (value) => {
+                        return new Promise((resolve) => {
+
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: {
+                                    _token: "{{ csrf_token() }}",
+                                    status: value,
+                                    _method: "PUT"
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        resolve();
+                                        getData();
+                                    } else {
+                                        resolve(response.message);
+                                    }
+                                }
+                            });
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endpush

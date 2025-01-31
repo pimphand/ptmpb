@@ -107,6 +107,7 @@ class HomeController extends Controller
         Order::create([
             'data' => $request->buyerInfo,
             'items' => $request->orderDetails,
+            'status' => 'pending'
         ]);
 
         return [

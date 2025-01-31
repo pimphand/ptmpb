@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderAdminResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use http\Env\Request;
 
 class OrderController extends Controller
 {
@@ -35,7 +36,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function data(\Illuminate\Http\Request $request)
+    public function data(Request $request)
     {
         $orders = Order::when($request->search, function ($query) use ($request) {
             $query->where('items', 'like', "%{$request->search}%")
@@ -43,6 +44,20 @@ class OrderController extends Controller
         })
             ->latest()
             ->paginate(10);
-        return OrderResource::collection($orders);
+        return OrderAdminResource::collection($orders);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function updateStatus(Request $request, Order $order)
+    {
+        $order->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 }
