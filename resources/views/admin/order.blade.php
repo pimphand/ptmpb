@@ -89,7 +89,7 @@
 
                 const status = {
                     'pending': 'primary',
-                    'proses': 'warning',
+                    'process': 'warning',
                     'success': 'success',
                     'cancel': 'danger',
                     'done': 'success'
@@ -97,7 +97,7 @@
 
                 const statusId = {
                     'pending': 'Pending',
-                    'proses': 'Proses',
+                    'process': 'Proses',
                     'success': 'Selesai',
                     'cancel': 'Batal',
                     'done': 'Selesai'
