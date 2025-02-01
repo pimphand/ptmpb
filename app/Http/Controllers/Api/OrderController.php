@@ -116,7 +116,28 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        return OrderResource::make($order->load('customer'));
+        $validator =  Validator::make($request->all(), [
+            'status' => 'required|in:pending,process,success,cancel,done',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors(),
+            ], 422);
+        }
+
+        if (Auth::user()->id != $order->user_id) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $order->update([
+            'status' => $request->status,
+        ]);
+        return response()->json([
+            'message' => 'Order updated',
+        ]);
     }
 
     /**

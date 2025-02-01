@@ -247,7 +247,7 @@
                     value: pending,
                     isConfirmed
                 } = await Swal.fire({
-                    title: "Select field validation",
+                    title: "Pilih Status",
                     input: "select",
                     inputOptions: {
                         "pending": "Pending",

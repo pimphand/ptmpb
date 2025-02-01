@@ -19,7 +19,18 @@ return [
             'products' => 'c,r,u,d',
             'categories' => 'c,r,u,d',
             'sku' => 'c,r,u,d',
+            'order' => 'c,r,u,d',
+            'message' => 'c,r,u,d',
+            'contact' => 'c,r,u,d',
+            'gallery' => 'c,r,u,d',
+            'about' => 'c,r,u,d',
+            'team' => 'c,r,u,d',
+            'banner' => 'c,r,u,d',
+            'testimonial' => 'c,r,u,d',
+            'faq' => 'c,r,u,d',
+            'setting' => 'c,r,u,d',
         ],
+
         'admin' => [
             'users' => 'c,r,u,d',
             'profile' => 'r,u',
@@ -30,6 +41,16 @@ return [
         'content' => [
             'profile' => 'r,u',
             'blog' => 'c,r,u,d',
+        ],
+
+        //
+        'sales' => [
+            'profile' => 'r,u',
+            'order' => 'c,r',
+        ],
+        'driver' => [
+            'profile' => 'r,u',
+            'order' => 'r,u',
         ],
     ],
 
