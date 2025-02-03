@@ -13,7 +13,6 @@
     <meta name="description"
         content="Mandalika Putra Bersama adalah toko oli terpercaya di Garut. Menyediakan berbagai jenis oli berkualitas untuk kendaraan Anda.">
 
-
     @if (isset($title) && $title == 'Blog')
         @stack('meta')
     @else
