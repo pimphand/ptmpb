@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Sku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
@@ -48,7 +49,7 @@ class ProductController extends Controller
             $product = (new Product)->create([
                 'name' => $request->name,
                 'category_id' => $request->category,
-                'file' => $request->has('file') ? $request->file('file')->store('images/products', 'public') : null,
+                'file' => $request->has('file') ? $request->file('file')->store('file/products', 'public') : null,
             ]);
 
 
@@ -102,7 +103,7 @@ class ProductController extends Controller
             $product->update([
                 'name' => $request->name,
                 'category_id' => $request->category,
-                'file' => $request->has('file') ? $request->file('file')->store('images/products', 'public') : $product->file,
+                'file' => $request->has('file') ? $request->file('file')->store('file/products', 'public') : $product->file,
             ]);
 
             foreach ($request->name_sku as $key => $name_sku) {
@@ -135,6 +136,11 @@ class ProductController extends Controller
     public function destroy(Product $product): \Illuminate\Http\JsonResponse
     {
         $product->skus()->delete();
+        //delete file jika ada
+        if ($product->file) {
+            Storage::disk('public')->delete($product->file);
+        }
+
         $product->delete();
         return response()->json(['message' => 'Produk berhasil dihapus']);
     }

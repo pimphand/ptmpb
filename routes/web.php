@@ -67,6 +67,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::put('orders-status/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
     Route::get('orders-data', [\App\Http\Controllers\Admin\OrderController::class, 'data'])->name('orders.data');
+
+    Route::resource('sales', \App\Http\Controllers\Admin\SalesController::class);
+    Route::get('sales-data', [\App\Http\Controllers\Admin\SalesController::class, 'data'])->name('sales.data');
 });
 
 require __DIR__ . '/auth.php';

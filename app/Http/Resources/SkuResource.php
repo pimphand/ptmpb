@@ -22,6 +22,7 @@ class SkuResource extends JsonResource
             "image" => $this->image->path ?? null,
             "brand" => $this->product->name,
             "category" => $this->product->category->name,
+            "file" => $this->file ? asset('storage/' . $this->file) : null,
         ];
     }
 }
