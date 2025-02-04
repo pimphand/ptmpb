@@ -19,7 +19,7 @@ class ProductController extends Controller
             ->when($request->name, function ($query, $name) {
                 return $query->where("name", "like", "%" . $name . "%");
             })
-            ->paginate(10);
+            ->paginate(12);
         return SkuResource::collection($sku);
     }
 
