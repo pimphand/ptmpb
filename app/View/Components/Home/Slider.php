@@ -23,6 +23,7 @@ class Slider extends Component
     public function render(): View|Closure|string
     {
         $banners = Gallery::where('type', 'slide-banner')->get();
-        return view('components.home.slider',compact('banners'));
+
+        return view('components.home.slider', compact('banners'));
     }
 }

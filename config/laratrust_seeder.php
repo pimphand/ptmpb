@@ -18,6 +18,7 @@ return [
             'blog' => 'c,r,u,d',
             'products' => 'c,r,u,d',
             'categories' => 'c,r,u,d',
+            'blog-categories' => 'c,r,u,d',
             'sku' => 'c,r,u,d',
             'order' => 'c,r,u,d',
             'message' => 'c,r,u,d',
@@ -37,12 +38,14 @@ return [
             'products' => 'c,r,u,d',
             'categories' => 'c,r,u,d',
             'sku' => 'c,r,u,d',
+            'order' => 'c,r,u,d',
+            'message' => 'c,r,u,d',
         ],
         'content' => [
             'profile' => 'r,u',
+            'blog-categories' => 'c,r,u,d',
             'blog' => 'c,r,u,d',
         ],
-
         //
         'sales' => [
             'profile' => 'r,u',

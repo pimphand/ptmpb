@@ -220,7 +220,7 @@ return [
              * If the message content is empty it won't be added to the redirection.
              */
             'redirect' => [
-                'url' => '/home',
+                'url' => '/',
                 'message' => [
                     'key' => 'error',
                     'content' => '',
@@ -324,7 +324,7 @@ return [
         | These middleware will get added onto each Laratrust panel route.
         |
         */
-        'middleware' => ['web'],
+        'middleware' => ['web', 'auth', 'role:admin'],
 
         /*
         |--------------------------------------------------------------------------

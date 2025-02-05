@@ -16,8 +16,8 @@ class CategoryController extends Controller
      */
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        return view('admin.category',[
-            'title' => 'Kategori'
+        return view('admin.category', [
+            'title' => 'Kategori',
         ]);
     }
 
@@ -27,6 +27,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         (new \App\Models\Category)->create($request->validated());
+
         return response()->json(['message' => 'Kategori berhasil ditambahkan']);
     }
 
@@ -36,6 +37,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category): \Illuminate\Http\JsonResponse
     {
         $category->update($request->validated());
+
         return response()->json(['message' => 'Kategori berhasil diperbarui']);
     }
 
@@ -45,6 +47,7 @@ class CategoryController extends Controller
     public function destroy(Category $category): \Illuminate\Http\JsonResponse
     {
         $category->delete();
+
         return response()->json(['message' => 'Kategori berhasil dihapus']);
     }
 
@@ -54,6 +57,7 @@ class CategoryController extends Controller
     public function data(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $categories = Category::whereLike('name', "%$request->search%")->paginate(10);
+
         return CategoryResource::collection($categories);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -15,6 +13,7 @@ class UserSeeder extends Seeder
     {
         $developer = (new \App\Models\User)->create([
             'name' => 'Developer',
+            'username' => 'developer',
             'email' => 'developer@gmail.com',
             'password' => bcrypt('password'),
         ]);
@@ -22,6 +21,7 @@ class UserSeeder extends Seeder
 
         $admin = (new \App\Models\User)->create([
             'name' => 'Admin',
+            'username' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
         ]);
@@ -29,9 +29,18 @@ class UserSeeder extends Seeder
 
         $content = (new \App\Models\User)->create([
             'name' => 'Content',
+            'username' => 'content',
             'email' => 'content@gmail.com',
             'password' => bcrypt('password'),
         ]);
         $content->addRole('content');
+
+        $driver = (new \App\Models\User)->create([
+            'name' => 'Driver',
+            'username' => 'driver',
+            'email' => 'driver@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $driver->addRole('driver');
     }
 }

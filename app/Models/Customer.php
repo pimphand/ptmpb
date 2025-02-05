@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
     use HasUuids, SoftDeletes;
+
     protected $fillable = [
         'name',
         'phone',
@@ -20,7 +21,7 @@ class Customer extends Model
         'identity',
         'npwp',
         'others',
-        'user_id'
+        'user_id',
     ];
 
     protected $hidden = [
@@ -28,7 +29,7 @@ class Customer extends Model
         'created_at',
         'updated_at',
         'deleted_at',
-        'user_id'
+        'user_id',
     ];
 
     public function scopeIsBlock($query, $bool = false)

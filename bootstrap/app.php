@@ -13,7 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-           'locale' => App\Http\Middleware\SetLocale::class,
+            'locale' => App\Http\Middleware\SetLocale::class,
+            'role' => \Laratrust\Middleware\Role::class,
+            'permission' => \Laratrust\Middleware\Permission::class,
+            'ability' => \Laratrust\Middleware\Ability::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

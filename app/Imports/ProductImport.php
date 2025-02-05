@@ -12,7 +12,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class ProductImport implements ToCollection, WithHeadingRow
 {
     /**
-     * @param Collection $collection
      * @return void
      */
     public function collection(Collection $collection)
@@ -23,7 +22,7 @@ class ProductImport implements ToCollection, WithHeadingRow
                 continue; // Skip this iteration
             }
             $category = Category::updateOrCreate([
-                'name' => $row['kategori_produk']
+                'name' => $row['kategori_produk'],
             ]);
 
             $product = Product::updateOrCreate([
@@ -36,14 +35,13 @@ class ProductImport implements ToCollection, WithHeadingRow
             Sku::updateOrCreate([
                 'product_id' => $product->id,
                 'name' => $row['nama_produk'],
-            ],[
+            ], [
                 'performance' => $row['kinerja'],
 
                 'packaging' => $row['kemasan'],
             ]);
         }
     }
-
 
     public function headingRow(): int
     {

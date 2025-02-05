@@ -1,4 +1,5 @@
 <?php
+
 return [
     'home' => 'Beranda',
     'about_us' => 'Tentang Kami',
@@ -11,7 +12,7 @@ return [
     'gallery' => 'Galeri',
     'contact_us' => 'Hubungi Kami',
 
-    //admin
+    // admin
     'dashboard' => 'Dasbor',
     'users' => 'Pengguna',
     'roles' => 'Peran',

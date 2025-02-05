@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderAdminResource;
-use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -18,18 +16,18 @@ class OrderController extends Controller
     public function index()
     {
         return view('admin.order', [
-            'title' => 'Order'
+            'title' => 'Order',
         ]);
     }
 
     public function update(UpdateOrderRequest $request, Order $order)
     {
         $order->update([
-            'is_folow_up' => 1
+            'is_folow_up' => 1,
         ]);
 
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
 
@@ -44,6 +42,7 @@ class OrderController extends Controller
         })
             ->latest()
             ->paginate(10);
+
         return OrderAdminResource::collection($orders);
     }
 
@@ -53,11 +52,11 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $order->update([
-            'status' => $request->status
+            'status' => $request->status,
         ]);
 
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
 }

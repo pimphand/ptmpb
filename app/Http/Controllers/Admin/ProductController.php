@@ -24,7 +24,7 @@ class ProductController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         return view('admin.product', [
-            'title' => 'Product'
+            'title' => 'Product',
         ]);
     }
 
@@ -36,7 +36,7 @@ class ProductController extends Controller
         return view('admin.product_create', [
             'title' => 'Tambah Produk',
             'categories' => Category::all(),
-            'product' => []
+            'product' => [],
         ]);
     }
 
@@ -52,7 +52,6 @@ class ProductController extends Controller
                 'file' => $request->has('file') ? $request->file('file')->store('file/products', 'public') : null,
             ]);
 
-
             foreach ($request->name_sku as $key => $name_sku) {
                 $product->skus()->create([
                     'name' => $name_sku,
@@ -61,10 +60,10 @@ class ProductController extends Controller
                     'application' => $request->application[$key],
                 ]);
 
-                if ($request->hasFile('image.' . $key)) {
+                if ($request->hasFile('image.'.$key)) {
                     Image::create([
                         'imaginable_id' => $product->skus->last()->id,
-                        'path' => $request->file('image.' . $key)->store('images/products', 'public'),
+                        'path' => $request->file('image.'.$key)->store('images/products', 'public'),
                         'imaginable_type' => Sku::class,
                     ]);
                 }
@@ -90,7 +89,7 @@ class ProductController extends Controller
         return view('admin.product_create', [
             'title' => 'Tambah Produk',
             'categories' => Category::all(),
-            'product' => $product
+            'product' => $product,
         ]);
     }
 
@@ -116,12 +115,12 @@ class ProductController extends Controller
                     'application' => $request->application[$key],
                 ]);
 
-                if ($request->hasFile('image.' . $key)) {
+                if ($request->hasFile('image.'.$key)) {
                     Image::updateOrCreate([
                         'imaginable_id' => $sku->id,
                         'imaginable_type' => Sku::class,
                     ], [
-                        'path' => $request->file('image.' . $key)->store('images/products', 'public'),
+                        'path' => $request->file('image.'.$key)->store('images/products', 'public'),
                     ]);
                 }
             }
@@ -136,12 +135,13 @@ class ProductController extends Controller
     public function destroy(Product $product): \Illuminate\Http\JsonResponse
     {
         $product->skus()->delete();
-        //delete file jika ada
+        // delete file jika ada
         if ($product->file) {
             Storage::disk('public')->delete($product->file);
         }
 
         $product->delete();
+
         return response()->json(['message' => 'Produk berhasil dihapus']);
     }
 
@@ -154,6 +154,7 @@ class ProductController extends Controller
             ->with('category')
             ->withCount('skus')
             ->paginate(10);
+
         return ProductResource::collection($products);
     }
 
@@ -163,10 +164,10 @@ class ProductController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls'
+            'file' => 'required|mimes:xlsx,xls',
         ]);
 
-        Excel::import(new ProductImport(), request()->file('file'));
+        Excel::import(new ProductImport, request()->file('file'));
 
         return response()->json(['message' => 'Produk berhasil diupload']);
     }

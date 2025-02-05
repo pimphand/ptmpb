@@ -15,6 +15,5 @@ class Team extends Model
     /** @use HasFactory<TeamFactory> */
     use HasFactory,HasUuids;
 
-    protected $fillable = ['name', 'position', 'order', 'team_name','photo'];
-
+    protected $fillable = ['name', 'position', 'order', 'team_name', 'photo'];
 }

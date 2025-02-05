@@ -19,9 +19,10 @@ class AboutController extends Controller
     {
         return view('admin.about', [
             'title' => 'About',
-            'about' => About::find('9df277bb-6c87-4029-b9e7-36fcde971d8b')
+            'about' => About::find('9df277bb-6c87-4029-b9e7-36fcde971d8b'),
         ]);
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -37,14 +38,14 @@ class AboutController extends Controller
         About::create(array_merge($request->validated(), ['data' => $data]));
 
         return response()->json([
-            'message' => 'Data berhasil disimpan'
+            'message' => 'Data berhasil disimpan',
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAboutRequest $request, $id ): array
+    public function update(UpdateAboutRequest $request, $id): array
     {
         $about = About::find($id);
         $data = [
@@ -58,7 +59,7 @@ class AboutController extends Controller
         $about->update(array_merge($request->validated(), ['data' => $data]));
 
         return [
-            'message' => 'Data berhasil diupdate'
+            'message' => 'Data berhasil diupdate',
         ];
     }
 

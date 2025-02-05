@@ -25,7 +25,7 @@ class StoreAboutRequest extends FormRequest
         return [
             'title' => 'required|string',
             'content' => 'required|string',
-            'data' => 'nullable|array'
+            'data' => 'nullable|array',
         ];
     }
 }

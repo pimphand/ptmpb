@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\Sku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,13 +19,13 @@ class OrderController extends Controller
     {
         $order = Auth::user()->orders()
             ->when($request->id, function ($query, $id) {
-                return $query->where("id", $id)->with('customer');
+                return $query->where('id', $id)->with('customer');
             })
             ->when($request->status, function ($query, $status) {
-                return $query->where("status", $status);
+                return $query->where('status', $status);
             })
             ->when($request->product, function ($query, $product) {
-                return $query->where("items", 'like', "%$product%");
+                return $query->where('items', 'like', "%$product%");
             })->when($request->customer, function ($query, $customer) {
                 return $query->whereHas('customer', function ($query) use ($customer) {
                     $query->where('name', 'like', "%$customer%")
@@ -35,8 +34,9 @@ class OrderController extends Controller
                         ->orWhere('phone', 'like', "%$customer%");
                 });
             })->with('customer')
-            ->orderBy("id", "desc")
+            ->orderBy('id', 'desc')
             ->paginate(10);
+
         return OrderResource::collection($order);
     }
 
@@ -56,11 +56,11 @@ class OrderController extends Controller
             'items.*.product_id' => 'required|exists:skus,id',
             'items.*.quantity' => 'required|integer',
         ], [
-            'items.*.product_id.exists' => "Produk tidak ditemukan",
-            'items.*.quantity.integer' => "Jumlah harus berupa angka",
-            'items.*.quantity.required' => "Jumlah harus diisi",
-            'items.*.product_id.required' => "Produk harus diisi",
-            'customer_id.required' => "Customer harus diisi",
+            'items.*.product_id.exists' => 'Produk tidak ditemukan',
+            'items.*.quantity.integer' => 'Jumlah harus berupa angka',
+            'items.*.quantity.required' => 'Jumlah harus diisi',
+            'items.*.product_id.required' => 'Produk harus diisi',
+            'customer_id.required' => 'Customer harus diisi',
         ]);
 
         if ($validate->fails()) {
@@ -116,7 +116,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $validator =  Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'status' => 'required|in:pending,process,success,cancel,done',
         ]);
 
@@ -135,6 +135,7 @@ class OrderController extends Controller
         $order->update([
             'status' => $request->status,
         ]);
+
         return response()->json([
             'message' => 'Order updated',
         ]);

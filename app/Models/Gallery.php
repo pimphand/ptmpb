@@ -15,7 +15,7 @@ class Gallery extends Model
 
     protected $fillable = ['title', 'description', 'url', 'is_publish', 'code', 'type'];
 
-    //boot method
+    // boot method
     protected static function boot(): void
     {
         parent::boot();
@@ -32,6 +32,7 @@ class Gallery extends Model
     {
         return $this->morphMany(Image::class, 'imaginable');
     }
+
     public function image(): \Illuminate\Database\Eloquent\Relations\MorphOne
     {
         return $this->morphOne(Image::class, 'imaginable');

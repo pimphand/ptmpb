@@ -15,11 +15,11 @@ class CustomerAdminResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "fullName" => $this['fullName'] ?? $this['name'],
-            "companyName" => $this['companyName'] ?? $this['store_name'],
-            "whatsappNumber" => $this['whatsappNumber'] ?? $this['phone'],
-            "companyEmail" => $this['companyEmail'] ?? "-",
-            "fullAddress" => $this['fullAddress'] ?? $this['address'],
+            'fullName' => $this['fullName'] ?? $this['name'],
+            'companyName' => $this['companyName'] ?? $this['store_name'],
+            'whatsappNumber' => $this['whatsappNumber'] ?? $this['phone'],
+            'companyEmail' => $this['companyEmail'] ?? '-',
+            'fullAddress' => $this['fullAddress'] ?? $this['address'],
         ];
     }
 }

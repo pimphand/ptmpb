@@ -17,9 +17,10 @@ class ProductController extends Controller
         $sku = Sku::with('image')
             ->whereHas('image')
             ->when($request->name, function ($query, $name) {
-                return $query->where("name", "like", "%" . $name . "%");
+                return $query->where('name', 'like', '%'.$name.'%');
             })
             ->paginate(12);
+
         return SkuResource::collection($sku);
     }
 
@@ -35,8 +36,9 @@ class ProductController extends Controller
             ->inRandomOrder()
             ->limit(5)
             ->get();
+
         return SkuResource::make($sku)->additional([
-            'recomended' => SkuResource::collection($recomended)
+            'recomended' => SkuResource::collection($recomended),
         ]);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ProductImport;
 use App\Models\About;
 use App\Models\Blog;
 use App\Models\Category;
@@ -23,8 +22,9 @@ class HomeController extends Controller
     {
         $data = [
             'title' => 'Tentang Kami',
-            'about' => About::first()
+            'about' => About::first(),
         ];
+
         return view('frontend.about_us', $data);
     }
 
@@ -35,7 +35,7 @@ class HomeController extends Controller
         // Check if the user has already visited this blog recently
         $lastViewed = session("blog_{$id}_viewed");
 
-        if (!$lastViewed || now()->diffInMinutes($lastViewed) > 1) {
+        if (! $lastViewed || now()->diffInMinutes($lastViewed) > 1) {
             // Set not spam and increment views
             $blog->count += 1;
             $blog->save();
@@ -45,7 +45,7 @@ class HomeController extends Controller
 
         return view('frontend.blog.detail', [
             'title' => 'Blog',
-            'blog' => $blog
+            'blog' => $blog,
         ]);
     }
 
@@ -58,7 +58,7 @@ class HomeController extends Controller
 
         return view('frontend.blog.list', [
             'title' => 'List Blog',
-            'blogs' => $blogs
+            'blogs' => $blogs,
         ]);
     }
 
@@ -67,10 +67,11 @@ class HomeController extends Controller
         $categories = Category::select('name', 'id')->get();
 
         $merk = Product::select('name')->distinct()->get();
+
         return view('frontend.products', [
             'title' => 'List Product',
             'categories' => $categories,
-            'merks' => $merk
+            'merks' => $merk,
         ]);
     }
 
@@ -98,7 +99,7 @@ class HomeController extends Controller
     public function checkout(Request $request)
     {
         return view('frontend.checkout', [
-            'title' => 'Checkout'
+            'title' => 'Checkout',
         ]);
     }
 
@@ -107,7 +108,7 @@ class HomeController extends Controller
         Order::create([
             'data' => $request->buyerInfo,
             'items' => $request->orderDetails,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         return [
@@ -119,7 +120,7 @@ class HomeController extends Controller
     {
         return view('frontend.contact', [
             'title' => 'Kontak',
-            'contact' => About::where('type', 'contact')->first()
+            'contact' => About::where('type', 'contact')->first(),
         ]);
     }
 
@@ -128,30 +129,32 @@ class HomeController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'message' => 'required'
+            'message' => 'required',
         ], [
             'name.required' => 'Nama harus diisi',
             'email.required' => 'Email harus diisi',
             'email.email' => 'Email tidak valid',
-            'message.required' => 'Pesan harus diisi'
+            'message.required' => 'Pesan harus diisi',
         ]);
 
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'message' => $request->message
+            'message' => $request->message,
         ];
 
         Message::create($data);
+
         return redirect()->back()->with('success', 'Pesan berhasil dikirim');
     }
 
     public function teams(Request $request)
     {
         $teams = \App\Models\Team::limit(5)->get();
+
         return view('components.home.team', [
             'title' => 'Tim Kami',
-            'teams' => $teams
+            'teams' => $teams,
         ]);
     }
 
@@ -161,7 +164,7 @@ class HomeController extends Controller
 
         return view('frontend.gallery', [
             'title' => 'Gallery',
-            'galleries' => $galleries
+            'galleries' => $galleries,
         ]);
     }
 
@@ -169,11 +172,12 @@ class HomeController extends Controller
     {
         $sku = Sku::with('images')->where('code', $sku)->firstOrFail();
         $sku->visit()->hourlyIntervals()->withIp();
+
         return view('frontend.product', [
             'title' => 'Detail Product',
             'product' => $sku->product,
             'sku' => $sku,
-            'relateds' =>  Sku::where('product_id', $sku->product_id)
+            'relateds' => Sku::where('product_id', $sku->product_id)
                 ->where('id', '!=', $sku->id)
                 ->orWhereHas('product', function ($query) use ($sku) {
                     $query->where('category_id', $sku->product->category_id);
@@ -181,7 +185,7 @@ class HomeController extends Controller
                 ->whereHas('images')
                 ->inRandomOrder()
                 ->limit(4)
-                ->get()
+                ->get(),
         ]);
     }
 }

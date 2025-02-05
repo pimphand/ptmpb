@@ -15,11 +15,12 @@ class About extends Model
 {
     /** @use HasFactory<\Database\Factories\AboutFactory> */
     use HasFactory, HasUuids;
+
     use SoftDeletes;
 
     protected $fillable = ['title', 'content', 'data'];
 
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
     ];
 }

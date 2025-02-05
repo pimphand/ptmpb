@@ -18,7 +18,9 @@ class Blog extends Model implements CanVisit
 {
     /** @use HasFactory<BlogFactory> */
     use HasFactory, HasUuids;
+
     use HasVisits;
+
     protected $fillable = ['title', 'content', 'slug', 'user_id', 'is_publish', 'category_id', 'thumbnail', 'count', 'image'];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

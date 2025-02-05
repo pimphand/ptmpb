@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBlogCategoryRequest;
 use App\Http\Requests\UpdateBlogCategoryRequest;
 use App\Http\Resources\BlogCategoryResource;
-use App\Models\Blog;
 use App\Models\BlogCategory;
 use Illuminate\Contracts\View\View;
 
@@ -18,7 +17,7 @@ class BlogCategoryController extends Controller
     public function index(): View
     {
         return view('admin.blog_category', [
-            'title' => 'Blog Category'
+            'title' => 'Blog Category',
         ]);
     }
 
@@ -38,7 +37,7 @@ class BlogCategoryController extends Controller
         BlogCategory::create($request->validated());
 
         return response()->json([
-            'message' => 'Data berhasil disimpan'
+            'message' => 'Data berhasil disimpan',
         ]);
     }
 
@@ -66,7 +65,7 @@ class BlogCategoryController extends Controller
         $blogCategory->update($request->validated());
 
         return response()->json([
-            'message' => 'Data berhasil diupdate'
+            'message' => 'Data berhasil diupdate',
         ]);
     }
 
@@ -81,10 +80,9 @@ class BlogCategoryController extends Controller
     /**
      * Get all data
      */
-
     public function data(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $blogCategories = BlogCategory::where('name', 'like', '%' . request('q') . '%')
+        $blogCategories = BlogCategory::where('name', 'like', '%'.request('q').'%')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

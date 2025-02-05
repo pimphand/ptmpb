@@ -15,13 +15,15 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements LaratrustUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasRolesAndPermissions, HasApiTokens;
+    use HasApiTokens, HasFactory, HasRolesAndPermissions, Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
+        'username',
         'name',
         'email',
         'password',

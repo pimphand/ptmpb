@@ -12,7 +12,7 @@ class CompanyController extends Controller
     {
         return view('admin.company.contact', [
             'title' => 'Kontak',
-            'contact' => About::where('type', 'contact')->first()
+            'contact' => About::where('type', 'contact')->first(),
         ]);
     }
 
@@ -31,12 +31,12 @@ class CompanyController extends Controller
         About::updateOrCreate(['type' => 'contact'], [
             'data' => $data,
             'content' => $request->map,
-            'title' => "Kontak",
-            'type' => 'contact'
+            'title' => 'Kontak',
+            'type' => 'contact',
         ]);
 
         return [
-            'message' => 'Data berhasil disimpan'
+            'message' => 'Data berhasil disimpan',
         ];
     }
 }

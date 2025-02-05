@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,59 +22,58 @@ Route::post('/contact', [\App\Http\Controllers\Frontend\HomeController::class, '
 Route::get('/home-teams', [\App\Http\Controllers\Frontend\HomeController::class, 'teams'])->name('home-teams');
 Route::get('/gallery', [\App\Http\Controllers\Frontend\HomeController::class, 'gallery'])->name('gallery');
 
-
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-    //category
-    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
-    Route::get('categories-data', [\App\Http\Controllers\Admin\CategoryController::class, 'data'])->name('categories.data');
+    // category
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->middleware('permission:categories-read');
+    Route::get('categories-data', [\App\Http\Controllers\Admin\CategoryController::class, 'data'])->name('categories.data')->middleware('permission:categories-read');
 
-    //product
-    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
-    Route::get('products-data', [\App\Http\Controllers\Admin\ProductController::class, 'data'])->name('products.data');
-    Route::post('products-upload', [\App\Http\Controllers\Admin\ProductController::class, 'upload'])->name('products.upload');
+    // product
+    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)->middleware('permission:products-read');
+    Route::get('products-data', [\App\Http\Controllers\Admin\ProductController::class, 'data'])->name('products.data')->middleware('permission:products-read');
+    Route::post('products-upload', [\App\Http\Controllers\Admin\ProductController::class, 'upload'])->name('products.upload')->middleware('permission:products-read');
 
-    //blog
-    Route::resource('blogs', \App\Http\Controllers\Admin\BlogController::class);
-    Route::get('blogs-data', [\App\Http\Controllers\Admin\BlogController::class, 'data'])->name('blogs.data');
+    // blog
+    Route::resource('blogs', \App\Http\Controllers\Admin\BlogController::class)->middleware('permission:blog-read');
+    Route::get('blogs-data', [\App\Http\Controllers\Admin\BlogController::class, 'data'])->name('blogs.data')->middleware('permission:blog-read');
 
-    //blog category
-    Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class);
-    Route::get('blog-categories-data', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'data'])->name('blog-categories.data');
+    // blog category
+    Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->middleware('permission:blog-categories-read');
+    Route::get('blog-categories-data', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'data'])->name('blog-categories.data')->middleware('permission:blog-categories-read');
 
-    Route::resource('about-us', \App\Http\Controllers\Admin\AboutController::class);
+    Route::resource('about-us', \App\Http\Controllers\Admin\AboutController::class)->middleware('role:developer|admin');
 
-    //banner
-    Route::resource('galleries', \App\Http\Controllers\Admin\GalleryController::class);
-    Route::get('galleries-data', [\App\Http\Controllers\Admin\GalleryController::class, 'data'])->name('galleries.data');
+    // banner
+    Route::resource('galleries', \App\Http\Controllers\Admin\GalleryController::class)->middleware('permission:gallery-read');
+    Route::get('galleries-data', [\App\Http\Controllers\Admin\GalleryController::class, 'data'])->name('galleries.data')->middleware('permission:gallery-read');
 
-    //image
-    Route::delete('image/{id}', [\App\Http\Controllers\Admin\GalleryController::class, 'delete'])->name('images.destroy');
+    // image
+    Route::delete('image/{id}', [\App\Http\Controllers\Admin\GalleryController::class, 'delete'])->name('images.destroy')->middleware('permission:order-read');
 
-    //contact
-    Route::get('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'contact'])->name('contact.index');
-    Route::post('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'storeContact'])->name('contact.store');
+    // contact
+    Route::get('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'contact'])->name('contact.index')->middleware('permission:contact-read');
+    Route::post('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'storeContact'])->name('contact.store')->middleware('permission:contact-read');
 
-    //message
-    Route::get('messages', [\App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages.index');
-    Route::get('messages-data', [\App\Http\Controllers\Admin\MessageController::class, 'data'])->name('messages.data');
+    // message
+    Route::get('messages', [\App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages.index')->middleware('permission:message-read');
+    Route::get('messages-data', [\App\Http\Controllers\Admin\MessageController::class, 'data'])->name('messages.data')->middleware('permission:message-read');
 
-    //order
-    Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
-    Route::put('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('orders.update');
-    Route::put('orders-status/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    // order
+    Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index')->middleware('permission:order-read');
+    Route::put('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('orders.update')->middleware('permission:order-update');
+    Route::put('orders-status/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.updateStatus')->middleware('permission:order-update');
+    Route::get('orders-data', [\App\Http\Controllers\Admin\OrderController::class, 'data'])->name('orders.data')->middleware('permission:order-read');
 
-    Route::get('orders-data', [\App\Http\Controllers\Admin\OrderController::class, 'data'])->name('orders.data');
-
-    Route::resource('sales', \App\Http\Controllers\Admin\SalesController::class);
-    Route::get('sales-data', [\App\Http\Controllers\Admin\SalesController::class, 'data'])->name('sales.data');
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->middleware('permission:users-read|users-create|users-update|users-delete');
+    Route::get('users-data', [\App\Http\Controllers\Admin\UserController::class, 'data'])->name('users.data')->middleware('permission:users-read');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
-//set locale
+// set locale
 Route::get('/lang/{locale}', function ($locale) {
     \Illuminate\Support\Facades\Session::put('locale', $locale);
+
     return redirect()->back();
 })->middleware('locale')->name('lang');

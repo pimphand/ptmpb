@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateBlogRequest;
 use App\Http\Resources\BlogResource;
 use App\Models\Blog;
 use App\Models\BlogCategory;
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
@@ -21,7 +20,7 @@ class BlogController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         return view('admin.blog', [
-            'title' => 'Blog'
+            'title' => 'Blog',
         ]);
     }
 
@@ -33,7 +32,7 @@ class BlogController extends Controller
         return view('admin.blog_create', [
             'title' => 'Tambah Blog',
             'categories' => BlogCategory::all(),
-            'blog' => []
+            'blog' => [],
         ]);
     }
 
@@ -45,14 +44,14 @@ class BlogController extends Controller
         $image = ImageManager::imagick()->read($request->file('image'));
 
         // Resize gambar dan simpan di images/blog/thumbnail
-        $thumbnailPath = $request->file('image')->storeAs('images/blog/thumbnail', 'thumbnail_' . time() . '.jpg', 'public');
+        $thumbnailPath = $request->file('image')->storeAs('images/blog/thumbnail', 'thumbnail_'.time().'.jpg', 'public');
         $image->resize(410, 293, function ($constraint) {
             $constraint->aspectRatio();
         });
-        $image->save(storage_path('app/public/' . $thumbnailPath));
+        $image->save(storage_path('app/public/'.$thumbnailPath));
 
         // Simpan gambar asli di images/blog
-        $imagePath = $request->file('image')->storeAs('images/blog', 'image_' . time() . '.jpg', 'public');
+        $imagePath = $request->file('image')->storeAs('images/blog', 'image_'.time().'.jpg', 'public');
 
         $data['user_id'] = auth()->id();
         $data['title'] = $request->name;
@@ -66,7 +65,7 @@ class BlogController extends Controller
         Blog::create($data);
 
         return response()->json([
-            'message' => 'Data berhasil disimpan'
+            'message' => 'Data berhasil disimpan',
         ]);
     }
 
@@ -86,7 +85,7 @@ class BlogController extends Controller
         return view('admin.blog_create', [
             'title' => 'Edit Blog',
             'categories' => BlogCategory::all(),
-            'blog' => $blog
+            'blog' => $blog,
         ]);
     }
 
@@ -108,7 +107,7 @@ class BlogController extends Controller
         $blog->update($data);
 
         return response()->json([
-            'message' => 'Data berhasil disimpan'
+            'message' => 'Data berhasil disimpan',
         ]);
     }
 
@@ -118,8 +117,9 @@ class BlogController extends Controller
     public function destroy(Blog $blog)
     {
         $blog->delete();
+
         return response()->json([
-            'message' => 'Data berhasil dihapus'
+            'message' => 'Data berhasil dihapus',
         ]);
     }
 
@@ -135,6 +135,7 @@ class BlogController extends Controller
             ->where('title', 'like', "%$request->search%")
             ->orWhere('content', 'like', "%$request->search%")
             ->orderBy('id', 'desc')->paginate(10);
+
         return BlogResource::collection($blogs);
     }
 }

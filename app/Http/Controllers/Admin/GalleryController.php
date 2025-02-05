@@ -19,7 +19,7 @@ class GalleryController extends Controller
     public function index(): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view('admin.gallery.index', [
-            'title' => 'Galeri'
+            'title' => 'Galeri',
         ]);
     }
 
@@ -30,7 +30,7 @@ class GalleryController extends Controller
     {
         return view('admin.gallery.create', [
             'title' => 'Galeri',
-            'gallery' => []
+            'gallery' => [],
         ]);
     }
 
@@ -45,7 +45,7 @@ class GalleryController extends Controller
                 'description' => $request->description,
                 'url' => $request->url,
                 'is_publish' => $request->is_publish ?? false,
-                'type' => $request->type
+                'type' => $request->type,
             ]);
 
             foreach ($request->image as $image) {
@@ -53,12 +53,12 @@ class GalleryController extends Controller
                     'path' => $image->store('galleries', 'public'),
                     'imaginable_id' => $gallery->id,
                     'imaginable_type' => $gallery->getMorphClass(),
-                    'gallery_type' => $request->type
+                    'gallery_type' => $request->type,
                 ]);
             }
 
             return response()->json([
-                'message' => 'Data berhasil disimpan'
+                'message' => 'Data berhasil disimpan',
             ]);
         });
     }
@@ -78,7 +78,7 @@ class GalleryController extends Controller
     {
         return view('admin.gallery.create', [
             'title' => 'Galeri',
-            'gallery' => $gallery
+            'gallery' => $gallery,
         ]);
     }
 
@@ -93,7 +93,7 @@ class GalleryController extends Controller
                 'description' => $request->description,
                 'url' => $request->url,
                 'is_publish' => $request->is_publish ?? false,
-                'type' => $request->type
+                'type' => $request->type,
             ]);
 
             if ($request->hasFile('image')) {
@@ -102,13 +102,13 @@ class GalleryController extends Controller
                         'imaginable_id' => $gallery->id,
                         'imaginable_type' => $gallery->getMorphClass(),
                         'path' => $image->store('galleries', 'public'),
-                        'gallery_type' => $request->type
+                        'gallery_type' => $request->type,
                     ]);
                 }
             }
 
             return response()->json([
-                'message' => 'Data berhasil diubah'
+                'message' => 'Data berhasil diubah',
             ]);
         });
     }
@@ -119,8 +119,9 @@ class GalleryController extends Controller
     public function destroy(Gallery $gallery): \Illuminate\Http\JsonResponse
     {
         $gallery->delete();
+
         return response()->json([
-            'message' => 'Data berhasil dihapus'
+            'message' => 'Data berhasil dihapus',
         ]);
     }
 
@@ -131,9 +132,10 @@ class GalleryController extends Controller
     {
         $image = Image::find($id);
         $image->delete();
+
         return response()->json([
             'message' => 'Data berhasil dihapus',
-            'redirect' => false
+            'redirect' => false,
         ]);
     }
 
@@ -143,6 +145,7 @@ class GalleryController extends Controller
     public function data(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $galleries = Gallery::with('images')->paginate(10);
+
         return GalleryResource::collection($galleries);
     }
 }

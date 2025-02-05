@@ -13,10 +13,13 @@ class Sku extends Model implements CanVisit
 {
     /** @use HasFactory<SkuFactory> */
     use HasFactory, HasUuids;
+
     use HasVisits;
 
     protected $primaryKey = 'id';
+
     protected $primaryKeyType = 'string';
+
     protected $fillable = ['name', 'price', 'code', 'product_id', 'description', 'application', 'packaging'];
 
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -38,7 +41,7 @@ class Sku extends Model implements CanVisit
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->code = 'SKU' . $model->product_id . '-' . time();
+            $model->code = 'SKU'.$model->product_id.'-'.time();
         });
     }
 }

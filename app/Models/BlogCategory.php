@@ -31,7 +31,7 @@ class BlogCategory extends Model
             $model->slug = Str::slug($model->name);
         });
 
-        static ::updating(function ($model) {
+        static::updating(function ($model) {
             $model->slug = Str::slug($model->name);
         });
     }

@@ -14,8 +14,8 @@ class SalesController extends Controller
      */
     public function index()
     {
-        return view("admin.sales.index", [
-            "title" => "Sales"
+        return view('admin.sales.index', [
+            'title' => 'Sales',
         ]);
     }
 
@@ -42,7 +42,8 @@ class SalesController extends Controller
     {
         $user = User::find($id);
         $user->load('orders');
-        return view("admin.sales.show", compact("user"));
+
+        return view('admin.sales.show', compact('user'));
     }
 
     /**

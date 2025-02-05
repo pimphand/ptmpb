@@ -14,6 +14,7 @@ class Product extends Model implements CanVisit
 {
     /** @use HasFactory<ProductFactory> */
     use HasFactory, HasUuids;
+
     use HasVisits;
 
     protected $fillable = ['name', 'description', 'price', 'category_id', 'file'];
@@ -23,12 +24,12 @@ class Product extends Model implements CanVisit
         return $this->belongsTo(Category::class);
     }
 
-    //boot
+    // boot
     protected static function boot(): void
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->slug = Str::slug($model->name . '-' . $model->category->name) . '-' . rand(1000, 9999);
+            $model->slug = Str::slug($model->name.'-'.$model->category->name).'-'.rand(1000, 9999);
         });
     }
 

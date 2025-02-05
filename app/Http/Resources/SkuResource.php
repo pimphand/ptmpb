@@ -15,14 +15,14 @@ class SkuResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "packaging" => $this->packaging,
-            "description" => $this->description,
-            "image" => $this->image->path ?? null,
-            "brand" => $this->product->name,
-            "category" => $this->product->category->name,
-            "file" => $this->file ? asset('storage/' . $this->file) : null,
+            'id' => $this->id,
+            'name' => $this->name,
+            'packaging' => $this->packaging,
+            'description' => $this->description,
+            'image' => $this->image->path ?? null,
+            'brand' => $this->product->name,
+            'category' => $this->product->category->name,
+            'file' => $this->file ? asset('storage/'.$this->file) : null,
         ];
     }
 }

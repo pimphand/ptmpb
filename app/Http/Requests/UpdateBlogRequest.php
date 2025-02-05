@@ -23,11 +23,11 @@ class UpdateBlogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:blogs,title,' . $this->route('blog')->id],
+            'name' => ['required', 'string', 'max:255', 'unique:blogs,title,'.$this->route('blog')->id],
             'content' => ['required', 'string'],
             'category' => ['required', 'exists:blog_categories,id'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'is_publish' => ['nullable', 'boolean']
+            'is_publish' => ['nullable', 'boolean'],
         ];
     }
 }
