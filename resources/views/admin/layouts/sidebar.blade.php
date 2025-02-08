@@ -24,7 +24,7 @@
             </li>
         @endpermission
 
-        @permission('categories-read')
+        @permission('products-read')
             <li class="menu-item">
                 <a href="{{ route('admin.products.index') }}" class="menu-link">
                     <span class="material-symbols-outlined menu-icon">featured_video</span>
@@ -33,7 +33,7 @@
             </li>
         @endpermission
 
-        @permission('categories-read')
+        @permission('blog-categories-read')
             <li class="menu-item">
                 <a href="{{ route('admin.blog-categories.index') }}" class="menu-link">
                     <span class="material-symbols-outlined menu-icon">widgets</span>

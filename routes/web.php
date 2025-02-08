@@ -39,7 +39,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('blogs-data', [\App\Http\Controllers\Admin\BlogController::class, 'data'])->name('blogs.data')->middleware('permission:blog-read');
 
     // blog category
-    Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->middleware('permission:blog-categories-read');
+        Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->middleware('permission:blog-categories-read');
     Route::get('blog-categories-data', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'data'])->name('blog-categories.data')->middleware('permission:blog-categories-read');
 
     Route::resource('about-us', \App\Http\Controllers\Admin\AboutController::class)->middleware('role:developer|admin');
@@ -52,8 +52,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::delete('image/{id}', [\App\Http\Controllers\Admin\GalleryController::class, 'delete'])->name('images.destroy')->middleware('permission:order-read');
 
     // contact
-    Route::get('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'contact'])->name('contact.index')->middleware('permission:contact-read');
-    Route::post('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'storeContact'])->name('contact.store')->middleware('permission:contact-read');
+    Route::get('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'contact'])->name('contact.index')->middleware('role:admin|developer');
+    Route::post('contacts', [\App\Http\Controllers\Admin\CompanyController::class, 'storeContact'])->name('contact.store')->middleware('role:admin|developer');
 
     // message
     Route::get('messages', [\App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages.index')->middleware('permission:message-read');

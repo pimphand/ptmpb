@@ -29,11 +29,13 @@
                 </div>
 
             </div>
-            <div class="section-head text-justify">
-                <p style="text-align: center !important;">{!! $about->content !!}</p>
-                <a href="{{ asset('storage/' . $about->data['profile']) }}" target="_blank" class=" site-button m-r15"
-                    type="button">Download Profile Perusahaan</a>
-            </div>
+            @if($about)
+                <div class="section-head text-justify">
+                    <p style="text-align: center !important;">{!! $about->content !!}</p>
+                    <a href="{{ asset('storage/' . $about->data['profile']) }}" target="_blank" class=" site-button m-r15"
+                       type="button">Download Profile Perusahaan</a>
+                </div>
+
             <!-- TITLE END -->
             <h4 class="section-head text-center "> Legalitas Perusahaan</h4>
             <div class="row mt-4">
@@ -136,6 +138,7 @@
                     </ul>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 @endsection

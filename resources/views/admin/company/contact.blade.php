@@ -25,98 +25,100 @@
             </ol>
         </nav>
     </div>
-    <div class="row">
-        <div class="col-xxl-12">
-            <div class="card bg-white border-0 rounded-3 mb-4">
-                <div class="card-body p-4">
-                    <form id="form" method="POST" enctype="multipart/form-data" action="{{route('admin.contact.store')}}">
-                        @csrf
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group mb-4">
-                                    <label class="label text-secondary fs-14">Email</label>
-                                    <input type="text" class="form-control text-dark"
-                                           value="{{isset($contact->data['email']) ? $contact->data['email'] : ''}}"
-                                           name="email"
-                                           placeholder="Masukan email">
+    @if($contact)
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="card bg-white border-0 rounded-3 mb-4">
+                    <div class="card-body p-4">
+                        <form id="form" method="POST" enctype="multipart/form-data" action="{{route('admin.contact.store')}}">
+                            @csrf
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group mb-4">
+                                        <label class="label text-secondary fs-14">Email</label>
+                                        <input type="text" class="form-control text-dark"
+                                               value="{{isset($contact) ? $contact->data['email'] : ''}}"
+                                               name="email"
+                                               placeholder="Masukan email">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group mb-4">
+                                        <label class="label text-secondary fs-14">Alamat Kantor</label>
+                                        <input type="text" class="form-control text-dark"
+                                               value="{{isset($contact->data['address']) ? $contact->data['address'] : ''}}"
+                                               name="address"
+                                               placeholder="Masukan alamat kantor">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group mb-4">
+                                        <label class="label text-secondary fs-14">Nomor Telepon</label>
+                                        <input type="text" class="form-control text-dark"
+                                               value="{{isset($contact->data['phone']) ? $contact->data['phone'] : ''}}"
+                                               name="phone"
+                                               placeholder="Masukan Nomor Telepon">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="form-group mb-4">
-                                    <label class="label text-secondary fs-14">Alamat Kantor</label>
-                                    <input type="text" class="form-control text-dark"
-                                           value="{{isset($contact->data['address']) ? $contact->data['address'] : ''}}"
-                                           name="address"
-                                           placeholder="Masukan alamat kantor">
+                            <hr>
+                            <h4>Sosial Media</h4>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-4">
+                                        <label class="label text-secondary fs-14">Url Instagram</label>
+                                        <input type="text" class="form-control text-dark"
+                                               value="{{isset($contact->data['instagram']) ? $contact->data['instagram'] : ''}}"
+                                               name="instagram"
+                                               placeholder="Masukan url instagram">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group mb-4">
-                                    <label class="label text-secondary fs-14">Nomor Telepon</label>
-                                    <input type="text" class="form-control text-dark"
-                                           value="{{isset($contact->data['phone']) ? $contact->data['phone'] : ''}}"
-                                           name="phone"
-                                           placeholder="Masukan Nomor Telepon">
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-4">
+                                        <label class="label text-secondary fs-14">Url Facebook</label>
+                                        <input type="text" class="form-control text-dark"
+                                               value="{{isset($contact->data['facebook']) ? $contact->data['facebook'] : ''}}"
+                                               name="facebook"
+                                               placeholder="Masukan url facebook">
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <h4>Sosial Media</h4>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group mb-4">
-                                    <label class="label text-secondary fs-14">Url Instagram</label>
-                                    <input type="text" class="form-control text-dark"
-                                           value="{{isset($contact->data['instagram']) ? $contact->data['instagram'] : ''}}"
-                                           name="instagram"
-                                           placeholder="Masukan url instagram">
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-4">
+                                        <label class="label text-secondary fs-14">Url Linkdin</label>
+                                        <input type="text" class="form-control text-dark"
+                                               value="{{isset($contact->data['linkdin']) ? $contact->data['linkdin'] : ''}}"
+                                               name="linkdin"
+                                               placeholder="Masukan url Linkdin">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group mb-4">
-                                    <label class="label text-secondary fs-14">Url Facebook</label>
-                                    <input type="text" class="form-control text-dark"
-                                           value="{{isset($contact->data['facebook']) ? $contact->data['facebook'] : ''}}"
-                                           name="facebook"
-                                           placeholder="Masukan url facebook">
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-4">
+                                        <label class="label text-secondary fs-14">Url Twitter / X</label>
+                                        <input type="text" class="form-control text-dark"
+                                               value="{{isset($contact->data['twitter']) ? $contact->data['twitter'] : ''}}"
+                                               name="twitter"
+                                               placeholder="Masukan Url Twitter / X">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group mb-4">
-                                    <label class="label text-secondary fs-14">Url Linkdin</label>
-                                    <input type="text" class="form-control text-dark"
-                                           value="{{isset($contact->data['linkdin']) ? $contact->data['linkdin'] : ''}}"
-                                           name="linkdin"
-                                           placeholder="Masukan url Linkdin">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group mb-4">
-                                    <label class="label text-secondary fs-14">Url Twitter / X</label>
-                                    <input type="text" class="form-control text-dark"
-                                           value="{{isset($contact->data['twitter']) ? $contact->data['twitter'] : ''}}"
-                                           name="twitter"
-                                           placeholder="Masukan Url Twitter / X">
-                                </div>
-                            </div>
 
-                        </div>
-                        <h4>Map</h4>
-                        <textarea class="form-control" name="map" style="height: 135px;">{{$contact->content ?? ''}}</textarea>
-                        <div class="col-lg-12 mt-3">
-                            <div class="d-flex flex-wrap gap-3">
-                                <a href="{{back()->getTargetUrl()}}"
-                                   class="btn btn-danger py-2 px-4 fw-medium fs-16 text-white">Cancel</a>
-                                <button class="btn btn-primary py-2 px-4 fw-medium fs-16" type="button" id="save">
-                                    <i class="ri-add-line text-white fw-medium"></i> Simpan Kontak
-                                </button>
                             </div>
-                        </div>
-                    </form>
+                            <h4>Map</h4>
+                            <textarea class="form-control" name="map" style="height: 135px;">{{$contact->content ?? ''}}</textarea>
+                            <div class="col-lg-12 mt-3">
+                                <div class="d-flex flex-wrap gap-3">
+                                    <a href="{{back()->getTargetUrl()}}"
+                                       class="btn btn-danger py-2 px-4 fw-medium fs-16 text-white">Cancel</a>
+                                    <button class="btn btn-primary py-2 px-4 fw-medium fs-16" type="button" id="save">
+                                        <i class="ri-add-line text-white fw-medium"></i> Simpan Kontak
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 @endsection
 
 @push('js')
