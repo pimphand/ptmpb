@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-        <h3 class="mb-0">Kategori Blog</h3>
+        <h3 class="mb-0">Brand</h3>
 
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb align-items-center mb-0 lh-1">
@@ -12,7 +12,7 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <span class="fw-medium">Kategori Blog</span>
+                    <span class="fw-medium">Brand</span>
                 </li>
             </ol>
         </nav>
@@ -28,7 +28,7 @@
                     </form>
                     <button type="button" class="btn btn-primary text-white py-2 px-4 fw-semibold" id="_add"
                         data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        {{ __('app.add') }} Kategori Blog
+                        {{ __('app.add') }} Brand
                     </button>
                 </div>
 
@@ -44,7 +44,8 @@
                                             <label class="position-relative top-2 ms-1" for="flexCheckDefault7">ID</label>
                                         </div>
                                     </th>
-                                    <th scope="col">{{ __('app.name') }}</th>=
+                                    <th scope="col">{{ __('app.name') }}</th>
+                                    <th scope="col">Foto</th>
                                     <th scope="col">{{ __('app.action') }}</th>
                                 </tr>
                             </thead>
@@ -88,6 +89,13 @@
                             <label for="name" class="form-label">{{ __('app.name') }}</label>
                             <input type="text" class="form-control" id="name" name="name">
                         </div>
+                        <div class="mb-3">
+                            <label for="logo" class="form-label">Logo</label>
+                            <input type="file" class="form-control" id="logo" name="logo">
+                        </div>
+                        <div class="text-center">
+                            <img src="" alt="" id="preview" class="img-fluid" style="max-width: 200px;max-height: 200px;">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -109,7 +117,7 @@
         let dataTable = [];
 
         function getData(page = 1, query = '') {
-            $.get(`{{ route('admin.blog-categories.data') }}?page=${page}&search=${query}`, function(response) {
+            $.get(`{{ route('admin.brands.data') }}?page=${page}&search=${query}`, function(response) {
                 const {
                     data,
                     meta,
@@ -122,7 +130,7 @@
 
                 // Render data
                 $.each(data, function(key, value) {
-                    let url = `{{ route('admin.blog-categories.destroy', ':id') }}`.replace(':id', value
+                    let url = `{{ route('admin.brands.destroy', ':id') }}`.replace(':id', value
                         .id);
                     const row = `
                     <tr>
@@ -133,6 +141,9 @@
                             </div>
                         </td>
                         <td class="text-body">${value.name}</td>
+                        <td class="text-body">
+                            <img src="{{ asset('storage') }}/${value.logo}" alt="${value.name}" class="img-fluid" style="max-width: 100px;">
+                        </td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
                                 <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" data-id="${value.id}">
@@ -187,21 +198,30 @@
         $('#dataTable').on('click', '.edit', function() {
             const id = $(this).data('id');
             const data = dataTable.find(item => item.id === id);
-            $('#form').attr('action', `{{ route('admin.blog-categories.update', ':id') }}`.replace(':id', id));
+            $('#form').attr('action', `{{ route('admin.brands.update', ':id') }}`.replace(':id', id));
             $('#id').val(data.id);
             $('#name').val(data.name);
-            $('#description').val(data.description);
-            $('#staticBackdropLabel').text('Edit Category');
+            $('#preview').attr('src', `{{ asset('storage') }}/${data.logo}`);
+            $('#staticBackdropLabel').text('Edit Brand');
             $('#staticBackdrop').modal('show');
         });
 
         //add
         $('#_add').click(function() {
-            $('#form').attr('action', `{{ route('admin.blog-categories.store') }}`);
+            $('#form').attr('action', `{{ route('admin.brands.store') }}`);
             $('#id').val('');
             $('#name').val('');
-            $('#description').val('');
-            $('#staticBackdropLabel').text('Tambah Category');
+            $('#staticBackdropLabel').text('Tambah Brand');
+        });
+
+        //show logo after upload
+        $('#logo').change(function() {
+            const file = $(this)[0].files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#preview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
         });
     </script>
 @endpush

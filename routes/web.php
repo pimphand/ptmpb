@@ -67,6 +67,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->middleware('permission:users-read|users-create|users-update|users-delete');
     Route::get('users-data', [\App\Http\Controllers\Admin\UserController::class, 'data'])->name('users.data')->middleware('permission:users-read');
+
+    Route::resource('brands', \App\Http\Controllers\Admin\BrandController::class)->middleware('role:developer|admin');
+    Route::get('brands-data', [\App\Http\Controllers\Admin\BrandController::class, 'data'])->name('brands.data')->middleware('role:developer|admin');
 });
 
 require __DIR__.'/auth.php';

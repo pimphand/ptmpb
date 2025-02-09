@@ -16,6 +16,12 @@
         </li>
 
         @permission(['products-read'])
+        <li class="menu-item">
+            <a href="{{ route('admin.brands.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">space_dashboard</span>
+                <span class="title">Brand</span>
+            </a>
+        </li>
             <li class="menu-item">
                 <a href="{{ route('admin.categories.index') }}" class="menu-link">
                     <span class="material-symbols-outlined menu-icon">widgets</span>
