@@ -20,7 +20,7 @@ class Sku extends Model implements CanVisit
 
     protected $primaryKeyType = 'string';
 
-    protected $fillable = ['name', 'price', 'code', 'product_id', 'description', 'application', 'packaging'];
+    protected $fillable = ['name', 'price', 'code', 'product_id', 'description', 'application', 'packaging', 'total_order'];
 
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
