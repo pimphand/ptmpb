@@ -81,6 +81,8 @@ class OrderController extends Controller
                 'image' => $sku->image->path ?? null,
                 'package' => $sku->packaging,
             ];
+
+            $sku->total_order += $value['quantity'];
         }
 
         Order::create([
