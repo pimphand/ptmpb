@@ -83,6 +83,7 @@ class OrderController extends Controller
             ];
 
             $sku->total_order += $value['quantity'];
+            $sku->save();
         }
 
         Order::create([

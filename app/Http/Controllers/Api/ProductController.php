@@ -24,6 +24,7 @@ class ProductController extends Controller
 
                     if ($sku) {
                         $sku->total_order += $item['quantity'];
+                        $sku->save();
                     }
 
                 }
