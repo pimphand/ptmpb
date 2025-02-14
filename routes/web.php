@@ -39,7 +39,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('blogs-data', [\App\Http\Controllers\Admin\BlogController::class, 'data'])->name('blogs.data')->middleware('permission:blog-read');
 
     // blog category
-        Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->middleware('permission:blog-categories-read');
+    Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->middleware('permission:blog-categories-read');
     Route::get('blog-categories-data', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'data'])->name('blog-categories.data')->middleware('permission:blog-categories-read');
 
     Route::resource('about-us', \App\Http\Controllers\Admin\AboutController::class)->middleware('role:developer|admin');
@@ -80,3 +80,5 @@ Route::get('/lang/{locale}', function ($locale) {
 
     return redirect()->back();
 })->middleware('locale')->name('lang');
+
+Route::get('generate-surat-jalan', [\App\Http\Controllers\PdfController::class, 'generateSuratJalan'])->name('generateSuratJalan');
