@@ -61,7 +61,7 @@
             <li class="menu-item">
                 <a href="{{ route('admin.orders.index') }}" class="menu-link">
                     <span class="material-symbols-outlined menu-icon">shopping_cart</span>
-                    <span class="title">Order</span>
+                    <span class="title">Order </span>
                 </a>
             </li>
         @endpermission
@@ -96,12 +96,12 @@
                 </a>
             </li>
 
-            <li class="menu-item">
-                <a href="{{ route('admin.messages.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">handshake</span>
-                    <span class="title">Pesan</span>
-                </a>
-            </li>
+{{--            <li class="menu-item">--}}
+{{--                <a href="{{ route('admin.messages.index') }}" class="menu-link">--}}
+{{--                    <span class="material-symbols-outlined menu-icon">handshake</span>--}}
+{{--                    <span class="title">Pesan</span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
             <li class="menu-item">
                 <a href="{{ route('admin.contact.index') }}" class="menu-link">
                     <span class="material-symbols-outlined menu-icon">map</span>

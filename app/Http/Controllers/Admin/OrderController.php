@@ -34,7 +34,7 @@ class OrderController extends Controller
            $item->quantity = $request->quantity[$key];
            $item->save();
         }
-        
+
         $order->status = "process";
         $order->driver_id = $request->driver_id;
         $order->save();
@@ -72,9 +72,10 @@ class OrderController extends Controller
         ]);
     }
 
-    public function show(Order $order): View|Factory|Application
+    public function show(Order $order) //: View|Factory|Application
     {
       $order->load('customer', 'user', 'orderItems.sku.product','driver');
+      return $order;
       $drivers = User::whereHasRole('driver')->get();
       return view('admin.order_detail', compact('order', 'drivers'));
     }

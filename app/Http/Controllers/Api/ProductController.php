@@ -31,6 +31,9 @@ class ProductController extends Controller
 
         $sku = Sku::with('image')
             ->whereHas('image')
+            ->whereHas('product', function ($query){
+                return $query->whereNotNull('file');
+            })
             ->when($request->name, function ($query, $name) {
                 return $query->where('name', 'like', '%'.$name.'%');
             })
