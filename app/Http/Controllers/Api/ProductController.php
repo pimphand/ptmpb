@@ -15,24 +15,12 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->sync == 1) {
-            $orders = Order::all();
-            foreach ($orders as $key => $order) {
-                foreach ($order->items as $item) {
-                    $order->orderItems()->create([
-                        'sku_id' => $item['product_id'],
-                        'quantity' => $item['quantity'],
-                        'price' => 0,
-                        'total' => 0,
-                    ]);
-                }
-            }
-        }
-
         $sku = Sku::with('image')
             ->whereHas('image')
-            ->whereHas('product', function ($query){
-                return $query->whereNotNull('file');
+            ->when($request->home, function ($query, $category) {
+                return $query->whereHas('product', function ($query){
+                    return $query->whereNotNull('file');
+                });
             })
             ->when($request->name, function ($query, $name) {
                 return $query->where('name', 'like', '%'.$name.'%');
