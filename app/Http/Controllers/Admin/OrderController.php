@@ -34,6 +34,8 @@ class OrderController extends Controller
            $item->quantity = $request->quantity[$key];
            $item->save();
         }
+        
+        $order->status = "process";
         $order->driver_id = $request->driver_id;
         $order->save();
         return response()->json([
