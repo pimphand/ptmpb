@@ -29,8 +29,9 @@ class OrderController extends Controller
     {
         foreach ($request->id as $key => $id) {
            $item =  $order->orderItems()->find($id);
-           $item->price = $request->value[$key] * $item->quantity;
+           $item->price = $request->value[$key];
            $item->note = $request->note[$key];
+           $item->quantity = $request->quantity[$key];
            $item->save();
         }
         $order->driver_id = $request->driver_id;

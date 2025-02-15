@@ -83,7 +83,9 @@
                                     <td class="text-secondary fw-medium">
                                         {{$item->sku->name}} ({{$item->sku->product->name}})
                                     </td>
-                                    <td class="text-body">{{$item->quantity}} Item</td>
+                                    <td class="text-body"><span class="price">{{$item->quantity}} Item</span>
+                                        <input class="form-control mb-2 form-show" style="display: none" name="quantity[]" value="{{$item->quantity}}">
+                                    </td>
                                     <td class="text-body"><span class="price">Rp. {{number_format($item->price,0,',','.')}}</span>
                                         <input class="form-control mb-2 form-show" style="display: none" name="value[]" value="{{$item->price}}">
                                         <input hidden class=" form-control" name="id[]" value="{{$item->id}}">
