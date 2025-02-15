@@ -24,7 +24,7 @@ class UpdateProductRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'category_id' => 'nullable|exists:categories,id',
-            'file' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,jpg,jpeg,png',
+            'file' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,jpg,jpeg,png,webp',
         ];
     }
 }

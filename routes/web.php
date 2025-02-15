@@ -61,6 +61,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     // order
     Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index')->middleware('permission:order-read');
+    Route::get('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show')->middleware('permission:order-read');
     Route::put('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('orders.update')->middleware('permission:order-update');
     Route::put('orders-status/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.updateStatus')->middleware('permission:order-update');
     Route::get('orders-data', [\App\Http\Controllers\Admin\OrderController::class, 'data'])->name('orders.data')->middleware('permission:order-read');

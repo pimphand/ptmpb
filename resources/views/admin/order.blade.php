@@ -105,6 +105,7 @@
 
                 // Render data
                 $.each(data, function(key, value) {
+                    let detail = "{{ route('admin.orders.show', ':id') }}".replace(':id', value.id);
                     const row = `
                     <tr>
                         <td class="text-body">
@@ -141,10 +142,11 @@
                             <button style="color:#fff" class="editStatus btn btn-${status[value.status]}" data-id="${value.id}" data-status="${value.status}">${statusId[value.status] ?? "-"} </button>
                         </td>
                         <td>
-                            ${value.is_folow_up ? `Sudah di Folow Up` : `<a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 folow-up" data-id="${value.id}" data-whatsapp="${value.data.whatsappNumber}" href="javascript:void(0)"><i class="material-symbols-outlined fs-16 text-body">call</i> Folow Up </a>`}
+                            <a href="${detail}" class="ml-3 btn btn-primary btn-sm">Detail</a>
                         </td>
                     </tr>
                 `;
+                    // ${value.is_folow_up ? `Sudah di Folow Up` : `<a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 folow-up" data-id="${value.id}" data-whatsapp="${value.data.whatsappNumber}" href="javascript:void(0)"><i class="material-symbols-outlined fs-16 text-body">call</i> Folow Up </a>`}
                     $('#dataTable').append(row);
                 });
 

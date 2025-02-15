@@ -18,15 +18,13 @@ class ProductController extends Controller
         if ($request->sync == 1) {
             $orders = Order::all();
             foreach ($orders as $key => $order) {
-                foreach ($order->items as $key => $item) {
-
-                    $sku = Sku::find($item['product_id']);
-
-                    if ($sku) {
-                        $sku->total_order += $item['quantity'];
-                        $sku->save();
-                    }
-
+                foreach ($order->items as $item) {
+                    $order->orderItems()->create([
+                        'sku_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                        'price' => 0,
+                        'total' => 0,
+                    ]);
                 }
             }
         }

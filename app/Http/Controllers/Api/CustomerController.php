@@ -29,7 +29,7 @@ class CustomerController extends Controller
             'name' => 'required',
             'phone' => 'required|numeric|digits_between:10,13|unique:customers,phone',
             'address' => 'required|',
-            'owner_address' => 'required',
+//            'owner_address' => 'required',
             'store_name' => 'required',
             'store_photo' => 'required',
             'owner_photo' => 'nullable',
