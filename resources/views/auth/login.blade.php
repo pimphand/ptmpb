@@ -38,11 +38,13 @@
     <div class="preloader" id="preloader">
         <div class="preloader">
             <div class="waviy position-relative">
-                <span class="d-inline-block">T</span>
+                <span class="d-inline-block">C</span>
+                <span class="d-inline-block">I</span>
+                <span class="d-inline-block">K</span>
+                <span class="d-inline-block">U</span>
                 <span class="d-inline-block">R</span>
-                <span class="d-inline-block">E</span>
-                <span class="d-inline-block">Z</span>
-                <span class="d-inline-block">O</span>
+                <span class="d-inline-block">A</span>
+                <span class="d-inline-block">I</span>
             </div>
         </div>
     </div>

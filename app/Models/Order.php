@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderFactory> */
+    /** @use HasFactory<OrderFactory> */
     use HasFactory;
 
-    protected $fillable = ['is_folow_up', 'items', 'data', 'customer_id', 'status', 'user_id','driver_id'];
+    protected $fillable = ['is_folow_up', 'items', 'data', 'customer_id', 'status', 'user_id','driver_id','date_delivery','is_return'];
 
     protected $casts = [
         'is_folow_up' => 'boolean',

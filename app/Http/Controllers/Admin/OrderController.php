@@ -35,8 +35,11 @@ class OrderController extends Controller
            $item->save();
         }
 
-        $order->status = "process";
+        if ($order->status == "pending") {
+            $order->status = "process";
+        }
         $order->driver_id = $request->driver_id;
+        $order->date_delivery = $request->delivery_date;
         $order->save();
         return response()->json([
             'success' => true,
@@ -75,7 +78,7 @@ class OrderController extends Controller
     public function show(Order $order) //: View|Factory|Application
     {
       $order->load('customer', 'user', 'orderItems.sku.product','driver');
-      return $order;
+
       $drivers = User::whereHasRole('driver')->get();
       return view('admin.order_detail', compact('order', 'drivers'));
     }

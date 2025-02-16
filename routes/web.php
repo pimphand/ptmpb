@@ -24,6 +24,8 @@ Route::get('/gallery', [\App\Http\Controllers\Frontend\HomeController::class, 'g
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard-data', [\App\Http\Controllers\Admin\DashboardController::class, 'dashboardData'])->name('dashboard.data');
+    Route::get('/order-count', [\App\Http\Controllers\Admin\DashboardController::class, 'order'])->name('order.count');
 
     // category
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->middleware('permission:categories-read');

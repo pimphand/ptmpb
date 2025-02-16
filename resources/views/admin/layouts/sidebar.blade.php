@@ -62,6 +62,7 @@
                 <a href="{{ route('admin.orders.index') }}" class="menu-link">
                     <span class="material-symbols-outlined menu-icon">shopping_cart</span>
                     <span class="title">Order </span>
+                    <span class="count" style="display: none"></span>
                 </a>
             </li>
         @endpermission

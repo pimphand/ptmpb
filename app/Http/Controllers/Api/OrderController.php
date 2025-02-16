@@ -101,9 +101,9 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order): OrderResource
     {
-        return OrderResource::make($order->load('customer'));
+        return OrderResource::make($order->load('customer', 'user', 'orderItems.sku.product', 'driver'));
     }
 
     /**

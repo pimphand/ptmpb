@@ -70,7 +70,19 @@
         </div>
     </div>
 @endsection
+@push('css')
+    <style>
+        tr.return {
+            background-color: #22b1c2;
+        }
+        tr.return label,
+        tr.return a,
+        tr.return span {
+            color: #fff !important;
+        }
+    </style>
 
+@endpush
 @push('js')
     <script>
         let dataTable = [];
@@ -107,19 +119,19 @@
                 $.each(data, function(key, value) {
                     let detail = "{{ route('admin.orders.show', ':id') }}".replace(':id', value.id);
                     const row = `
-                    <tr>
+                    <tr class="${value.is_return ? 'return' : ''}">
                         <td class="text-body">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="_${value.id}">
                                 <label class="position-relative top-2 ms-1" for="_${value.id}">${key + 1}</label>
                             </div>
                         </td>
-                        <td class="text-body">${value.data.fullName} <br>
+                        <td class="text-body"><span>${value.data.fullName}</span> <br>
                            <a href="${value.sales.id}" class="text-${value.sales.name ? "success": ''}"> Sales : ${value.sales.name ?? "-"}</a>
                         </td>
-                        <td class="text-body">${value.data.companyEmail}</td>
-                        <td class="text-body">${value.data.companyName}</td>
-                        <td class="text-body">${value.data.whatsappNumber}</td>
+                        <td class="text-body"><span>${value.data.companyEmail}</span></td>
+                        <td class="text-body"><span>${value.data.companyName}</span></td>
+                        <td class="text-body"><span>${value.data.whatsappNumber}</span></td>
                         <td class="text-body">
                             <div class="accordion faq-wrapper" id="accordionExample">
                                 <div class="accordion-item">
@@ -131,7 +143,7 @@
                                     <div id="collapseThree-${value.id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <ul class="list-group">
-                                                ${value.items.map(item => `<li class="list-group-item">${item.name} - ${item.qty} pcs<br><small class="text-muted">Merek: ${item.brand}</small><br>small class="text-muted">Kategori: ${item.category}</small></li>`).join('')}
+                                                ${value.items.map(item => `<li class="list-group-item">${item.name} - ${item.qty} pcs<br><small class="text-muted">Merek: ${item.brand}</small><br><small class="text-muted">Kategori: ${item.category}</small></li>`).join('')}
                                             </ul>
                                         </div>
                                     </div>
@@ -139,7 +151,7 @@
                             </div>
                         </td>
                         <td class="text-body ">
-                            <button style="color:#fff" class="editStatus btn btn-${status[value.status]}" data-id="${value.id}" data-status="${value.status}">${statusId[value.status] ?? "-"} </button>
+                            <button style="color:#fff" class="editStatus btn-sm btn btn-${status[value.status]}" data-id="${value.id}" data-status="${value.status}">${statusId[value.status] ?? "-"} </button>
                         </td>
                         <td>
                             <a href="${detail}" class="ml-3 btn btn-primary btn-sm">Detail</a>
@@ -262,7 +274,6 @@
                     inputValue: status, // Set the default value to the current status
                     inputValidator: (value) => {
                         return new Promise((resolve) => {
-
                             $.ajax({
                                 type: "post",
                                 url: url,
