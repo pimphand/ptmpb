@@ -2,31 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
 class PdfController extends Controller
 {
-    public function generateSuratJalan()
+    public function generateSuratJalan($id): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        $data = [
-            'customer' => 'Nama Customer',
-            'no_sj' => 'SJ.001/MPB/2/25',
-            'tanggal' => now()->format('d F Y'),
-            'alamat' => 'Alamat Customer',
-            'no_po' => 'PO001',
-            'items' => [
-                ['no' => 1, 'nama_barang' => 'Barang A', 'ukuran' => 'M', 'jumlah' => 10, 'unit' => 'pcs', 'keterangan' => '-'],
-            ],
-        ];
-        $logo = $this->getImage('logo.png');
-        $options = new Options;
-        $options->set('defaultFont', 'Courier');
-        $dompdf = new Dompdf($options);
-
-        // dd($pdf);
-
-        return $pdf->stream('surat_jalan.pdf');
+        $order =Order::find(decrypt($id));
+        $order->load('orderItems');
+        $suratJalan = "SJ.".str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d').'%')->count()+1,3, '0', STR_PAD_LEFT)."/MPB/".date('m')."/".date('y');
+        if (!$order->surat_jalan) {
+            $order->surat_jalan = $suratJalan;
+            $order->save();
+        }
+        return view('admin.pdf.surat_jalan', compact('order'));
     }
 
     public function getImage($path)

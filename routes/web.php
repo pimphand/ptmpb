@@ -84,4 +84,4 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect()->back();
 })->middleware('locale')->name('lang');
 
-Route::get('generate-surat-jalan', [\App\Http\Controllers\PdfController::class, 'generateSuratJalan'])->name('generateSuratJalan');
+Route::get('generate-surat-jalan/{id}', [\App\Http\Controllers\PdfController::class, 'generateSuratJalan'])->name('generateSuratJalan');

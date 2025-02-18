@@ -11,7 +11,7 @@ class Order extends Model
     /** @use HasFactory<OrderFactory> */
     use HasFactory;
 
-    protected $fillable = ['is_folow_up', 'items', 'data', 'customer_id', 'status', 'user_id','driver_id','date_delivery','is_return'];
+    protected $fillable = ['is_folow_up', 'items', 'data', 'customer_id', 'status', 'user_id','driver_id','date_delivery','is_return','surat_jalan'];
 
     protected $casts = [
         'is_folow_up' => 'boolean',
