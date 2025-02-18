@@ -3,177 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Jalan</title>
+    <title>Invoice</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; font-size: 16px; }
+        body { font-family: Arial, sans-serif; margin: 20px; font-size: 14px; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid black; padding: 5px; text-align: left; }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header-text {
-            text-align: right;
-        }
-        .header-text h1, .header-text p {
-            margin: 0;
-        }
-        .logo img {
-            filter: grayscale(100%);
-            width: 150px;
-        }
-        ul {
-            list-style: none; /* Menghapus dot pada list */
-            padding: 0; /* Menghilangkan padding default */
-            margin: 0; /* Menghilangkan margin default */
-        }
-        /* Print media query to hide the print button */
-        @media print {
-            #printButton {
-                display: none;
-            }
-        }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .header-left { text-align: left; }
+        .header-right { text-align: right; }
+        .invoice-title { font-size: 24px; font-weight: bold; text-align: right; }
+        .info-table td { border: none; padding: 5px 0; }
+        .product-table th, .product-table td { text-align: center; }
+        .note-section { font-size: 12px; margin-top: 20px; }
     </style>
 </head>
 <body>
-<br>
 <div class="header-container">
-    <div class="logo">
-        <img src="{{asset('logo.webp')}}" alt="Logo">
+    <div class="header-left">
+        <img src="{{asset('logo.webp')}}" alt="Logo" style="width:100px;">
+        <p>Komplek Warga Rahayu Blok E4/E5<br>Kab. Garut Jawa Barat<br>Indonesia</p>
     </div>
-    <div class="header-text" style="font-size: 18px">
-        <h1>SURAT JALAN</h1>
-        <p>(Delivery Order)</p>
+    <div class="header-right">
+        <p class="invoice-title">Invoice</p>
+        <p><strong>Tanggal:</strong> {{ date('d M Y') }}</p>
+        <p><strong>No Invoice:</strong> {{$order->invoice_number}}</p>
+        <p><strong>Surat Jalan:</strong> {{$order->delivery_note}}</p>
     </div>
 </div>
-<br>
-<br>
-<table style="width: 100%; border-collapse: collapse;">
+<h3>Kepada : {{$order->customer->store_name}}</h3>
+<table class="product-table">
     <tr>
-        <td style="text-align: left; vertical-align: top; width: 50%;border:none">
-            <p><strong>Kepada Yth.</strong></p>
-            <table style="width: 100%;">
-                <tr>
-                    <td style="border:none">Customer</td>
-                    <td style="border:none">:</td>
-                    <td style="border:none">{{$order->customer->name}} ({{$order->customer->store_name}})</td>
-                </tr>
-                <tr>
-                    <td style="border:none">No HP/Telp</td>
-                    <td style="border:none">:</td>
-                    <td style="border:none">{{$order->customer->phone}}</td>
-                </tr>
-                <tr>
-                    <td style="border:none">Alamat</td>
-                    <td style="border:none">:</td>
-                    <td style="border:none">{{$order->customer->address}}</td>
-                </tr>
-            </table>
-        </td>
-
-        <td style="text-align: right; vertical-align: top; width: 50%;border:none">
-            <p><strong>Detail Pengiriman</strong></p>
-            <table style="width: 100%;">
-                <tr>
-                    <td style="border:none;text-align: center; ">No. SJ / DO</td>
-                    <td style="border:none">:</td>
-                    <td style="border:none">{{$order->surat_jalan}}</td>
-                </tr>
-                <tr>
-                    <td style="border:none;text-align: center;">Tanggal</td>
-                    <td style="border:none">:</td>
-                    <td style="border:none">{{ date('d/m/Y') }}</td>
-                </tr>
-                <tr>
-                    <td style="border:none;text-align: center;">No. PO</td>
-                    <td style="border:none">:</td>
-                    <td style="border:none">#{{str_pad($order->id,4,'0', STR_PAD_LEFT)}}</td>
-                </tr>
-            </table>
-        </td>
+        <th>Nama Barang</th>
+        <th>Qty</th>
+        <th>@Harga</th>
+        <th>Diskon</th>
+        <th>Total Harga</th>
     </tr>
+    <!-- Loop items -->
 </table>
 <br>
-<br>
-
-<table style="width: 100%; border-collapse: collapse;">
-    <tr style="background-color: #f2f2f2;">
-        <th>NO</th>
-        <th>NAMA BARANG</th>
-        <th>UKURAN</th>
-        <th>JUMLAH</th>
-        <th>UNIT</th>
-        <th>KET.</th>
-    </tr>
-    <tr style="border: #0A0E19">
-        @foreach($order->orderItems as $item)
-            <td>{{ $loop->iteration }}</td>
-            <td>{{ $item->sku->name }} ({{ $item->sku->product?->name }})</td>
-            <td>{{ $item->packaging }}</td>
-            <td>{{ $item->quantity }}</td>
-            <td>{{ $item->unit }}</td>
-            <td>{{ $item->note }}</td>
-        @endforeach
-    </tr>
-</table>
-
-<table style="width: 100%; border-collapse: collapse;">
+<table>
     <tr>
-        <td style="text-align: left; vertical-align: top; width: 50%;border:none">
-            <table style="width: 100%;">
-                <tr>
-                    <td style="border:none;text-align: left; ">
-                        <b>Total : </b>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="border:none;text-align: left; ">
-                        <b>Catatan :</b>
-                    </td>
-                </tr>
-            </table>
-        </td>
-
-        <td style="text-align: right; vertical-align: top; width: 50%;border:none">
-            <table style="width: 100%;">
-                <tr>
-                    <td style="border:none;text-align: left; ">
-                        <p><strong>Perhatian:</strong></p>
-                        <ul style="font-size: 16px;">
-                            <li>1. Surat Jalan ini merupakan bukti resmi penerimaan barang</li>
-                            <li>2. Surat Jalan ini akan dilengkapi invoice sebagai bukti penjualan</li>
-                        </ul>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
-<p style="text-align: center">BARANG SUDAH DITERIMA DALAM KEADAAN BAIK DAN SESUAI DENGAN PESANAN.</p>
-<br>
-<br>
-
-<table style="margin-top: 30px; text-align: center; width: 100%;">
-    <tr>
-        <th style="text-align: center;border: none">Diterima oleh,</th>
-        <th style="text-align: center;border: none">Pengirim,</th>
-        <th style="text-align: center;border: none">Dibuat oleh,</th>
+        <td style="width: 50%; text-align: center; border: none;">Customer / Penerima,</td>
+        <td style="width: 50%; text-align: center; border: none;">Admin,</td>
+        <td><strong>Sub Total</strong></td>
+        <td>{{$order->subtotal}}</td>
     </tr>
     <tr>
-        <td style="text-align: center;border: none"><br><br>______________</td>
-        <td style="text-align: center;border: none"><br><br>{{$order->driver->name ?? "Belum Ada Driver"}}</td>
-        <td style="text-align: center;border: none"><br><br>{{Auth::user()->name}}</td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td><strong>Diskon</strong></td>
+        <td>{{$order->discount}}</td>
+    </tr>
+    <tr>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td><strong>PPN ({{$order->tax_percentage}}%)</strong></td>
+        <td>{{$order->tax_amount}}</td>
+    </tr>
+    <tr>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td><strong>Biaya Lain-lain</strong></td>
+        <td>{{$order->other_fees}}</td>
+    </tr>
+    <tr>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td><strong>Total</strong></td>
+        <td>{{$order->total}}</td>
     </tr>
 </table>
-
-<!-- Print Button (This will not appear in the printout) -->
-<button id="printButton" onclick="window.print()">Print Surat Jalan</button>
-<script type="text/javascript">
-    window.print();
-    window.onmousemove = function() {
-        window.close();
-    }
-</script>
+<p><strong>Terbilang :</strong> {{$order->terbilang}}</p>
+<div class="note-section">
+    <p><strong>NOTE:</strong></p>
+    <ol>
+        <li>Pembayaran dianggap sah setelah di transfer ke rekening:<br>Bank Permata a/c. 4175142008 a/n PT Mandalika Putra Bersama</li>
+        <li>Pembayaran dengan CEK DAN GIRO dianggap sah setelah Cek/Giro tersebut dapat diuangkan</li>
+    </ol>
+</div>
+<h4>Rincian</h4>
+<table>
+    <tr>
+        <th>Tanggal</th>
+        <th>Kas/Trf</th>
+        <th>Nominal</th>
+        <th>Sisa</th>
+        <th>Customer</th>
+        <th>Kolektor</th>
+        <th>Admin</th>
+    </tr>
+    <!-- Loop details -->
+</table>
 </body>
 </html>

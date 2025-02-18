@@ -163,7 +163,10 @@
 
                 <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
                     <a target="_blank" href="{{route('generateSuratJalan', encrypt($order->id))}}" class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
-                            class="ri-truck-fill text-white fw-medium"></i> Print Surat Jalan
+                            class="ri-truck-fill text-white fw-medium"></i> Surat Jalan
+                    </a>
+                    <a target="_blank" href="{{route('invoice', encrypt($order->id))}}" class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
+                            class="ri-file-paper-2-fill text-white fw-medium"></i> Invoice
                     </a>
                     <button class="btn btn-success py-2 px-4 fw-medium fs-16 text-white" id="edit"><i
                             class="ri-pencil-fill text-white fw-medium"></i>Edit

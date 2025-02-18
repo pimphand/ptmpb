@@ -85,3 +85,4 @@ Route::get('/lang/{locale}', function ($locale) {
 })->middleware('locale')->name('lang');
 
 Route::get('generate-surat-jalan/{id}', [\App\Http\Controllers\PdfController::class, 'generateSuratJalan'])->name('generateSuratJalan');
+Route::get('generate-invoice/{id}', [\App\Http\Controllers\PdfController::class, 'invoice'])->name('invoice');
