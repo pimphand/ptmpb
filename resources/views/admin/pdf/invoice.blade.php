@@ -39,42 +39,85 @@
         <th>Diskon</th>
         <th>Total Harga</th>
     </tr>
-    <!-- Loop items -->
+    @php
+        $subTotal = 0;
+
+        function terbilang($angka) {
+            $angka = abs($angka);
+            $bilangan = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+
+            if ($angka < 12) {
+                return " " . $bilangan[$angka];
+            } elseif ($angka < 20) {
+                return terbilang($angka - 10) . " belas";
+            } elseif ($angka < 100) {
+                return terbilang($angka / 10) . " puluh" . terbilang($angka % 10);
+            } elseif ($angka < 200) {
+                return " seratus" . terbilang($angka - 100);
+            } elseif ($angka < 1000) {
+                return terbilang($angka / 100) . " ratus" . terbilang($angka % 100);
+            } elseif ($angka < 2000) {
+                return " seribu" . terbilang($angka - 1000);
+            } elseif ($angka < 1000000) {
+                return terbilang($angka / 1000) . " ribu" . terbilang($angka % 1000);
+            } elseif ($angka < 1000000000) {
+                return terbilang($angka / 1000000) . " juta" . terbilang($angka % 1000000);
+            } elseif ($angka < 1000000000000) {
+                return terbilang($angka / 1000000000) . " miliar" . terbilang($angka % 1000000000);
+            } else {
+                return "Angka terlalu besar";
+            }
+        }
+
+    @endphp
+   @foreach($order->orderItems as $item)
+        <tr>
+            <td>{{$item->sku->product->name}} ({{$item->sku->product->name}})</td>
+            <td>{{$item->quantity}}</td>
+            <td>Rp. {{number_format($item->price)}}</td>
+            <td>Rp. {{$item->discount ? number_format($item->discount) : "0"}}</td>
+            <td>Rp. {{number_format((int)$item->quantity*(int)$item->price)}}</td>
+        </tr>
+
+        @php
+            $subTotal += (int)$item->quantity*(int)$item->price;
+        @endphp
+   @endforeach
 </table>
 <br>
 <table>
     <tr>
-        <td style="width: 50%; text-align: center; border: none;">Customer / Penerima,</td>
-        <td style="width: 50%; text-align: center; border: none;">Admin,</td>
+        <td style="width: 30%; text-align: center; border: none;">Customer / Penerima,</td>
+        <td style="width: 30%; text-align: center; border: none;">Admin,</td>
         <td><strong>Sub Total</strong></td>
-        <td>{{$order->subtotal}}</td>
+        <td>Rp. {{$subTotal ? number_format($subTotal)  : "0"}}</td>
     </tr>
     <tr>
         <td style="border: none;"></td>
         <td style="border: none;"></td>
         <td><strong>Diskon</strong></td>
-        <td>{{$order->discount}}</td>
+        <td>Rp. {{$order->discount ? number_format($order->discount)  : "0"}}</td>
     </tr>
     <tr>
         <td style="border: none;"></td>
         <td style="border: none;"></td>
         <td><strong>PPN ({{$order->tax_percentage}}%)</strong></td>
-        <td>{{$order->tax_amount}}</td>
+        <td>Rp. {{$order->tax_amount? number_format($order->tax_amount) : 0}}</td>
     </tr>
     <tr>
         <td style="border: none;"></td>
         <td style="border: none;"></td>
         <td><strong>Biaya Lain-lain</strong></td>
-        <td>{{$order->other_fees}}</td>
+        <td>Rp. {{$order->other_fees? number_format($order->other_fees) : 0}}</td>
     </tr>
     <tr>
         <td style="border: none;"></td>
         <td style="border: none;"></td>
         <td><strong>Total</strong></td>
-        <td>{{$order->total}}</td>
+        <td>Rp. {{number_format($subTotal)}}</td>
     </tr>
 </table>
-<p><strong>Terbilang :</strong> {{$order->terbilang}}</p>
+<p><strong>Terbilang : {{ucfirst(trim(terbilang($subTotal))) . " rupiah."}} </strong></p>
 <div class="note-section">
     <p><strong>NOTE:</strong></p>
     <ol>
