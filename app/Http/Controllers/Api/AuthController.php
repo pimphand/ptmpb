@@ -27,6 +27,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Login success',
                 'token' => Auth::user()->createToken('auth_token')->plainTextToken,
+                'role' => Auth::user()->roles()->first(),
             ]);
         }
 
