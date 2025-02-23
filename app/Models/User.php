@@ -64,6 +64,11 @@ class User extends Authenticatable implements LaratrustUser
         return $this->hasMany(Order::class);
     }
 
+    public function driverOrders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'driver_id');
+    }
+
     public function customers(): HasMany
     {
         return $this->hasMany(Customer::class);

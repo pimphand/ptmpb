@@ -17,10 +17,16 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $order = Auth::user()->orders()
-            ->when($request->id, function ($query, $id) {
-                return $query->where('id', $id)->with('customer');
-            })
+        $order = Order::query();
+        if (Auth::user()->roles()->first()->name == 'driver') {
+            $order->where('driver_id', Auth::id());
+        }else{
+            $order->where('user_id', Auth::id());
+        }
+
+        $order->when($request->id, function ($query, $id) {
+            return $query->where('id', $id)->with('customer');
+        })
             ->when($request->status, function ($query, $status) {
                 return $query->where('status', $status);
             })
@@ -33,17 +39,18 @@ class OrderController extends Controller
                         ->orWhere('address', 'like', "%$customer%")
                         ->orWhere('phone', 'like', "%$customer%");
                 });
-            })->with('customer')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-
-        return OrderResource::collection($order);
+            })->with(['customer', 'driver','orderItems.sku.product'])
+            ->orderBy('id', 'desc');
+        $data = $order->paginate(10);
+        return OrderResource::collection($data);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -119,36 +126,37 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $validator = Validator::make($request->all(), [
-            'status' => 'required|in:pending,process,success,cancel,done',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => $validator->errors(),
-            ], 422);
+        foreach ($request->id as $key=> $sku){
+            if ($request->status == 'retur'){
+                $order->orderItems()->where('sku_id',$sku)->update([
+                    'returns' => $request->quantity[$key],
+                ]);
+            }
         }
 
-        if (Auth::user()->id != $order->user_id) {
-            return response()->json([
-                'message' => 'Unauthorized',
-            ], 401);
+        if ($request->status == 'retur'){
+            $order->status = 'process';
+            $order->is_return = true;
+        }else{
+            $order->status = "success";
+            $order->tanggal_pengiriman = now();
         }
 
-        $order->update([
-            'status' => $request->status,
-        ]);
-
+        $order->note = $request->note ?? $order->note;
+        $order->file = $request->file ?? $order->file;
+        $order->bukti_pengiriman = $request->file ?? $order->file;
+        $order->save();
         return response()->json([
             'message' => 'Order updated',
+            'request' => $request->all(),
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function dataDriver()
     {
-        //
+
     }
 }
