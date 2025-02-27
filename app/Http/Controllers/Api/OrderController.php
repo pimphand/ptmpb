@@ -40,7 +40,7 @@ class OrderController extends Controller
                         ->orWhere('phone', 'like', "%$customer%");
                 });
             })->with(['customer', 'driver','orderItems.sku.product'])
-            ->orderBy('id', 'desc');
+            ->orderBy('updated_at', 'desc');
         $data = $order->paginate(10);
         return OrderResource::collection($data);
     }

@@ -38,7 +38,7 @@
 </head>
 <body>
 <br>
-<div class="header-container">
+<div class="header-container" style="font-size: ">
     <div class="logo">
         <img src="{{asset('logo.webp')}}" alt="Logo">
     </div>
@@ -116,7 +116,6 @@
             <td>{{ $item->unit }}</td>
             <td>{{ $item->note }}</td>
         </tr>
-            
         @endforeach
 </table>
 
