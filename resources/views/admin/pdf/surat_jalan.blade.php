@@ -106,16 +106,18 @@
         <th>UNIT</th>
         <th>KET.</th>
     </tr>
-    <tr style="border: #0A0E19">
+
         @foreach($order->orderItems as $item)
+        <tr style="border: #0A0E19">
             <td>{{ $loop->iteration }}</td>
             <td>{{ $item->sku->name }} ({{ $item->sku->product?->name }})</td>
             <td>{{ $item->packaging }}</td>
             <td>{{ $item->quantity }}</td>
             <td>{{ $item->unit }}</td>
             <td>{{ $item->note }}</td>
+        </tr>
+            
         @endforeach
-    </tr>
 </table>
 
 <table style="width: 100%; border-collapse: collapse;">
