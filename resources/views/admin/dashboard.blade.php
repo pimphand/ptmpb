@@ -136,7 +136,7 @@
                                         ];
                                         @endphp
                                         @foreach($new_orders as $new_order)
-                                        <tr>
+                                        <tr style="cursor: pointer" class="order" data-id="{{$new_order->id}}">
                                             <td>#{{$new_order->id}}</td>
                                             <td>
                                                 <div class="ms-2 ps-1">
@@ -164,4 +164,12 @@
 
 @endsection
 @push('js')
+    <script>
+        $(document).ready(function () {
+            $('.order').click(function () {
+                let id = $(this).data('id');
+                window.location.href = '/admin/orders/' + id;
+            });
+        });
+    </script>
 @endpush

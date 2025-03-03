@@ -52,7 +52,9 @@
                             <br>
                             <br>
                             <br>
+                            @if($order->date_delivery))
                             <h4>Dikirim : {{date('d M Y', strtotime($order->date_delivery))}}</h4>
+                            @endif
                         </div>
                     </div>
                     <div class="col-lg-4 col-sm-4 col-md-4">

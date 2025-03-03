@@ -24,13 +24,13 @@ class DashboardController extends Controller
             'new_orders' => Order::with('orderItems')->withSum(
                 'orderItems',
                 'quantity'
-            )->where('status', 'pending')->orderBy('created_at', 'desc')->limit(5)->get(),
+            )->whereHas('orderItems')->where('status', 'pending')->orderBy('created_at', 'desc')->limit(5)->get(),
         ]);
     }
 
     public function order(): int
     {
-        return Order::where('status', 'pending')->count();
+        return Order::where('status', 'pending')->whereHas('orderItems')->count();
     }
 
     public function dashboardData(): \Illuminate\Http\JsonResponse

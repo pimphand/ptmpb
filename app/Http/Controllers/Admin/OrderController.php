@@ -59,6 +59,7 @@ class OrderController extends Controller
             ->when($request->status, function ($query) use ($request) {
                 $query->where('status', $request->status);
             })
+            ->whereHas('orderItems')
             ->latest()
             ->paginate(10);
 

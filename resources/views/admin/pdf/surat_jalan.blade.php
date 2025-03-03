@@ -5,40 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Jalan</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; font-size: 16px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid black; padding: 5px; text-align: left; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 16px;
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+        }
+
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .header-text {
             text-align: right;
         }
+
         .header-text h1, .header-text p {
             margin: 0;
         }
+
         .logo img {
             filter: grayscale(100%);
             width: 150px;
         }
+
         ul {
-            list-style: none; /* Menghapus dot pada list */
-            padding: 0; /* Menghilangkan padding default */
-            margin: 0; /* Menghilangkan margin default */
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-        /* Print media query to hide the print button */
+
+        /* Watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+
+        /* Print media query */
         @media print {
-            #printButton {
+            @page {
+                size: A4;
+                margin: 2px;
+            }
+
+            table {
+                border-collapse: collapse;
+            }
+
+            #printButton, .watermark {
                 display: none;
             }
         }
     </style>
 </head>
 <body>
-<br>
-<div class="header-container" style="font-size: ">
+<!-- Watermark -->
+<div class="watermark" style="text-align: center">Asli <br> PT Mandalika Putra Bersama</div>
+
+<div class="header-container">
     <div class="logo">
         <img src="{{asset('logo.webp')}}" alt="Logo">
     </div>
@@ -47,13 +93,14 @@
         <p>(Delivery Order)</p>
     </div>
 </div>
-<br>
-<br>
+
+<br><br>
+
 <table style="width: 100%; border-collapse: collapse;">
     <tr>
         <td style="text-align: left; vertical-align: top; width: 50%;border:none">
             <p><strong>Kepada Yth.</strong></p>
-            <table style="width: 100%;">
+            <table style="width: 100%;font-size: 12px">
                 <tr>
                     <td style="border:none">Customer</td>
                     <td style="border:none">:</td>
@@ -74,9 +121,9 @@
 
         <td style="text-align: right; vertical-align: top; width: 50%;border:none">
             <p><strong>Detail Pengiriman</strong></p>
-            <table style="width: 100%;">
+            <table style="width: 100%;font-size: 12px">
                 <tr>
-                    <td style="border:none;text-align: center; ">No. SJ / DO</td>
+                    <td style="border:none;text-align: center;">No. SJ / DO</td>
                     <td style="border:none">:</td>
                     <td style="border:none">{{$order->surat_jalan}}</td>
                 </tr>
@@ -94,21 +141,21 @@
         </td>
     </tr>
 </table>
-<br>
-<br>
 
-<table style="width: 100%; border-collapse: collapse;">
+<br><br>
+
+<table style="width: 100%; border-collapse: collapse; font-size: 12px">
     <tr style="background-color: #f2f2f2;">
-        <th>NO</th>
-        <th>NAMA BARANG</th>
-        <th>UKURAN</th>
-        <th>JUMLAH</th>
-        <th>UNIT</th>
-        <th>KET.</th>
+        <th width="5%">NO</th>
+        <th width="30%">NAMA BARANG</th>
+        <th width="10%">UKURAN</th>
+        <th width="10%">JUMLAH</th>
+        <th width="10%">UNIT</th>
+        <th width="35%">KET.</th>
     </tr>
 
-        @foreach($order->orderItems as $item)
-        <tr style="border: #0A0E19">
+    @foreach($order->orderItems as $item)
+        <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $item->sku->name }} ({{ $item->sku->product?->name }})</td>
             <td>{{ $item->packaging }}</td>
@@ -116,8 +163,9 @@
             <td>{{ $item->unit }}</td>
             <td>{{ $item->note }}</td>
         </tr>
-        @endforeach
+    @endforeach
 </table>
+
 
 <table style="width: 100%; border-collapse: collapse;">
     <tr>
@@ -152,29 +200,33 @@
     </tr>
 </table>
 <p style="text-align: center">BARANG SUDAH DITERIMA DALAM KEADAAN BAIK DAN SESUAI DENGAN PESANAN.</p>
-<br>
-<br>
+<br><br>
 
 <table style="margin-top: 30px; text-align: center; width: 100%;">
     <tr>
-        <th style="text-align: center;border: none">Diterima oleh,</th>
-        <th style="text-align: center;border: none">Pengirim,</th>
-        <th style="text-align: center;border: none">Dibuat oleh,</th>
+        <th width="25%" style="text-align: center;">Diterima oleh,</th>
+        <th width="25%" style="text-align: center;">Pengirim,</th>
+        <th width="25%" style="text-align: center;">Gudang,</th>
+        <th width="25%" style="text-align: center;">Admin,</th>
     </tr>
     <tr>
-        <td style="text-align: center;border: none"><br><br>______________</td>
-        <td style="text-align: center;border: none"><br><br>{{$order->driver->name ?? "Belum Ada Driver"}}</td>
-        <td style="text-align: center;border: none"><br><br>{{Auth::user()->name}}</td>
+        <td style="text-align: center;"><br><br><br><br>______________</td>
+        <td style="text-align: center;"><br><br><br><br>{{$order->driver->name ?? "Belum Ada Driver"}}</td>
+        <td style="text-align: center;"><br><br><br><br>______________</td>
+        <td style="text-align: center;"><br><br><br><br>{{Auth::user()->name ?? "Admin"}}</td>
     </tr>
 </table>
+<div style="text-align: center; margin-top: 50px;">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{route('generateSuratJalan',encrypt($order->id))}}" alt="QR Code">
+</div>
+<!-- Print Button -->
+<button id="printButton" hidden="" onclick="window.print()">Print Surat Jalan</button>
 
-<!-- Print Button (This will not appear in the printout) -->
-<button id="printButton" onclick="window.print()">Print Surat Jalan</button>
 <script type="text/javascript">
     window.print();
-    window.onmousemove = function() {
-        window.close();
-    }
+    // window.onmousemove = function () {
+    //     window.close();
+    // }
 </script>
 </body>
 </html>
