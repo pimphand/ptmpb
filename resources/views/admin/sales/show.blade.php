@@ -55,7 +55,7 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <h5 class="text-white fw-semibold mb-0 fs-16">
-                                    @if ($order && $order->total > 0)
+                                    @if ($order && $order->total > 0 && $user->target_sales > 0)
                                         {{ number_format(($order->total / $user->target_sales) * 100, 2) }}
                                     @else
                                         0
