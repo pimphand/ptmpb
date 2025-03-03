@@ -124,7 +124,7 @@
                 // Render data
                 $.each(data, function (key, value) {
                     let detail = "{{ route('admin.orders.show', ':id') }}".replace(':id', value.id);
-                    let sales = "{{ route('admin.sales.show', ':id') }}".replace(':id', value.sales.id);
+                    let sales = "{{ route('admin.sales.show', ':id') }}?user_id=:userId".replace(':id', value.sales.id).replace(':userId', value.sales.id);
                     const row = `
                     <tr class="${value.is_return ? 'return' : ''}">
                         <td class="text-body">
