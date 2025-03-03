@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
@@ -19,7 +20,7 @@ class UserController extends Controller
     {
         return view('admin.user.index', [
             'title' => 'User',
-            'roles' => Role::whereNot('name', 'developer')->get()
+            'roles' => Role::whereNotIn('name', ['developer','sales'])->get(),
         ]);
     }
 
@@ -34,11 +35,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): UserResource
     {
         $user = User::create(array_merge($request->validated(), [
             'password' => bcrypt($request->password),
-            'photo' => $request->hasFile('photo') ? $request->file('photo')->store('images/user', 'public') : null
+            'photo' => $request->hasFile('photo') ? $request->file('photo')->store('images/user', 'public') : null,
         ]));
 
         $user->addRole($request->input('role'));
@@ -49,9 +50,14 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $user): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        //
+       $user['target'] =   (new \App\Models\User)->targetSales($user->id);
+
+        return view('admin.user.show', [
+            'title' => 'User Detail',
+            'user' => $user->load(['roles:id,display_name,name','customers','orders']),
+        ]);
     }
 
     /**
@@ -69,7 +75,7 @@ class UserController extends Controller
     {
         $user->update(array_merge($request->validated(), [
             'password' => $request->password ? bcrypt($request->password) : $user->password,
-            'photo' => $request->hasFile('photo') ? $request->file('photo')->store('images/user', 'public') : $user->photo
+            'photo' => $request->hasFile('photo') ? $request->file('photo')->store('images/user', 'public') : $user->photo,
         ]));
         $user->roles()->sync($request->input('role'));
 
@@ -89,21 +95,22 @@ class UserController extends Controller
     /**
      * get all user data
      */
-    public function data(Request $request)
+    public function data(Request $request): AnonymousResourceCollection
     {
         $users = User::when(! $request->role, function ($query) {
-            $query->whereHasRole(['admin', 'sales', 'content', 'driver']);
+            $query->whereHasRole(['admin', 'content', 'driver']);
         })
             ->when($request->role, function ($query) use ($request) {
                 $query->whereHasRole($request->role);
             })
             ->when($request->search, function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->search . '%')
-                    ->orWhere('email', 'like', '%' . $request->search . '%');
+                $query->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%');
             })
             ->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'developer');
             })
+            ->withCount('customers', 'orders')
             ->with('roles:id,display_name,name')
             ->paginate(10);
 

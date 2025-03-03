@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SkuResource;
-use App\Models\Order;
 use App\Models\Sku;
 use Illuminate\Http\Request;
 
@@ -18,7 +17,7 @@ class ProductController extends Controller
         $sku = Sku::with('image')
             ->whereHas('image')
             ->when($request->home, function ($query, $category) {
-                return $query->whereHas('product', function ($query){
+                return $query->whereHas('product', function ($query) {
                     return $query->whereNotNull('file');
                 });
             })

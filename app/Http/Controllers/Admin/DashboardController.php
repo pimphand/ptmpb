@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         $totalItem = OrderItem::sum('quantity');
 
-        return view('admin.dashboard',[
+        return view('admin.dashboard', [
             'total_item' => $totalItem,
             'total_order' => Order::count(),
             'total_pending' => Order::where('status', 'pending')->count(),

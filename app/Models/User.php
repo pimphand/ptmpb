@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laratrust\Contracts\LaratrustUser;
 use Laratrust\Traits\HasRolesAndPermissions;
 use Laravel\Sanctum\HasApiTokens;
@@ -34,6 +35,8 @@ class User extends Authenticatable implements LaratrustUser
         'country',
         'number_id',
         'photo',
+        'target_sales',
+        'achieved_sales',
     ];
 
     /**
@@ -72,5 +75,29 @@ class User extends Authenticatable implements LaratrustUser
     public function customers(): HasMany
     {
         return $this->hasMany(Customer::class);
+    }
+
+    public function salesTargets(): HasMany
+    {
+        return $this->hasMany(SalesTarget::class);
+    }
+
+    /*
+     * target sales
+     */
+    public function targetSales($user_id)
+    {
+        DB::table('orders')
+            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->whereIn('orders.status', ['done', 'success'])
+            ->where('orders.user_id', $user_id)
+            ->whereBetween('orders.created_at', [now()->startOfYear(), now()->endOfYear()])
+            ->selectRaw('SUM(order_items.price * order_items.quantity) as total_sales')
+            ->groupBy('orders.user_id')
+            ->first();
+
+
+
+        return $this->target_sales;
     }
 }

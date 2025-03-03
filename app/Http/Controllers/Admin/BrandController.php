@@ -62,7 +62,7 @@ class BrandController extends Controller
     {
         $brand->update([
             'name' => $request->name,
-            'logo' => $request->file('logo')? $request->file('logo')->store('brand', 'public') : $brand->logo,
+            'logo' => $request->file('logo') ? $request->file('logo')->store('brand', 'public') : $brand->logo,
         ]);
 
         return response()->json(['message' => 'Brand berhasil diperbarui']);

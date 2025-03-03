@@ -20,7 +20,7 @@ class OrderController extends Controller
         $order = Order::query();
         if (Auth::user()->roles()->first()->name == 'driver') {
             $order->where('driver_id', Auth::id());
-        }else{
+        } else {
             $order->where('user_id', Auth::id());
         }
 
@@ -39,18 +39,17 @@ class OrderController extends Controller
                         ->orWhere('address', 'like', "%$customer%")
                         ->orWhere('phone', 'like', "%$customer%");
                 });
-            })->with(['customer', 'driver','orderItems.sku.product'])
+            })->with(['customer', 'driver', 'orderItems.sku.product'])
             ->orderBy('updated_at', 'desc');
         $data = $order->paginate(10);
+
         return OrderResource::collection($data);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -126,19 +125,19 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        foreach ($request->id as $key=> $sku){
-            if ($request->status == 'retur'){
-                $order->orderItems()->where('sku_id',$sku)->update([
+        foreach ($request->id as $key => $sku) {
+            if ($request->status == 'retur') {
+                $order->orderItems()->where('sku_id', $sku)->update([
                     'returns' => $request->quantity[$key],
                 ]);
             }
         }
 
-        if ($request->status == 'retur'){
+        if ($request->status == 'retur') {
             $order->status = 'process';
             $order->is_return = true;
-        }else{
-            $order->status = "success";
+        } else {
+            $order->status = 'success';
             $order->tanggal_pengiriman = now();
         }
 
@@ -146,6 +145,7 @@ class OrderController extends Controller
         $order->file = $request->file ?? $order->file;
         $order->bukti_pengiriman = $request->file ?? $order->file;
         $order->save();
+
         return response()->json([
             'message' => 'Order updated',
             'request' => $request->all(),
@@ -155,8 +155,5 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function dataDriver()
-    {
-
-    }
+    public function dataDriver() {}
 }

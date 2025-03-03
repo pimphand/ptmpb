@@ -32,6 +32,7 @@ class StoreProductRequest extends FormRequest
             'application.*' => 'required|string',
         ];
     }
+
     /*
      * Get the error messages for the defined validation rules.
      */

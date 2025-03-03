@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-        <h3 class="mb-0">list User </h3>
+        <h3 class="mb-0">list Customer </h3>
 
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb align-items-center mb-0 lh-1">
@@ -12,7 +12,7 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <span class="fw-medium">User</span>
+                    <span class="fw-medium">Customer</span>
                 </li>
             </ol>
         </nav>
@@ -37,9 +37,7 @@
                         <table class="table align-middle">
                             <thead>
                             <tr>
-                                <th scope="col">
-                                    #
-                                </th>
+                                <th scope="col">#</th>
                                 <th scope="col">Nama Pemilik</th>
                                 <th scope="col">Nama Toko</th>
                                 <th scope="col">Alamat</th>

@@ -22,7 +22,7 @@ class CustomerController extends Controller
     {
         return view('admin.customer', [
             'title' => 'Customer',
-            'sales' => User::whereHasRole('sales')->get()
+            'sales' => User::whereHasRole('sales')->get(),
         ]);
     }
 
@@ -49,14 +49,14 @@ class CustomerController extends Controller
             'identity' => 'nullable',
             'npwp' => 'nullable',
             'others' => 'nullable',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id',
         ]);
 
         Customer::create(array_merge($validated->validated(), [
             'store_photo' => $request->file('store_photo')->store('customer/store_photo', 'public'),
             'owner_photo' => $request->file('owner_photo')->store('customer/owner_photo', 'public'),
             'user_id' => $request->user_id,
-            'is_blacklist' => $request->is_blacklist
+            'is_blacklist' => $request->is_blacklist,
         ]));
 
         return response()->json(['message' => 'Customer created'], 201);
@@ -85,20 +85,20 @@ class CustomerController extends Controller
     {
         $validated = Validator::make($request->all(), [
             'name' => 'required',
-            'phone' => 'required|numeric|digits_between:10,13|unique:customers,phone,' . $customer->id,
+            'phone' => 'required|numeric|digits_between:10,13|unique:customers,phone,'.$customer->id,
             'address' => 'required|',
             'owner_photo' => 'nullable',
             'identity' => 'nullable',
             'npwp' => 'nullable',
             'others' => 'nullable',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id',
         ]);
 
         $customer->update(array_merge($validated->validated(), [
-            'store_photo' => $request->file('store_photo')? $request->file('store_photo')->store('customer/store_photo', 'public') : $customer->store_photo,
-            'owner_photo' => $request->file('owner_photo')? $request->file('owner_photo')->store('customer/owner_photo', 'public') : $customer->owner_photo,
+            'store_photo' => $request->file('store_photo') ? $request->file('store_photo')->store('customer/store_photo', 'public') : $customer->store_photo,
+            'owner_photo' => $request->file('owner_photo') ? $request->file('owner_photo')->store('customer/owner_photo', 'public') : $customer->owner_photo,
             'user_id' => $request->user_id,
-            'is_blacklist' => $request->is_blacklist == 1 ? true : false
+            'is_blacklist' => $request->is_blacklist == 1 ? true : false,
         ]));
 
         return [
@@ -123,7 +123,8 @@ class CustomerController extends Controller
         })
             ->latest()
             ->paginate(10);
-//        dd($customers);
+
+        //        dd($customers);
         return CustomerResource::collection($customers);
     }
 }

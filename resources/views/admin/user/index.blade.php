@@ -2,7 +2,6 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
         <h3 class="mb-0">list User </h3>
-
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb align-items-center mb-0 lh-1">
                 <li class="breadcrumb-item">
@@ -22,14 +21,20 @@
         <div class="card bg-white border-0 rounded-3 mb-4">
             <div class="card-body p-0">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 p-4">
-                    <form class="position-relative table-src-form me-0">
-                        <input type="text" class="form-control" id="search" placeholder="Search here">
-                        <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
-                    </form>
+                    <div class="d-flex">
+                        <form class="position-relative table-src-form me-0">
+                            <input type="text" class="form-control" id="search" placeholder="Search here">
+                            <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
+                        </form>
+                        @foreach($roles as $role)
+                            <button data-value="{{$role->name}}" class="btn btn-outline-info btn-sm m-1 text-info btn-role hover-bg">{{$role->display_name}}</button>
+                        @endforeach
+                    </div>
                     <a href="javascript:void(0)" type="button"
                         class="btn btn-primary text-white py-2 px-4 fw-semibold add">
                         {{ __('app.add') }} {{ $title }}
                     </a>
+
                 </div>
 
                 <div class="default-table-area style-two default-table-width">
@@ -82,7 +87,7 @@
                         <input type="hidden" name="id" id="id">
                         <div class="row">
                             <div class="mb-2 col-6">
-                                <label for="role" class="form-label">Username</label>
+                                <label for="role" class="form-label">Role</label>
                                 <select class="form-select form-control" name="role" id="role">
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}">{{ $role->display_name }}</option>
@@ -144,9 +149,8 @@
 @push('js')
     <script>
         let dataTable = [];
-
-        function getData(page = 1, query = '') {
-            $.get(`{{ route('admin.users.data') }}?page=${page}&search=${query}`, function(response) {
+        function getData(page = 1, query = '', role = '') {
+            $.get(`{{ route('admin.users.data') }}?page=${page}&search=${query}&role=${role}`, function(response) {
                 const {
                     data,
                     meta,
@@ -161,13 +165,14 @@
                 $.each(data, function(key, value) {
                     let url = `{{ route('admin.users.destroy', ':id') }}`.replace(':id', value.id);
                     let urlEdit = `{{ route('admin.users.edit', ':id') }}`.replace(':id', value.id);
+                    let detail = `{{ route('admin.users.show', ':id') }}`.replace(':id', value.id);
                     const row = `
                     <tr>
                         <td class="text-body">
                             <img src="${value.photo ? '{{ asset('storage') }}/'+value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
                         </td>
-                        <td class="text-body">${value.name}</td>
-                        <td class="text-body">${value.username}</td>
+                        <td class="text-body"><a href="${detail}" class="btn btn-outline-primary hover-bg">${value.name}</a></td>
+                        <td class="text-body">${value.username ?? "-"}</td>
                         <td class="text-body">${value.phone ?? '-'}</td>
                         <td class="text-body">${value.roles[0].display_name	}</td>
                         <td>
@@ -224,9 +229,10 @@
         $('#dataTable').on('click', '.edit', function() {
             const id = $(this).data('id');
             const data = dataTable.find(item => item.id === id);
-            $('#form').attr('action', `{{ route('admin.users.update', ':id') }}`.replace(':id', id));
+            const form = $('#form');
+            form.attr('action', `{{ route('admin.users.update', ':id') }}`.replace(':id', id));
             //add method put
-            $('#form').append('<input type="hidden" name="_method" value="PUT">');
+            form.append('<input type="hidden" name="_method" value="PUT">');
 
             $('#id').val(data.id);
             $('#name').val(data.name);
@@ -243,8 +249,9 @@
 
         //add
         $('.add').click(function() {
-            $('#form').attr('action', `{{ route('admin.users.store') }}`);
-            $('#form').trigger('reset');
+            const form = $('#form');
+            form.attr('action', `{{ route('admin.users.store') }}`);
+            form.trigger('reset');
             //Remove method put
             $('#form [name="_method"]').remove();
             $('#staticBackdropLabel').text('Tambah User');
@@ -266,5 +273,11 @@
             e.preventDefault();
             formSendData();
         });
+
+        $('.btn-role').click(function (e) {
+            e.preventDefault();
+            const role = $(this).data('value');
+            getData(1,$('#search').val(), role);
+        })
     </script>
 @endpush

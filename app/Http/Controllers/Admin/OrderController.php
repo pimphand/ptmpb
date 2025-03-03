@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderAdminResource;
 use App\Models\Order;
 use App\Models\User;
@@ -28,22 +27,23 @@ class OrderController extends Controller
     public function update(Request $request, Order $order): JsonResponse
     {
         foreach ($request->id as $key => $id) {
-           $item =  $order->orderItems()->find($id);
-           $item->price = $request->value[$key];
-           $item->note = $request->note[$key];
-           $item->quantity = $request->quantity[$key];
-           $item->save();
+            $item = $order->orderItems()->find($id);
+            $item->price = $request->value[$key];
+            $item->note = $request->note[$key];
+            $item->quantity = $request->quantity[$key];
+            $item->save();
         }
 
-        if ($order->status == "pending") {
-            $order->status = "process";
+        if ($order->status == 'pending') {
+            $order->status = 'process';
         }
         $order->driver_id = $request->driver_id;
         $order->date_delivery = $request->delivery_date;
         $order->save();
+
         return response()->json([
             'success' => true,
-            'message' => 'Order berhasil diperbarui'
+            'message' => 'Order berhasil diperbarui',
         ]);
     }
 
@@ -58,6 +58,9 @@ class OrderController extends Controller
         })
             ->when($request->status, function ($query) use ($request) {
                 $query->where('status', $request->status);
+            })
+            ->when($request->user_id, function ($query) use ($request) {
+                $query->where('user_id', $request->user_id);
             })
             ->whereHas('orderItems')
             ->latest()
@@ -80,11 +83,12 @@ class OrderController extends Controller
         ]);
     }
 
-    public function show(Order $order) //: View|Factory|Application
+    public function show(Order $order) // : View|Factory|Application
     {
-      $order->load('customer', 'user', 'orderItems.sku.product','driver');
+        $order->load('customer', 'user', 'orderItems.sku.product', 'driver');
 
-      $drivers = User::whereHasRole('driver')->get();
-      return view('admin.order_detail', compact('order', 'drivers'));
+        $drivers = User::whereHasRole('driver')->get();
+
+        return view('admin.order_detail', compact('order', 'drivers'));
     }
 }

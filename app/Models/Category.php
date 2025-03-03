@@ -18,13 +18,13 @@ class Category extends Model
     protected static function boot(): void
     {
         parent::boot();
-                static::creating(function ($model) {
-                    $model->slug = Str::slug($model->name);
-                });
+        static::creating(function ($model) {
+            $model->slug = Str::slug($model->name);
+        });
 
-                static ::updating(function ($model) {
-                    $model->slug = Str::slug($model->name);
-                });
+        static::updating(function ($model) {
+            $model->slug = Str::slug($model->name);
+        });
     }
 
     public function products(): \Illuminate\Database\Eloquent\Relations\HasMany

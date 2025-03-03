@@ -78,6 +78,12 @@
 
         @role(['developer', 'admin'])
         <li class="menu-item">
+            <a href="{{ route('admin.sales.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">account_circle</span>
+                <span class="title">Sales</span>
+            </a>
+        </li>
+        <li class="menu-item">
             <a href="{{ route('admin.customers.index') }}" class="menu-link">
                 <span class="material-symbols-outlined menu-icon">account_circle</span>
                 <span class="title">Customer</span>
