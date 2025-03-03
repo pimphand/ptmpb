@@ -55,8 +55,13 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <h5 class="text-white fw-semibold mb-0 fs-16">
-                                    {{ number_format(($order->total ?? 0 / $user->target_sales) * 100, 2) }}
-                                    %</h5>
+                                    @if ($order->total > 0)
+                                        {{ number_format(($order->total / $user->target_sales) * 100, 2) }}
+                                    @else
+                                        0
+                                    @endif
+                                    %
+                                </h5>
                                 <p class="text-light">Pencapaian</p>
                             </div>
                         </div>
