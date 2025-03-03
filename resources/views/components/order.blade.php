@@ -130,7 +130,7 @@
                         <td class="text-body">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="_${value.id}">
-                                <label class="position-relative top-2 ms-1" for="_${value.id}">${key + 1}</label>
+                                <label class="position-relative top-2 ms-1" for="_${value.id}">${value.id}</label>
                             </div>
                         </td>
                         <td class="text-body"><a>${value.data.fullName}</a> <br>

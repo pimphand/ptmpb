@@ -53,7 +53,8 @@ class SalesController extends Controller
 
         $status = Order::where('user_id', $sale->id)
             ->whereBetween('orders.created_at', [now()->startOfYear(), now()->endOfYear()])
-            ->selectRaw('orders.status, COUNT(orders.id) as total') // Perbaikan selectRaw()
+            ->selectRaw('orders.status, COUNT(orders.id) as total')
+            ->whereHas('orderItems')
             ->groupBy('orders.status')
             ->get();
 
@@ -76,9 +77,21 @@ class SalesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $sale)
     {
-        //
+        if ($request->omzet) {
+            $request->validate([
+                'omzet' => ['required'],
+            ],[
+                'omzet.required' => 'Omzet wajib diisi',
+                'omzet.numeric' => 'Omzet harus berupa angka',
+            ]);
+
+            $sale->target_sales = (int)$request->target_sales;
+            $sale->save();
+        }
+
+        return response()->json(['message' => 'Data berhasil diubah']);
     }
 
     /**

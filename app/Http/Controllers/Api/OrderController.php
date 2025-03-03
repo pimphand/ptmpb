@@ -7,7 +7,9 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Sku;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -15,7 +17,7 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $order = Order::query();
         if (Auth::user()->roles()->first()->name == 'driver') {
@@ -49,7 +51,9 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -125,35 +129,48 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        foreach ($request->id as $key => $sku) {
-            if ($request->status == 'retur') {
-                $order->orderItems()->where('sku_id', $sku)->update([
-                    'returns' => $request->quantity[$key],
-                ]);
+        return DB::transaction(function () use ($request, $order) {
+            $total = 0;
+            foreach ($request->id as $key => $sku) {
+                $item = $order->orderItems()->where('id', $sku)->first();
+                if ($request->quantity[$key] > 0) {
+                    if ($item) {
+                        $item->update([
+                            'returns' => $request->quantity[$key],
+                        ]);
+                    }
+                }
+                $total += $item->quantity * $item->price;
             }
-        }
 
-        if ($request->status == 'retur') {
-            $order->status = 'process';
-            $order->is_return = true;
-        } else {
-            $order->status = 'success';
-            $order->tanggal_pengiriman = now();
-        }
+            $user =  $order->user()->first();
+            $user->achieved_sales += $total;
+            $user->save();
 
-        $order->note = $request->note ?? $order->note;
-        $order->file = $request->file ?? $order->file;
-        $order->bukti_pengiriman = $request->file ?? $order->file;
-        $order->save();
+            if ($request->status == 'retur') {
+                $order->status = 'process';
+                $order->is_return = true;
+            } else {
+                $order->status = 'success';
+                $order->tanggal_pengiriman = now();
+            }
 
-        return response()->json([
-            'message' => 'Order updated',
-            'request' => $request->all(),
-        ]);
+            $order->note = $request->note ?? $order->note;
+            $order->file = $request->file ?? $order->file;
+            $order->bukti_pengiriman = $request->file ?? $order->file;
+            $order->save();
+
+            return response()->json([
+                'message' => 'Order updated',
+                'request' => $request->all(),
+            ]);
+        });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function dataDriver() {}
+    public function dataDriver()
+    {
+    }
 }

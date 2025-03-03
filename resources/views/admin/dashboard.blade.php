@@ -89,28 +89,41 @@
 
             </div>
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-xl-6 col-xxl-6 col-lg-6">
+                    <h3>Sales</h3>
                     <div class="card bg-white border rounded-3 mb-4">
                         <div class="card-body p-4">
-                            <div
-                                class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3 mb-lg-30">
-                                <h3 class="mb-0">Recent Earnings</h3>
-                                <select class="form-select month-select form-control p-0 h-auto border-0 w-90"
-                                        style="background-position: right 0 center;"
-                                        aria-label="Default select example">
-                                    <option selected="">This Month</option>
-                                    <option value="1">Last Month</option>
-                                    <option value="2">Last Year</option>
-                                </select>
-                            </div>
-
-                            <div style="margin: -5px -9px -28px -17px;">
-                                <div id="recent_earnings"></div>
+                            <div class="default-table-area recent-orders recent-style-two">
+                                <div class="table-responsive">
+                                    <table class="table align-middle">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nama</th>
+                                            <th scope="col">Total Penjualan</th>
+                                            <th scope="col">Target</th>
+                                            <th scope="col">On Going</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($sales as $key=> $sale)
+                                            <tr>
+                                                <td>{{$key+1}}</td>
+                                                <td>{{$sale->name}}</td>
+                                                <td>{{$sale->success_orders_count}} Penjualan</td>
+                                                <td>{{$sale->target_sales}}</td>
+                                                <td>{{$sale->achieved_sales}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-6 col-xxl-6 col-lg-6">
+                    <h3>Order Terbaru</h3>
                     <div class="card bg-white border rounded-3 mb-4">
                         <div class="card-body p-4">
                             <div class="default-table-area recent-orders recent-style-two">
