@@ -22,14 +22,15 @@ class Customer extends Model
         'npwp',
         'others',
         'user_id',
+        'is_blacklist',
     ];
 
     protected $hidden = [
-        'is_blacklist',
+//        'is_blacklist',
         'created_at',
         'updated_at',
         'deleted_at',
-        'user_id',
+//        'user_id',
     ];
 
     public function scopeIsBlock($query, $bool = false)

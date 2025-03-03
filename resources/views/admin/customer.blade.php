@@ -27,7 +27,7 @@
                         <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
                     </form>
                     <a href="javascript:void(0)" type="button"
-                        class="btn btn-primary text-white py-2 px-4 fw-semibold add">
+                       class="btn btn-primary text-white py-2 px-4 fw-semibold add">
                         {{ __('app.add') }} {{ $title }}
                     </a>
                 </div>
@@ -36,16 +36,17 @@
                     <div class="table-responsive">
                         <table class="table align-middle">
                             <thead>
-                                <tr>
-                                    <th scope="col">
-                                        Foto
-                                    </th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Username</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Role</th>
-                                    <th scope="col">{{ __('app.action') }}</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">
+                                    #
+                                </th>
+                                <th scope="col">Nama Pemilik</th>
+                                <th scope="col">Nama Toko</th>
+                                <th scope="col">Alamat</th>
+                                <th scope="col">No Whatsapp</th>
+                                <th scope="col">NPWP</th>
+                                <th scope="col">{{ __('app.action') }}</th>
+                            </tr>
                             </thead>
                             <tbody id="dataTable">
 
@@ -56,7 +57,7 @@
                         <div
                             class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
                             <div id="pagination-container"
-                                class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
+                                 class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
                                 <span id="showing-info" class="fs-12 fw-medium">Showing 0 of 0 Results</span>
                                 <nav aria-label="Page navigation example">
                                     <ul id="pagination" class="pagination mb-0 justify-content-center"></ul>
@@ -69,7 +70,7 @@
         </div>
     </div>
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,59 +83,68 @@
                         <input type="hidden" name="id" id="id">
                         <div class="row">
                             <div class="mb-2 col-6">
-                                <label for="role" class="form-label">Username</label>
-                                <select class="form-select form-control" name="role" id="role">
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}">{{ $role->display_name }}</option>
+                                <label for="user_id" class="form-label">Sales</label>
+                                <select class="form-select form-control" name="user_id" id="user_id">
+                                    @foreach ($sales as $sale)
+                                        <option value="{{ $sale->id }}">{{ $sale->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-2 col-6">
                                 <label for="name" class="form-label">{{ __('app.name') }}</label>
                                 <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="masukan nama">
+                                       placeholder="masukan nama">
                             </div>
                             <div class="mb-2 col-6">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username"
-                                    placeholder="masukan username">
-                            </div>
-                            <div class="mb-2 col-6">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="masukan email">
-                            </div>
-                            <div class="mb-2 col-6">
-                                <label for="whatsapp" class="form-label">Nomor Whatsapp</label>
+                                <label for="phone" class="form-label">Nomor Whatsapp</label>
                                 <input type="text" class="form-control" id="phone" name="phone"
-                                    placeholder="masukan nomor whatsapp">
+                                       placeholder="masukan nomor whatsapp">
                             </div>
                             <div class="mb-2 col-6">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="text" class="form-control" id="password" name="password"
-                                    placeholder="masukan password">
-                            </div>
-                            <div class="mb-2 col-12">
-                                <label for="Alamat" class="form-label">Alamat</label>
+                                <label for="address" class="form-label">Alamat Lengkap</label>
                                 <input type="text" class="form-control" id="address" name="address"
-                                    placeholder="masukan Alamat">
+                                       placeholder="masukan alamat lengkap">
                             </div>
                             <div class="mb-2 col-6">
-                                <label for="photo" class="form-label">Foto</label>
-                                <input type="file" class="form-control" id="photo" name="photo"
-                                    placeholder="masukan Photo">
+                                <label for="store_name" class="form-label">Nama Toko</label>
+                                <input type="text" class="form-control" id="store_name" name="store_name"
+                                       placeholder="masukan alamat lengkap">
                             </div>
                             <div class="mb-2 col-6">
-                                <img src="" width="200px" alt="" id="photo-preview">
+                                <label for="npwp" class="form-label">NPWP (optional)</label>
+                                <input type="text" class="form-control" id="npwp" name="npwp"
+                                       placeholder="masukan alamat lengkap">
+                            </div>
+
+                            <div class="mb-2 col-6">
+                                <label for="store_photo" class="form-label">Foto Toko</label>
+                                <input type="file" class="form-control" id="store_photo" name="store_photo">
+                            </div>
+                            <div class="mb-2 col-6">
+                                <img src="" width="200px" alt="" id="store_photo-preview">
+                            </div>
+                            <div class="mb-2 col-6">
+                                <label for="owner_photo" class="form-label">Foto Pemilik</label>
+                                <input type="file" class="form-control" id="owner_photo" name="owner_photo">
+                            </div>
+                            <div class="mb-2 col-6">
+                                <img src="" width="200px" alt="" id="owner_photo-preview">
+                            </div>
+                            <div class="mb-2 col-6">
+                                <label for="is_blacklist" class="form-label">Blacklist</label>
+                                <select class="form-select form-control" name="is_blacklist" id="is_blacklist">
+                                    <option value="0">Tidak</option>
+                                    <option value="1">Ya</option>
+                                </select>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger text-white"
-                        data-bs-dismiss="modal">{{ __('app.close') }}</button>
+                            data-bs-dismiss="modal">{{ __('app.close') }}</button>
                     <button type="button" class="btn btn-primary text-white"
-                        id="save">{{ __('app.save') }}</button>
+                            id="save">{{ __('app.save') }}</button>
                 </div>
             </div>
         </div>
@@ -146,7 +156,7 @@
         let dataTable = [];
 
         function getData(page = 1, query = '') {
-            $.get(`{{ route('admin.users.data') }}?page=${page}&search=${query}`, function(response) {
+            $.get(`{{ route('admin.customers.data') }}?page=${page}&search=${query}`, function(response) {
                 const {
                     data,
                     meta,
@@ -159,17 +169,18 @@
 
                 // Render data
                 $.each(data, function(key, value) {
-                    let url = `{{ route('admin.users.destroy', ':id') }}`.replace(':id', value.id);
-                    let urlEdit = `{{ route('admin.users.edit', ':id') }}`.replace(':id', value.id);
+                    let url = `{{ route('admin.customers.destroy', ':id') }}`.replace(':id', value.id);
+                    let urlEdit = `{{ route('admin.customers.edit', ':id') }}`.replace(':id', value.id);
                     const row = `
-                    <tr>
+                    <tr class="align-middle" style="background-color: ${value.is_blacklist ? '#f8d7da' : ''}">
                         <td class="text-body">
-                            <img src="${value.photo ? '{{ asset('storage') }}/'+value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
+                            ${key + 1}
                         </td>
-                        <td class="text-body">${value.name}</td>
-                        <td class="text-body">${value.username}</td>
+                        <td class="text-body flex"><img src="${value.store_photo ? '{{ asset('storage') }}/'+value.store_photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}"> ${value.name}</td>
+                        <td class="text-body">${value.store_name ?? '-'}</td>
+                        <td class="text-body">${value.address ?? '-'}</td>
                         <td class="text-body">${value.phone ?? '-'}</td>
-                        <td class="text-body">${value.roles[0].display_name	}</td>
+                        <td class="text-body">${value.npwp ?? '-'}</td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
                                 <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="javascript:void(0)" data-url="${urlEdit}" data-id="${value.id}">
@@ -224,27 +235,31 @@
         $('#dataTable').on('click', '.edit', function() {
             const id = $(this).data('id');
             const data = dataTable.find(item => item.id === id);
-            $('#form').attr('action', `{{ route('admin.users.update', ':id') }}`.replace(':id', id));
+            let form = $('#form');
+            form.attr('action', `{{ route('admin.customers.update', ':id') }}`.replace(':id', id));
             //add method put
-            $('#form').append('<input type="hidden" name="_method" value="PUT">');
+            form.append('<input type="hidden" name="_method" value="PUT">');
 
             $('#id').val(data.id);
             $('#name').val(data.name);
-            $('#username').val(data.username);
-            $('#email').val(data.email);
             $('#phone').val(data.phone);
             $('#address').val(data.address);
-            $('#photo-preview').attr('src', "{{ asset('storage') }}/" + data.photo);
-
-            $('#role').val(data.roles[0].id);
-            $('#staticBackdropLabel').text('Edit User');
+            $('#store_name').val(data.store_name);
+            $('#npwp').val(data.npwp);
+            $('#user_id').val(data.user_id);
+            $('#store_photo-preview').attr('src', data.store_photo ? `{{ asset('storage') }}/${data.store_photo}` : '');
+            $('#owner_photo-preview').attr('src', data.owner_photo ? `{{ asset('storage') }}/${data.owner_photo}` : '');
+            $('#is_blacklist').val(data.is_blacklist);
+            $('#staticBackdropLabel').text('Edit Customer');
             $('#staticBackdrop').modal('show');
         });
 
         //add
         $('.add').click(function() {
-            $('#form').attr('action', `{{ route('admin.users.store') }}`);
+            $('#form').attr('action', `{{ route('admin.customers.store') }}`);
             $('#form').trigger('reset');
+            $('#store_photo-preview').attr('src','');
+            $('#owner_photo-preview').attr('src','');
             //Remove method put
             $('#form [name="_method"]').remove();
             $('#staticBackdropLabel').text('Tambah User');
@@ -252,11 +267,21 @@
         });
 
         //photo-preview
-        $('#photo').change(function() {
+        $('#store_photo').change(function() {
             const file = this.files[0];
             const reader = new FileReader();
             reader.onload = function(e) {
-                $('#photo-preview').attr('src', e.target.result);
+                $('#store_photo-preview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
+        });
+
+        //photo-preview
+        $('#owner_photo').change(function() {
+            const file = this.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#owner_photo-preview').attr('src', e.target.result);
             }
             reader.readAsDataURL(file);
         });

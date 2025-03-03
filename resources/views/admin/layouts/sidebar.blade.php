@@ -76,6 +76,15 @@
             </li>
         @endpermission
 
+        @role(['developer', 'admin'])
+        <li class="menu-item">
+            <a href="{{ route('admin.customers.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">account_circle</span>
+                <span class="title">Customer</span>
+            </a>
+        </li>
+        @endpermission
+
         @role('developer')
             <li class="menu-item">
                 <a href="/laratrust/roles-assignment" class="menu-link">

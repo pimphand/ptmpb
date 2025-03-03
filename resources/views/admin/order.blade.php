@@ -21,34 +21,34 @@
     <div class="card bg-white border-0 rounded-3 mb-4">
         <div class="card bg-white border-0 rounded-3 mb-4">
             <div class="card-body p-0">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 p-4">
+                <div class="d-flex align-items-center flex-wrap gap-2 p-4">
                     <form class="position-relative table-src-form me-0">
                         <input type="text" class="form-control" id="search" placeholder="Search here">
                         <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
                     </form>
-
+                    <div id="button"></div>
                 </div>
 
                 <div class="default-table-area style-two default-table-width">
                     <div class="table-responsive">
                         <table class="table align-middle">
                             <thead>
-                                <tr>
-                                    <th scope="col">
-                                        <div class="form-check">
-                                            <input class="form-check-input position-relative top-1" type="checkbox"
-                                                value="" id="flexCheckDefault7">
-                                            <label class="position-relative top-2 ms-1" for="flexCheckDefault7">ID</label>
-                                        </div>
-                                    </th>
-                                    <th scope="col">{{ __('app.name') }}</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Nama Perusahaan</th>
-                                    <th scope="col">whatsapp</th>
-                                    <th scope="col">Item</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">{{ __('app.action') }}</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input position-relative top-1" type="checkbox"
+                                               value="" id="flexCheckDefault7">
+                                        <label class="position-relative top-2 ms-1" for="flexCheckDefault7">ID</label>
+                                    </div>
+                                </th>
+                                <th scope="col">{{ __('app.name') }}</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Nama Perusahaan</th>
+                                <th scope="col">whatsapp</th>
+                                <th scope="col">Item</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">{{ __('app.action') }}</th>
+                            </tr>
                             </thead>
                             <tbody id="dataTable"></tbody>
                         </table>
@@ -57,7 +57,7 @@
                         <div
                             class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
                             <div id="pagination-container"
-                                class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
+                                 class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
                                 <span id="showing-info" class="fs-12 fw-medium">Showing 0 of 0 Results</span>
                                 <nav aria-label="Page navigation example">
                                     <ul id="pagination" class="pagination mb-0 justify-content-center"></ul>
@@ -75,6 +75,7 @@
         tr.return {
             background-color: #22b1c2;
         }
+
         tr.return label,
         tr.return a,
         tr.return span {
@@ -86,9 +87,35 @@
 @push('js')
     <script>
         let dataTable = [];
+        let statusId = {
+            'pending': 'Pending',
+            'process': 'Proses',
+            'success': 'Selesai',
+            'cancel': 'Batal',
+            'done': 'Selesai'
+        };
+        let status = {
+            'pending': 'primary',
+            'process': 'warning',
+            'success': 'success',
+            'cancel': 'danger',
+            'done': 'success'
+        };
+        $.each(status, function (key, value) {
+            if (key !== 'done') {
+                $('#button').append(`<button data-value="${key}" class="btn btn-${value} btn-sm me-2 text-white btn-status">${statusId[key]}</button>`);
+            }
+        });
 
-        function getData(page = 1, query = '') {
-            $.get(`{{ route('admin.orders.data') }}?page=${page}&search=${query}`, function(response) {
+
+        $(document).on('click', '.btn-status', function () {
+            console.log('click');
+            const status = $(this).data('value');
+            getData(1, $('#search').val(), status);
+        });
+
+        function getData(page = 1, query = '', status = '') {
+            $.get(`{{ route('admin.orders.data') }}?page=${page}&search=${query}&status=${status}`, function (response) {
                 const {
                     data,
                     meta,
@@ -98,8 +125,14 @@
                 // Clear table and pagination
                 $('#dataTable').empty();
                 $('#pagination').empty();
-
-                const status = {
+                let statusId = {
+                    'pending': 'Pending',
+                    'process': 'Proses',
+                    'success': 'Selesai',
+                    'cancel': 'Batal',
+                    'done': 'Selesai'
+                };
+                let status = {
                     'pending': 'primary',
                     'process': 'warning',
                     'success': 'success',
@@ -107,16 +140,8 @@
                     'done': 'success'
                 };
 
-                const statusId = {
-                    'pending': 'Pending',
-                    'process': 'Proses',
-                    'success': 'Selesai',
-                    'cancel': 'Batal',
-                    'done': 'Selesai'
-                };
-
                 // Render data
-                $.each(data, function(key, value) {
+                $.each(data, function (key, value) {
                     let detail = "{{ route('admin.orders.show', ':id') }}".replace(':id', value.id);
                     const row = `
                     <tr class="${value.is_return ? 'return' : ''}">
@@ -127,7 +152,7 @@
                             </div>
                         </td>
                         <td class="text-body"><span>${value.data.fullName}</span> <br>
-                           <a href="${value.sales.id}" class="text-${value.sales.name ? "success": ''}"> Sales : ${value.sales.name ?? "-"}</a>
+                           <a href="${value.sales.id}" class="text-${value.sales.name ? "success" : ''}"> Sales : ${value.sales.name ?? "-"}</a>
                         </td>
                         <td class="text-body"><span>${value.data.companyEmail}</span></td>
                         <td class="text-body"><span>${value.data.companyName}</span></td>
@@ -151,7 +176,7 @@
                             </div>
                         </td>
                         <td class="text-body ">
-                            <button style="color:#fff" class="editStatus btn-sm btn btn-${status[value.status]}" data-id="${value.id}" data-status="${value.status}">${statusId[value.status] ?? "-"} </button>
+                            <button style="color:#fff" class="${value.status != 'cancel'?  'editStatus' : ''} btn-sm btn btn-${status[value.status]}" data-id="${value.id}" data-status="${value.status}">${statusId[value.status] ?? "-"} </button>
                         </td>
                         <td>
                             <a href="${detail}" class="ml-3 btn btn-primary btn-sm">Detail</a>
@@ -166,7 +191,7 @@
                 $('#showing-info').text(`Showing ${meta.from} to ${meta.to} of ${meta.total} Results`);
 
                 // Render pagination
-                $.each(meta.links, function(index, link) {
+                $.each(meta.links, function (index, link) {
                     const activeClass = link.active ? 'active' : '';
                     const disabledClass = link.url ? '' : 'disabled';
                     const listItem = `
@@ -180,7 +205,7 @@
                 });
 
                 // Add click event for pagination links
-                $('#pagination .page-link').click(function(e) {
+                $('#pagination .page-link').click(function (e) {
                     e.preventDefault();
                     const page = $(this).data('page');
                     if (page && page !== '#') {
@@ -190,7 +215,7 @@
             });
         }
 
-        $('#search').on('input', function() {
+        $('#search').on('input', function () {
             const query = $(this).val();
             getData(1, query); // Fetch data from page 1 with search query
         });
@@ -198,7 +223,7 @@
         getData();
 
         //folow up
-        $('#dataTable').on('click', '.folow-up', function(e) {
+        $('#dataTable').on('click', '.folow-up', function (e) {
             const data = dataTable.find(item => item.id == $(this).data('id'));
             const items = data.items;
             const buyer = data.data;
@@ -243,7 +268,7 @@
                     _token: "{{ csrf_token() }}",
                     _method: "PUT",
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         window.open(whatsappURL, "_blank");
                         getData();
@@ -252,8 +277,8 @@
             });
 
         });
-        $(document).ready(function() {
-            $('#dataTable').on('click', '.editStatus', async function(e) {
+        $(document).ready(function () {
+            $('#dataTable').on('click', '.editStatus', async function (e) {
                 let status = $(this).data('status');
                 let id = $(this).data('id');
                 let url = "{{ route('admin.orders.updateStatus', ':id') }}".replace(':id', id);
@@ -282,7 +307,7 @@
                                     status: value,
                                     _method: "PUT"
                                 },
-                                success: function(response) {
+                                success: function (response) {
                                     if (response.success) {
                                         resolve();
                                         getData();

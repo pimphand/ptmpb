@@ -73,6 +73,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('brands', \App\Http\Controllers\Admin\BrandController::class)->middleware('role:developer|admin');
     Route::get('brands-data', [\App\Http\Controllers\Admin\BrandController::class, 'data'])->name('brands.data')->middleware('role:developer|admin');
+
+    Route::resource('customers', \App\Http\Controllers\Admin\CustomerController::class)->middleware('role:developer|admin');
+    Route::get('customers-data', [\App\Http\Controllers\Admin\CustomerController::class, 'data'])->name('customers.data')->middleware('role:developer|admin');
 });
 
 require __DIR__.'/auth.php';

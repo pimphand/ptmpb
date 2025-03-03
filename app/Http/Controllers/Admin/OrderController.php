@@ -55,7 +55,11 @@ class OrderController extends Controller
         $orders = Order::when($request->search, function ($query) use ($request) {
             $query->where('items', 'like', "%{$request->search}%")
                 ->orWhere('data', 'like', "%{$request->search}%");
-        })->latest()
+        })
+            ->when($request->status, function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
+            ->latest()
             ->paginate(10);
 
         return OrderAdminResource::collection($orders);
@@ -64,7 +68,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function updateStatus(Request $request, Order $order)
+    public function updateStatus(Request $request, Order $order): JsonResponse
     {
         $order->update([
             'status' => $request->status,
