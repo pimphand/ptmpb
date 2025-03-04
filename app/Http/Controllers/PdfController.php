@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use Illuminate\Http\Request;
 
 class PdfController extends Controller
 {
@@ -38,15 +39,21 @@ class PdfController extends Controller
         return view('admin.pdf.invoice', compact('order'));
     }
 
-    public function getImage($path)
+    public function paymentOrder(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
-        $filePath = public_path($path);
-        if (! file_exists($filePath)) {
-            return ''; // Jika file tidak ditemukan, hindari error
+        $order = Order::find(decrypt($id));
+        foreach ($request->date as $key=> $date){
+            $order->payments()->create([
+                'method' => $request->method[$key],
+                'date' => $request->date[$key],
+                'amount' => $request->amount[$key],
+                'remaining' => $request->remaining[$key],
+                'customer' => $request->customer[$key],
+                'collector' => $request->collector[$key],
+                'admin' => $request->admin[$key],
+            ]);
         }
-        $type = pathinfo($filePath, PATHINFO_EXTENSION);
-        $data = file_get_contents($filePath);
 
-        return 'data:image/'.$type.';base64,'.base64_encode($data);
+        return redirect()->route('invoice', encrypt($order->id));
     }
 }

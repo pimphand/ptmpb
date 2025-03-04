@@ -111,8 +111,8 @@
                                                 <td>{{$key+1}}</td>
                                                 <td>{{$sale->name}}</td>
                                                 <td>{{$sale->success_orders_count}} Penjualan</td>
-                                                <td>{{$sale->target_sales}}</td>
-                                                <td>{{$sale->achieved_sales}}</td>
+                                                <td>Rp. {{number_format($sale->target_sales)}}</td>
+                                                <td>Rp. {{number_format($sale->achieved_sales)}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
