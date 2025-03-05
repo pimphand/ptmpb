@@ -43,6 +43,8 @@
                                     <th scope="col">Phone</th>
                                     <th scope="col">Total Order</th>
                                     <th scope="col">Total Customer</th>
+                                    <th scope="col">Target</th>
+                                    <th scope="col">Sedang Berjalan</th>
                                 </tr>
                             </thead>
                             <tbody id="dataTable">
@@ -71,6 +73,7 @@
 @push('js')
     <script>
         let dataTable = [];
+        let table = $('#dataTable');
         function getData(page = 1, query = '', role = '') {
             $.get(`{{ route('admin.sales.data') }}?page=${page}&search=${query}&role=${role}`, function(response) {
                 const {
@@ -80,27 +83,35 @@
                 } = response;
                 dataTable = data;
                 // Clear table and pagination
-                $('#dataTable').empty();
+                table.empty();
                 $('#pagination').empty();
 
                 // Render data
                 $.each(data, function(key, value) {
-                    let url = `{{ route('admin.sales.destroy', ':id') }}`.replace(':id', value.id);
-                    let urlEdit = `{{ route('admin.sales.edit', ':id') }}`.replace(':id', value.id);
                     let detail = `{{ route('admin.sales.show', ':id') }}`.replace(':id', value.id);
                     const row = `
                     <tr>
                         <td class="text-body">
                             <img src="${value.photo ? '{{ asset('storage') }}/'+value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
                         </td>
-                        <td class="text-body"><a href="${detail}" class="btn btn-outline-primary hover-bg">${value.name}</a></td>
+                        <td class="text-body"><a href="${detail}?user_id=${value.id}" class="btn btn-outline-primary hover-bg">${value.name}</a></td>
                         <td class="text-body">${value.username ?? "-"}</td>
                         <td class="text-body">${value.phone ?? '-'}</td>
                         <td class="text-body">${value.orders_count	}</td>
-                        <td class="text-body">${value.customers_count	}</td>
+                        <td class="text-body">${value.customers_count}</td>
+                        <td class="text-body">
+                            <span class="btn btn-outline-primary omzet input-${value.id}" data-id="${value.id}">
+                                Rp ${parseInt(value.target_sales).toLocaleString('id-ID')}
+                            </span>
+                            <input class="form-control omzet-${value.id}" type="number" value="${value.target_sales}" style="display:none">
+                            <p class="text-danger text-danger-${value.id}"></p>
+                            <button style="display:none" data-id="${value.id}" class="omzet-${value.id} btn btn-outline-success">Simpan</button>
+                            <button style="display:none" data-id="${value.id}" class="omzet-${value.id} btn btn-outline-danger">Batal</button>
+                        </td>
+                        <td class="text-body"><span class="badge bg-success bg-opacity-10 text-success p-2 fs-12 fw-normal">${value.achieved_sales}</span></td>
                     </tr>
                 `;
-                    $('#dataTable').append(row);
+                    table.append(row);
                 });
 
                 // Update showing info
@@ -139,25 +150,40 @@
         getData();
 
         //edit
-        $('#dataTable').on('click', '.edit', function() {
+        table.on('click', '.omzet', function() {
             const id = $(this).data('id');
-            const data = dataTable.find(item => item.id === id);
-            const form = $('#form');
-            form.attr('action', `{{ route('admin.sales.update', ':id') }}`.replace(':id', id));
-            //add method put
-            form.append('<input type="hidden" name="_method" value="PUT">');
+            $('.omzet-'+id).show();
+            $(this).hide();
+        });
 
-            $('#id').val(data.id);
-            $('#name').val(data.name);
-            $('#username').val(data.username);
-            $('#email').val(data.email);
-            $('#phone').val(data.phone);
-            $('#address').val(data.address);
-            $('#photo-preview').attr('src', "{{ asset('storage') }}/" + data.photo);
+        table.on('click', '.btn-outline-danger', function() {
+            const id = $(this).data('id');
+            $('.omzet-'+id).hide();
+            $(`.input-${id}`).show();
+        });
 
-            $('#role').val(data.roles[0].id);
-            $('#staticBackdropLabel').text('Edit User');
-            $('#staticBackdrop').modal('show');
+        table.on('click', '.btn-outline-success', function() {
+            const id = $(this).data('id');
+            const url = `{{ route('admin.sales.update', ':id') }}`.replace(':id', id);
+            const value = parseFloat($(`.omzet-${id}`).val()) || 0; // Konversi ke angka, default 0 jika NaN
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {
+                    _method: 'put',
+                    target_sales: value,
+                    _token: '{{ csrf_token() }}',
+                    omzet: true
+                },
+                dataType: 'json',
+                success: function(response) {
+                    getData();
+                },
+                error: function(xhr) {
+                    $('.text-danger-'+id).text(xhr.responseJSON.message);
+                }
+            });
         });
 
         //add

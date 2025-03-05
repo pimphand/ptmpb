@@ -93,3 +93,4 @@ Route::get('/lang/{locale}', function ($locale) {
 
 Route::get('generate-surat-jalan/{id}', [\App\Http\Controllers\PdfController::class, 'generateSuratJalan'])->name('generateSuratJalan');
 Route::get('generate-invoice/{id}', [\App\Http\Controllers\PdfController::class, 'invoice'])->name('invoice');
+Route::post('payment-orders/{id}', [\App\Http\Controllers\PdfController::class, 'paymentOrder'])->name('admin.order.payment.store');

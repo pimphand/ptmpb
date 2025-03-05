@@ -67,8 +67,6 @@
                         </div>
                     </div>
                 </div>
-                <img src="{{ asset('admin/assets') }}/images/welcome-2.gif" class="welcome-2 d-none d-sm-block"
-                    alt="welcome">
             </div>
         </div>
         <div class="col-lg-6">
