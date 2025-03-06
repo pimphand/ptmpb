@@ -8,7 +8,6 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -19,6 +18,7 @@ class SalesController extends Controller
     {
         return view('admin.sales.index', [
             'title' => 'Sales',
+
         ]);
     }
 
@@ -35,7 +35,22 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'username' => 'required|string|unique:users,username',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'phone' => 'nullable|numeric|min:10',
+            'address' => 'nullable|string',
+        ]);
+
+        $user = User::create($request->only('name', 'username', 'email', 'phone', 'address')
+            + ['password' => bcrypt($request->password)]);
+        $user->addRole('sales');
+
+        return response()->json(['message' => 'Data berhasil disimpan']);
+
     }
 
     /**
@@ -82,12 +97,12 @@ class SalesController extends Controller
         if ($request->omzet) {
             $request->validate([
                 'omzet' => ['required'],
-            ],[
+            ], [
                 'omzet.required' => 'Omzet wajib diisi',
                 'omzet.numeric' => 'Omzet harus berupa angka',
             ]);
 
-            $sale->target_sales = (int)$request->target_sales;
+            $sale->target_sales = (int) $request->target_sales;
             $sale->save();
         }
 
@@ -108,12 +123,11 @@ class SalesController extends Controller
     public function data(Request $request): AnonymousResourceCollection
     {
         $users = User::when($request->search, function ($query) use ($request) {
-                $query->where('name', 'like', '%'.$request->search.'%')
-                    ->orWhere('email', 'like', '%'.$request->search.'%');
-            })
-            ->whereDoesntHave('roles', function ($query) {
-                $query->where('name', 'developer');
-            })
+            $query->where('name', 'like', '%'.$request->search.'%')
+                ->orWhere('email', 'like', '%'.$request->search.'%');
+        })->whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'developer');
+        })
             ->whereHasRole('sales')
             ->withCount('customers', 'orders')
             ->with('roles:id,display_name,name')

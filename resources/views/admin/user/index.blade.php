@@ -24,10 +24,12 @@
                     <div class="d-flex">
                         <form class="position-relative table-src-form me-0">
                             <input type="text" class="form-control" id="search" placeholder="Search here">
-                            <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
+                            <i
+                                class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
                         </form>
-                        @foreach($roles as $role)
-                            <button data-value="{{$role->name}}" class="btn btn-outline-info btn-sm m-1 text-info btn-role hover-bg">{{$role->display_name}}</button>
+                        @foreach ($roles as $role)
+                            <button data-value="{{ $role->name }}"
+                                class="btn btn-outline-info btn-sm m-1 text-info btn-role hover-bg">{{ $role->display_name }}</button>
                         @endforeach
                     </div>
                     <a href="javascript:void(0)" type="button"
@@ -149,6 +151,7 @@
 @push('js')
     <script>
         let dataTable = [];
+
         function getData(page = 1, query = '', role = '') {
             $.get(`{{ route('admin.users.data') }}?page=${page}&search=${query}&role=${role}`, function(response) {
                 const {
@@ -274,10 +277,10 @@
             formSendData();
         });
 
-        $('.btn-role').click(function (e) {
+        $('.btn-role').click(function(e) {
             e.preventDefault();
             const role = $(this).data('value');
-            getData(1,$('#search').val(), role);
+            getData(1, $('#search').val(), role);
         })
     </script>
 @endpush
