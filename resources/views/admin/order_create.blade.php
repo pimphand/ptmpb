@@ -197,7 +197,7 @@
                         </td>
                         <td>${formatRupiah(value.total)}</td>
                         <td>
-                            <button class="btn btn-danger" onclick="deleteItem(${value.id})">Delete</button>
+                            <button class="btn btn-danger" onclick="deleteItem('${value.id}')">Delete</button>
                         </td>
                     </tr>
                 `;
@@ -290,13 +290,18 @@
         });
 
         function deleteItem(id) {
-            //delete item from local storage
-            let cart = localStorage.getItem('cart');
-            cart = JSON.parse(cart);
+            let cart = JSON.parse(localStorage.getItem('cart')) || []; // Pastikan cart selalu berupa array
+
+            // Temukan indeks item berdasarkan ID
             let index = cart.findIndex(item => item.id === id);
-            cart.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateItem()
+
+            if (index !== -1) { // Hanya hapus jika item ditemukan
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateItem();
+            } else {
+                console.warn("Item tidak ditemukan dalam keranjang.");
+            }
         }
 
         $('#save').click(function (e) {
