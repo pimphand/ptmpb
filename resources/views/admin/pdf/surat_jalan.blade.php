@@ -47,7 +47,7 @@
             padding: 0;
             margin: 0;
         }
-        
+
         .watermark {
             position: fixed;
             top: 50%;
@@ -153,7 +153,7 @@
         <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $item->sku->name }} ({{ $item->sku->product?->name }})</td>
-            <td>{{ $item->packaging }}</td>
+            <td>{{ $item->sku->packaging }}</td>
             <td>{{ $item->quantity }}</td>
             <td>{{ $item->unit }}</td>
             <td>{{ $item->note }}</td>

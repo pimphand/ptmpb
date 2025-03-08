@@ -232,7 +232,7 @@
         <td style="border: none;"></td>
         <td style="border: none;"></td>
         <td><strong>Total</strong></td>
-        <td>Rp. {{number_format($subTotal - $totalRetur)}}</td>
+        <td>Rp. {{number_format($subTotal - $totalRetur - $order->discount)}}</td>
     </tr>
 </table>
 <p><strong>Terbilang : {{ucfirst(trim(terbilang($subTotal))) . " rupiah."}} </strong></p>

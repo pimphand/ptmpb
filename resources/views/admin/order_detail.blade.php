@@ -135,8 +135,15 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td class="fw-medium text-secondary">Diskon (-)</td>
+                                    <td class="text-secondary">Rp. {{number_format($order->discount,0,',','.')}}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td class="fw-medium text-secondary">Grand Total</td>
-                                    <td class="text-secondary">Rp. {{number_format($total,0,',','.')}}</td>
+                                    <td class="text-secondary">Rp. {{number_format($total-$order->discount,0,',','.')}}</td>
                                 </tr>
                                 <tr class="form-show" style="display: none;background-color: #fd5812;color: #fff;">
                                     <td></td>
