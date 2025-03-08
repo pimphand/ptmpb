@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->string('type_discount')->nullable()->after('discount');
-            $table->bigInteger('fee_ship')->default(0)->after('total');
+            $table->bigInteger('fee_ship')->default(0)->after('discount');
         });
     }
 
