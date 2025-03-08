@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderAdminResource;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
@@ -21,6 +22,15 @@ class OrderController extends Controller
     {
         return view('admin.order', [
             'title' => 'Order',
+        ]);
+    }
+
+    public function create(): View|Factory|Application
+    {
+        return view('admin.order_create', [
+            'title' => 'Order',
+            'sales' => User::whereHasRole('sales')->get(),
+            'drivers' => User::whereHasRole('driver')->get(),
         ]);
     }
 
@@ -90,5 +100,10 @@ class OrderController extends Controller
         $drivers = User::whereHasRole('driver')->get();
 
         return view('admin.order_detail', compact('order', 'drivers'));
+    }
+
+    public function customer($id)
+    {
+        return Customer::where('user_id', $id)->get();
     }
 }

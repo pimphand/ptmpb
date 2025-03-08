@@ -158,6 +158,22 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
+    public function skus(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $products = Sku::when($request->search, function ($query) use ($request) {
+            $query->where('name', 'like', "%{$request->search}%");
+        })
+            ->when($request->brand, function ($query) use ($request) {
+                $query->whereHas('product', function ($query) use ($request) {
+                    $query->where('name', $request->brand);
+                });
+            })
+            ->with(['product.category'])
+            ->paginate(10);
+
+        return ProductResource::collection($products);
+    }
+
     /**
      * Upload product
      */

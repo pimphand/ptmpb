@@ -2,13 +2,19 @@
 <div class="card bg-white border-0 rounded-3 mb-4">
     <div class="card bg-white border-0 rounded-3 mb-4">
         <div class="card-body p-0">
-            <div class="d-flex align-items-center flex-wrap gap-2 p-4">
-                <form class="position-relative table-src-form me-0">
-                    <input type="text" class="form-control" id="search" placeholder="Search here">
-                    <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
-                </form>
-                <div id="button"></div>
+            <div class="d-flex justify-content-between flex-wrap gap-2 p-4 align-items-center">
+                <div class="d-flex align-items-center">
+                    <form class="position-relative table-src-form me-2">
+                        <input type="text" class="form-control ps-4" id="search" placeholder="Search here">
+                        <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y ps-2">search</i>
+                    </form>
+                    <div id="button" class="ms-2"></div>
+                </div>
+                <a class="btn btn-primary text-white py-2 px-4 fw-semibold" href="{{route('admin.orders.create')}}">
+                    {{ __('app.add') }} Order
+                </a>
             </div>
+
 
             <div class="default-table-area style-two default-table-width">
                 <div class="table-responsive">
@@ -90,7 +96,6 @@
 
 
         $(document).on('click', '.btn-status', function () {
-            console.log('click');
             const status = $(this).data('value');
             getData(1, $('#search').val(), status);
         });
@@ -150,7 +155,7 @@
                                     <div id="collapseThree-${value.id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <ul class="list-group">
-                                                ${value.items.map(item => `<li class="list-group-item">${item.name} - ${item.qty} pcs<br><small class="text-muted">Merek: ${item.brand}</small><br><small class="text-muted">Kategori: ${item.category}</small></li>`).join('')}
+                                                ${value.items.map(item => `<li class="list-group-item">${item.name} - ${item.quantity} pcs<br><small class="text-muted">Merek: ${item.brand}</small><br><small class="text-muted">Kategori: ${item.category}</small></li>`).join('')}
                                             </ul>
                                         </div>
                                     </div>
@@ -262,6 +267,9 @@
         $(document).ready(function () {
             $('#dataTable').on('click', '.editStatus', async function (e) {
                 let status = $(this).data('status');
+                if (status === 'success'){
+                    return;
+                }
                 let id = $(this).data('id');
                 let url = "{{ route('admin.orders.updateStatus', ':id') }}".replace(':id', id);
                 const {
@@ -273,7 +281,7 @@
                     inputOptions: {
                         "pending": "Pending",
                         "process": "Proses",
-                        "done": "Selesai",
+                        // "done": "Selesai",
                         "cancel": "Batal"
                     },
                     inputPlaceholder: "Pilih Status",

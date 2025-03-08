@@ -12,7 +12,7 @@ Route::get('banners', [App\Http\Controllers\Api\BannerController::class, 'banner
 Route::apiResource('products', App\Http\Controllers\Api\ProductController::class);
 
 // middleware group
-Route::group(['middleware' => 'auth:sanctum', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['auth:sanctum'], 'as' => 'api.'], function () {
     Route::apiResource('orders', App\Http\Controllers\Api\OrderController::class)->names('orders');
     Route::apiResource('customers', App\Http\Controllers\Api\CustomerController::class)->names('customers');
 });

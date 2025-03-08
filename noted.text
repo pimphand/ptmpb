@@ -1,27 +1,8 @@
-- Aplikasi =  di ganti minimum order
-- icon header di ganti icon cart
-- button delete cart
-
-#modul
-- Customer
-    - Banned Customer
-
-- Order
-    - Filter by status
-    - batal tidak ada surat jalan
-
-#retur di
-
-#ttd surat jalan 4 orang
-
-1. pengirim
-2. gudang
-3. admin
-
-#generate qrcode
-#generate bacground Asli
-
 #dashboard
+- add omset dinamis / tahun
 
+#mobile web
+- add omset dinamis / tahun
 
-#
+#Order
+- add Order

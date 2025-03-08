@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Sku;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -80,33 +81,43 @@ class OrderController extends Controller
             ], 422);
         }
 
-        $items = [];
-        foreach ($request->items as $key => $value) {
-            $sku = Sku::find($value['product_id']);
-            $items[] = [
-                'product_id' => $value['product_id'],
-                'quantity' => $value['quantity'],
-                'name' => $sku->name,
-                'brand' => $sku->product->name,
-                'category' => $sku->product->category->name,
-                'image' => $sku->image->path ?? null,
-                'package' => $sku->packaging,
-            ];
+        return DB::transaction(function () use ($request) {
+            $order = Order::create([
+                'customer_id' => $request->customer_id,
+                'status' => 'pending',
+                'discount' => $request->discount ?? 0,
+                'user_id' => $request->sales_id ?? Auth::id(),
+            ]);
+            foreach ($request->items as $key => $value) {
+                $sku = Sku::find($value['product_id']);
+                OrderItem::create([
+                    'quantity' => $value['quantity'],
+                    'sku_id' => $sku->id,
+                    'price' => $value['price']?? 0,
+                    'total' => $value['quantity'] * ($value['price'] ?? 0),
+                    'order_id' => $order->id,
+                ]);
 
-            $sku->total_order += $value['quantity'];
-            $sku->save();
-        }
+                $items[] = [
+                    'product_id' => $value['product_id'],
+                    'quantity' => $value['quantity'],
+                    'name' => $sku->name,
+                    'brand' => $sku->product->name,
+                    'category' => $sku->product->category->name,
+                    'image' => $sku->image->path ?? null,
+                    'package' => $sku->packaging,
+                ];
 
-        Order::create([
-            'customer_id' => $request->customer_id,
-            'status' => 'pending',
-            'items' => $items,
-            'user_id' => Auth::id(),
-        ]);
+                $sku->total_order += $value['quantity'];
+                $sku->save();
+            }
 
-        return response()->json([
-            'message' => 'Order created',
-        ]);
+            $order->items = $items;
+            $order->save();
+            return response()->json([
+                'message' => 'Order created',
+            ]);
+        });
     }
 
     /**
@@ -144,7 +155,7 @@ class OrderController extends Controller
                 $total += $item->quantity * $item->price;
             }
 
-            $user =  $order->user()->first();
+            $user = $order->user()->first();
             $user->achieved_sales += $total;
             $user->save();
 

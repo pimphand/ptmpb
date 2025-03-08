@@ -80,8 +80,8 @@
                                 </div>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h3 class="fs-24 fw-medium mb-0" id="total_order">{{$total_return }}</h3>
-                                <span>Total Order Return</span>
+                                <h3 class="fs-24 fw-medium mb-0" id="total_order">Rp. {{number_format($omzet) }}</h3>
+                                <span>Total Omzet</span>
                             </div>
                         </div>
                     </div>

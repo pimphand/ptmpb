@@ -13,7 +13,7 @@
         }
     </style>
     <div class="main-content-container overflow-hidden">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4" >
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
             <h3 class="mb-0">Invoice Details</h3>
 
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -34,7 +34,7 @@
             </nav>
         </div>
 
-        <div class="card bg-white border-0 rounded-3 mb-4" >
+        <div class="card bg-white border-0 rounded-3 mb-4">
             <div class="card-body p-4">
                 <div class="row">
                     <div class="col-lg-4 col-sm-4 col-md-4">
@@ -52,8 +52,8 @@
                             <br>
                             <br>
                             <br>
-                            @if($order->date_delivery))
-                            <h4>Dikirim : {{date('d M Y', strtotime($order->date_delivery))}}</h4>
+                            @if($order->date_delivery)
+                                <h4>Dikirim : {{date('d M Y', strtotime($order->date_delivery))}}</h4>
                             @endif
                         </div>
                     </div>
@@ -110,7 +110,13 @@
                                             <span
                                                 class="price">Rp. {{number_format($item->price,0,',','.')}}</span> <br>
                                             @if($item->returns>0)
-                                                <span class="price">Retur : {{$item->returns }} @if($item->file)<a href="javascript:viod(0)" data-url="{{asset('storage/'.$item->file)}}" class="text-white fw-semibold" data-bs-toggle="modal" data-bs-target="#exampleModallg"><i class="ri-image-2-fill"></i></a> @endif</span> <br>
+                                                <span class="price">Retur : {{$item->returns }} @if($item->file)
+                                                        <a href="javascript:viod(0)"
+                                                           data-url="{{asset('storage/'.$item->file)}}"
+                                                           class="text-white fw-semibold" data-bs-toggle="modal"
+                                                           data-bs-target="#exampleModallg"><i
+                                                                class="ri-image-2-fill"></i></a>
+                                                    @endif</span> <br>
                                                 <p class="price">{{$item->return_reason}}</p>
                                             @endif
                                             <input class="form-control mb-2 form-show" style="display: none"
@@ -164,24 +170,28 @@
                 </div>
 
                 <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
-                   @if($order->status != 'cancel')
-                        <a target="_blank" href="{{route('generateSuratJalan', encrypt($order->id))}}" class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
-                            class="ri-truck-fill text-white fw-medium"></i> Surat Jalan
-                    </a>
-                    <a target="_blank" href="{{route('invoice', encrypt($order->id))}}" class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
-                            class="ri-file-paper-2-fill text-white fw-medium"></i> Invoice
-                    </a>
+                    @if($order->status != 'cancel')
+                        <a target="_blank" href="{{route('generateSuratJalan', encrypt($order->id))}}"
+                           class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
+                                class="ri-truck-fill text-white fw-medium"></i> Surat Jalan
+                        </a>
+                        <a target="_blank" href="{{route('invoice', encrypt($order->id))}}"
+                           class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
+                                class="ri-file-paper-2-fill text-white fw-medium"></i> Invoice
+                        </a>
 
-                    <button class="btn btn-success py-2 px-4 fw-medium fs-16 text-white" id="edit"><i
-                            class="ri-pencil-fill text-white fw-medium"></i>Edit
-                    </button>
+                        @if($order->status == 'process' || $order->status == 'pending')
+                            <button class="btn btn-success py-2 px-4 fw-medium fs-16 text-white" id="edit"><i
+                                    class="ri-pencil-fill text-white fw-medium"></i>Edit
+                            </button>
+                        @endif
 
-                    <button class="btn btn-success py-2 px-4 fw-medium fs-16 text-white" style="display: none"
-                            id="save"><i class="ri-save-2-fill text-white fw-medium"></i>Simpan
-                    </button>
-                    <button class="btn btn-danger py-2 px-4 fw-medium fs-16 text-white" style="display: none"
-                            id="cancel"><i class="ri-xrp-line"></i>Cancel
-                    </button>
+                        <button class="btn btn-success py-2 px-4 fw-medium fs-16 text-white" style="display: none"
+                                id="save"><i class="ri-save-2-fill text-white fw-medium"></i>Simpan
+                        </button>
+                        <button class="btn btn-danger py-2 px-4 fw-medium fs-16 text-white" style="display: none"
+                                id="cancel"><i class="ri-xrp-line"></i>Cancel
+                        </button>
                     @endif
                 </div>
             </div>

@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            font-size: 14px;
+            font-size: 11px;
         }
 
         table {
@@ -26,7 +26,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
         }
 
         .header-left {
@@ -38,7 +37,7 @@
         }
 
         .invoice-title {
-            font-size: 24px;
+            font-size: 16px;
             font-weight: bold;
             text-align: right;
         }
@@ -94,7 +93,7 @@
 
         @media print {
             @page {
-                size: A4;
+                size: landscape;
                 margin: 20mm; /* Atur margin agar sesuai */
             }
 
@@ -107,9 +106,25 @@
             }
         }
 
+        /* Watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
+<div class="watermark" style="text-align: center">Asli <br> PT Mandalika Putra Bersama</div>
+
 <div class="header-container">
     <div class="header-left">
         <img src="{{asset('logo.webp')}}" alt="Logo" style="width:100px;">
@@ -129,7 +144,6 @@
         <th>Qty</th>
         <th>Retur</th>
         <th>@Harga</th>
-
         <th>Total Retur</th>
         <th>Total Harga</th>
     </tr>
@@ -182,7 +196,8 @@
 <br>
 <table>
     <tr>
-        <td style="width: 30%; text-align: center; border: none;">Customer / Penerima,</td>
+        <td style="width: 30%; text-align: center; border: none;">Customer / Penerima,
+        </td>
         <td style="width: 30%; text-align: center; border: none;">Admin,</td>
         <td><strong>Sub Total</strong></td>
         <td>Rp. {{$subTotal ? number_format($subTotal)  : "0"}}</td>
@@ -197,7 +212,7 @@
         <td style="border: none;"></td>
         <td style="border: none;"></td>
         <td><strong>Retur</strong></td>
-        <td>Rp. -{{$totalRetur ? number_format($totalRetur)  : "0"}}</td>
+        <td>Rp. {{$totalRetur ? "-". number_format($totalRetur)  : "0"}}</td>
     </tr>
     <tr>
         <td style="border: none;"></td>
@@ -206,11 +221,13 @@
         <td>Rp. {{$order->tax_amount? number_format($order->tax_amount) : 0}}</td>
     </tr>
     <tr>
-        <td style="border: none;"></td>
-        <td style="border: none;"></td>
+        <td style="width: 30%; text-align: center; border: none;">___________________
+        </td>
+        <td style="width: 30%; text-align: center; border: none;">___________________</td>
         <td><strong>Biaya Lain-lain</strong></td>
         <td>Rp. {{$order->other_fees? number_format($order->other_fees) : 0}}</td>
     </tr>
+
     <tr>
         <td style="border: none;"></td>
         <td style="border: none;"></td>

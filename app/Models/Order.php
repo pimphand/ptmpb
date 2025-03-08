@@ -12,7 +12,7 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = ['is_folow_up', 'items', 'data',
-        'customer_id', 'status', 'user_id', 'driver_id', 'date_delivery', 'note', 'file',
+        'customer_id', 'status', 'user_id', 'driver_id', 'date_delivery', 'note', 'file','discount',
         'is_return', 'surat_jalan', 'invoice', 'bukti_pengiriman', 'tanggal_pengiriman'];
 
     protected $casts = [

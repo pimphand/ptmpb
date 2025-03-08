@@ -34,6 +34,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // product
     Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)->middleware('permission:products-read');
     Route::get('products-data', [\App\Http\Controllers\Admin\ProductController::class, 'data'])->name('products.data')->middleware('permission:products-read');
+    Route::get('products-skus', [\App\Http\Controllers\Admin\ProductController::class, 'skus'])->name('products.skus')->middleware('permission:products-read');
     Route::post('products-upload', [\App\Http\Controllers\Admin\ProductController::class, 'upload'])->name('products.upload')->middleware('permission:products-read');
 
     // blog
@@ -63,7 +64,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     // order
     Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index')->middleware('permission:order-read');
+    Route::get('order/create', [\App\Http\Controllers\Admin\OrderController::class, 'create'])->name('orders.create')->middleware('permission:order-read');
     Route::get('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show')->middleware('permission:order-read');
+    Route::get('orders/customer/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'customer'])->name('orders.customer')->middleware('permission:order-update');
     Route::put('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('orders.update')->middleware('permission:order-update');
     Route::put('orders-status/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.updateStatus')->middleware('permission:order-update');
     Route::get('orders-data', [\App\Http\Controllers\Admin\OrderController::class, 'data'])->name('orders.data')->middleware('permission:order-read');

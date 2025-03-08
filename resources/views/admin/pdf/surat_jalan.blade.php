@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 10px;
             font-size: 16px;
             position: relative;
         }
@@ -39,7 +39,7 @@
 
         .logo img {
             filter: grayscale(100%);
-            width: 150px;
+            width: 100px;
         }
 
         ul {
@@ -47,8 +47,7 @@
             padding: 0;
             margin: 0;
         }
-
-        /* Watermark */
+        
         .watermark {
             position: fixed;
             top: 50%;
@@ -66,8 +65,8 @@
         /* Print media query */
         @media print {
             @page {
-                size: A4;
                 margin: 2px;
+                size: landscape;
             }
 
             table {
@@ -93,8 +92,6 @@
         <p>(Delivery Order)</p>
     </div>
 </div>
-
-<br><br>
 
 <table style="width: 100%; border-collapse: collapse;">
     <tr>
@@ -141,8 +138,6 @@
         </td>
     </tr>
 </table>
-
-<br><br>
 
 <table style="width: 100%; border-collapse: collapse; font-size: 12px">
     <tr style="background-color: #f2f2f2;">
@@ -200,7 +195,6 @@
     </tr>
 </table>
 <p style="text-align: center">BARANG SUDAH DITERIMA DALAM KEADAAN BAIK DAN SESUAI DENGAN PESANAN.</p>
-<br><br>
 
 <table style="margin-top: 30px; text-align: center; width: 100%;">
     <tr>

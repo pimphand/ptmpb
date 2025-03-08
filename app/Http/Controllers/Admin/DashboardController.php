@@ -26,8 +26,10 @@ class DashboardController extends Controller
         return view('admin.dashboard', [
             'total_item' => $totalItem,
             'total_order' => Order::count(),
-            'total_pending' => Order::where('status', 'pending')->count(),
-            'total_return' => Order::where('is_return', true)->count(),
+            'total_pending' => Order::whereHas('orderItems')->where('status', 'pending')->count(),
+            'omzet' => OrderItem::whereHas('order', function ($query) {
+                $query->where('status', 'success');
+            })->sum('price'),
             'new_orders' => Order::with('orderItems')->withSum(
                 'orderItems',
                 'quantity'
