@@ -96,8 +96,6 @@ class User extends Authenticatable implements LaratrustUser
             ->groupBy('orders.user_id')
             ->first();
 
-
-
         return $this->target_sales;
     }
 }

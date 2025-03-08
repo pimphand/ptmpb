@@ -111,7 +111,9 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return response()->json(['message' => 'Customer deleted']);
     }
 
     public function data(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

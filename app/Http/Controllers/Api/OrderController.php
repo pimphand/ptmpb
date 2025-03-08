@@ -53,9 +53,7 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -93,7 +91,7 @@ class OrderController extends Controller
                 OrderItem::create([
                     'quantity' => $value['quantity'],
                     'sku_id' => $sku->id,
-                    'price' => $value['price']?? 0,
+                    'price' => $value['price'] ?? 0,
                     'total' => $value['quantity'] * ($value['price'] ?? 0),
                     'order_id' => $order->id,
                 ]);
@@ -114,6 +112,7 @@ class OrderController extends Controller
 
             $order->items = $items;
             $order->save();
+
             return response()->json([
                 'message' => 'Order created',
             ]);
@@ -182,7 +181,5 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function dataDriver()
-    {
-    }
+    public function dataDriver() {}
 }

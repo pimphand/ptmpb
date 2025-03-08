@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         return view('admin.user.index', [
             'title' => 'User',
-            'roles' => Role::whereNotIn('name', ['developer','sales'])->get(),
+            'roles' => Role::whereNotIn('name', ['developer', 'sales'])->get(),
         ]);
     }
 
@@ -52,11 +52,11 @@ class UserController extends Controller
      */
     public function show(User $user): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-       $user['target'] =   (new \App\Models\User)->targetSales($user->id);
+        $user['target'] = (new \App\Models\User)->targetSales($user->id);
 
         return view('admin.user.show', [
             'title' => 'User Detail',
-            'user' => $user->load(['roles:id,display_name,name','customers','orders']),
+            'user' => $user->load(['roles:id,display_name,name', 'customers', 'orders']),
         ]);
     }
 

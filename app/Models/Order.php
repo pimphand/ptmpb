@@ -12,7 +12,7 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = ['is_folow_up', 'items', 'data',
-        'customer_id', 'status', 'user_id', 'driver_id', 'date_delivery', 'note', 'file','discount',
+        'customer_id', 'status', 'user_id', 'driver_id', 'date_delivery', 'note', 'file', 'discount',
         'is_return', 'surat_jalan', 'invoice', 'bukti_pengiriman', 'tanggal_pengiriman'];
 
     protected $casts = [
@@ -43,6 +43,6 @@ class Order extends Model
 
     public function payments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Payment::class)->orderBy('date','desc');
+        return $this->hasMany(Payment::class)->orderBy('date', 'desc');
     }
 }

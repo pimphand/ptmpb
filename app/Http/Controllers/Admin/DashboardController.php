@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -23,13 +24,13 @@ class DashboardController extends Controller
             ->whereHas('orders.orderItems')
             ->limit(5)
             ->get();
+
         return view('admin.dashboard', [
             'total_item' => $totalItem,
             'total_order' => Order::count(),
             'total_pending' => Order::whereHas('orderItems')->where('status', 'pending')->count(),
-            'omzet' => OrderItem::whereHas('order', function ($query) {
-                $query->where('status', 'success');
-            })->sum('price'),
+            'omzet' => OrderItem::whereHas('order', fn ($query) => $query->where('status', 'success')
+            )->sum(DB::raw('price * quantity')),
             'new_orders' => Order::with('orderItems')->withSum(
                 'orderItems',
                 'quantity'

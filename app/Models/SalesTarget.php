@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SalesTarget extends Model
 {
     use HasUuids;
+
     protected $fillable = [
         'name',
         'start_date',

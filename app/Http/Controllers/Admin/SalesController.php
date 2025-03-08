@@ -71,7 +71,14 @@ class SalesController extends Controller
             ->selectRaw('orders.status, COUNT(orders.id) as total')
             ->whereHas('orderItems')
             ->groupBy('orders.status')
-            ->get();
+            ->get()
+            ->map(function ($order) {
+                if ($order->status === 'done') {
+                    $order->status = 'success';
+                }
+
+                return $order;
+            });
 
         return view('admin.sales.show', [
             'title' => 'User Detail',
@@ -104,7 +111,12 @@ class SalesController extends Controller
 
             $sale->target_sales = (int) $request->target_sales;
             $sale->save();
+
+            return response()->json(['message' => 'Data berhasil diubah']);
         }
+
+        $sale->update($request->only('name', 'username', 'email', 'phone', 'address')
+            + ['password' => $request->password ? bcrypt($request->password) : $sale->password]);
 
         return response()->json(['message' => 'Data berhasil diubah']);
     }

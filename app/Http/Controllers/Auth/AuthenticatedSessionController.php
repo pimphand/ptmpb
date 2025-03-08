@@ -30,8 +30,9 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
         if ($user->hasRole(['developer', 'admin', 'content'])) {
-            //generate token
+            // generate token
             session(['bearerToken' => $user->createToken('token-name')->plainTextToken]);
+
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }
 
@@ -51,6 +52,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
         session()->forget('bearerToken');
+
         return redirect('/');
     }
 }

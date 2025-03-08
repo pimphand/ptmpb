@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     use HasUuids;
-    protected $guarded = [];
 
+    protected $guarded = [];
 }

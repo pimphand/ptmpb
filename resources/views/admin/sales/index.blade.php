@@ -49,6 +49,7 @@
                                     <th scope="col">Total Customer</th>
                                     <th scope="col">Target</th>
                                     <th scope="col">Sedang Berjalan</th>
+                                    <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="dataTable">
@@ -177,6 +178,16 @@
                             <button style="display:none" data-id="${value.id}" class="omzet-${value.id} btn btn-outline-danger">Batal</button>
                         </td>
                         <td class="text-body"><span class="badge bg-success bg-opacity-10 text-success p-2 fs-12 fw-normal">${value.achieved_sales}</span></td>
+                        <td>
+                            <div class="d-flex align-items-center gap-1">
+                                <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="javascript:void(0)" data-url="${detail}" data-id="${value.id}">
+                                    <i class="material-symbols-outlined fs-16 text-body">edit</i>
+                                </a>
+                                <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" onclick="deleteData('${detail}','${value.name}')">
+                                    <i class="material-symbols-outlined fs-16 text-danger">delete</i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 `;
                     table.append(row);
@@ -263,7 +274,7 @@
 
 
         //edit
-        $('#dataTable').on('click', '.edit', function() {
+        table.on('click', '.edit', function() {
             const id = $(this).data('id');
             const data = dataTable.find(item => item.id === id);
             const form = $('#form');
@@ -290,7 +301,7 @@
             form.attr('action', `{{ route('admin.sales.store') }}`);
             form.trigger('reset');
             //Remove method put
-            $('#form [name="_method"]').remove();
+            $('input[name="_method"]').remove();
             $('#staticBackdropLabel').text('Tambah User');
             $('#staticBackdrop').modal('show');
         });
