@@ -15,7 +15,6 @@
                 </a>
             </div>
 
-
             <div class="default-table-area style-two default-table-width">
                 <div class="table-responsive">
                     <table class="table align-middle">
