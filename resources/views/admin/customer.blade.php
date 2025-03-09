@@ -170,7 +170,7 @@
                     let url = `{{ route('admin.customers.destroy', ':id') }}`.replace(':id', value.id);
                     let urlEdit = `{{ route('admin.customers.edit', ':id') }}`.replace(':id', value.id);
                     const row = `
-                    <tr class="align-middle" style="background-color: ${value.is_blacklist ? '#f8d7da' : ''}">
+                    <tr class="align-middle" style="background-color: ${value.is_blacklist != "0" ? '#f8d7da' : ''}">
                         <td class="text-body">
                             ${key + 1}
                         </td>
