@@ -31,7 +31,7 @@
                             <th scope="col">{{ __('app.name') }}</th>
                             <th scope="col">Email</th>
                             <th scope="col">Nama Perusahaan
-                            <th scope="col">Pembayaran</th>
+                            <th scope="col">Sisa Pembayaran</th>
                             <th scope="col">whatsapp</th>
                             <th scope="col">Item</th>
                             <th scope="col">Status</th>
