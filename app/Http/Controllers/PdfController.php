@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PdfController extends Controller
@@ -30,7 +31,6 @@ class PdfController extends Controller
         if (! $order->surat_jalan) {
             $suratJalan = 'SJ.'.str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d').'%')->count() + 1, 3, '0', STR_PAD_LEFT).'/MPB/'.date('m').'/'.date('y');
             $invoice = 'IN.'.str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d').'%')->count() + 1, 3, '0', STR_PAD_LEFT).'/MPB-GM/'.date('m').'/'.date('y');
-
             $order->surat_jalan = $suratJalan;
             $order->invoice = $invoice;
             $order->save();
@@ -45,7 +45,7 @@ class PdfController extends Controller
         foreach ($request->date as $key => $date) {
             $order->payments()->create([
                 'method' => $request->method[$key],
-                'date' => $request->date[$key],
+                'date' => Carbon::parse($request->date[$key])->toDateString() . ' ' . now()->toTimeString(),
                 'amount' => $request->amount[$key],
                 'remaining' => $request->remaining[$key],
                 'customer' => $request->customer[$key],
