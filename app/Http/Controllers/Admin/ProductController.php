@@ -169,7 +169,8 @@ class ProductController extends Controller
                 });
             })
             ->with(['product.category'])
-            ->paginate(10);
+            ->paginate(10)
+            ->appends(request()->query());
 
         return ProductResource::collection($products);
     }
