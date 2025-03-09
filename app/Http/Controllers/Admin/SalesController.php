@@ -47,6 +47,11 @@ class SalesController extends Controller
 
         $user = User::create($request->only('name', 'username', 'email', 'phone', 'address')
             + ['password' => bcrypt($request->password)]);
+
+        if ($request->hasFile('photo')) {
+            $user->photo = asset('storage')."/". $request->file('photo')->store('photos', 'public');
+            $user->save();
+        }
         $user->addRole('sales');
 
         return response()->json(['message' => 'Data berhasil disimpan']);
@@ -114,7 +119,10 @@ class SalesController extends Controller
 
             return response()->json(['message' => 'Data berhasil diubah']);
         }
-
+        if ($request->hasFile('photo')) {
+            $sale->photo = asset('storage')."/". $request->file('photo')->store('photos', 'public');
+            $sale->save();
+        }
         $sale->update($request->only('name', 'username', 'email', 'phone', 'address')
             + ['password' => $request->password ? bcrypt($request->password) : $sale->password]);
 

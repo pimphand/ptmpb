@@ -72,6 +72,7 @@ class OrderController extends Controller
             ->when($request->user_id, function ($query) use ($request) {
                 $query->where('user_id', $request->user_id);
             })
+            ->with('payment')
             ->whereHas('orderItems')
             ->latest()
             ->paginate(10);

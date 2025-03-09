@@ -86,6 +86,7 @@ class OrderController extends Controller
                 'discount' => $request->discount ?? 0,
                 'user_id' => $request->sales_id ?? Auth::id(),
             ]);
+            $total = 0;
             foreach ($request->items as $key => $value) {
                 $sku = Sku::find($value['product_id']);
                 OrderItem::create([
@@ -108,10 +109,22 @@ class OrderController extends Controller
 
                 $sku->total_order += $value['quantity'];
                 $sku->save();
+
+                $total += $value['quantity'] * ($value['price'] ?? 0);
             }
 
             $order->items = $items;
             $order->save();
+
+            $order->payments()->create([
+                'method' => "System",
+                'date' => now(),
+                'amount' => 0,
+                'remaining' => $total,
+                'customer' => $order->customer->store_name,
+                'collector' => "System",
+                'admin' => "System",
+            ]);
 
             return response()->json([
                 'message' => 'Order created',

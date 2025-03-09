@@ -242,6 +242,10 @@
                 $('.count').text(response + " Baru");
             }
         });
+        function formatRupiah(amount) {
+            return `Rp. ${amount.toLocaleString('id-ID')}`;
+        }
+
     </script>
     @stack('js')
 </body>

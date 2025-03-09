@@ -45,4 +45,9 @@ class Order extends Model
     {
         return $this->hasMany(Payment::class)->orderBy('date', 'desc');
     }
+
+    public function payment(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Payment::class)->orderBy('date', 'desc');
+    }
 }

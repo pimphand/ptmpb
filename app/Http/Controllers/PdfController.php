@@ -51,6 +51,7 @@ class PdfController extends Controller
                 'customer' => $request->customer[$key],
                 'collector' => $request->collector[$key],
                 'admin' => $request->admin[$key],
+                'user_id' => $order->user_id,
             ]);
         }
 

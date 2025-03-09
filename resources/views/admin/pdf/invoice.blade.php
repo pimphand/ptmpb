@@ -79,7 +79,15 @@
 
         .form-control-custom {
             border-radius: 8px; /* Membuat sudut input lebih membulat */
-            border: 2px solid #17a2b8; /* Warna border biru */
+            border: 2px solid; /* Warna border biru */
+            padding: 5px 10px;
+            font-size: 12px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-control-custom-required {
+            border-radius: 8px; /* Membuat sudut input lebih membulat */
+            border: 2px solid #b83517; /* Warna border biru */
             padding: 5px 10px;
             font-size: 12px;
             transition: all 0.3s ease-in-out;
@@ -252,13 +260,17 @@
         <th width="10%">Tanggal</th>
         <th width="10%">Kas/Trf</th>
         <th width="10%">Nominal</th>
-        <th width="10%">Sisa</th>
+        <th width="10%">Sisa (-)</th>
         <th width="10%">Customer</th>
         <th width="10%">Kolektor</th>
         <th width="10%">Admin</th>
     </tr>
     </thead>
     <tbody>
+    @php
+        $sisa = 0;
+        $paid = 0;
+    @endphp
     @foreach($order->payments as $payment)
         <tr>
             <td>{{date('d/m/Y',strtotime($payment->date))}}</td>
@@ -269,6 +281,10 @@
             <td>{{$payment->collector}}</td>
             <td>{{$payment->admin}}</td>
         </tr>
+        @php
+            $sisa += $payment->remaining;
+            $paid += $payment->amount;
+        @endphp
     @endforeach
     </tbody>
     <tbody class="form" id="form">
@@ -276,7 +292,9 @@
     <tbody class="form">
     <tr>
         <td colspan="7" class="text-center">
-            <button type="button" class="btn btn-info-custom add">Tambah Pembayaran</button>
+            @if($sisa > 0)
+                <button type="button" class="btn btn-info-custom add">Tambah Pembayaran</button>
+            @endif
             <button type="button" class="btn btn-info-custom save" style="display: none">Simpan</button>
         </td>
     </tr>
@@ -287,77 +305,120 @@
         crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
+        let maxAmount = {{ $subTotal - $totalRetur - $order->discount - $paid}}; // Batas jumlah maksimal
+        let totalAmount = 0;
+        let sisa = {{ $sisa ?? 0 }};
         // Tambah baris baru
         $(".add").click(function (e) {
             e.preventDefault();
             $("#form").append(`
                 <tr>
-                    <td><input placeholder="Masukkan tanggal" type="date" class="form-control-custom" name="date[]"></td>
-                    <td><input placeholder="Masukkan metode" type="text" class="form-control-custom" name="method[]"></td>
-                    <td><input placeholder="Masukkan jumlah" type="number" class="form-control-custom" name="amount[]"></td>
-                    <td><input placeholder="Masukkan sisa" type="number" class="form-control-custom" name="remaining[]"></td>
-                    <td><input placeholder="Masukkan customer" type="text" class="form-control-custom" name="customer[]"></td>
-                    <td><input placeholder="Masukkan collector" type="text" class="form-control-custom" name="collector[]"></td>
-                    <td><input placeholder="Masukkan admin" type="text" class="form-control-custom" name="admin[]"></td>
+                    <td><input placeholder="Masukkan tanggal" type="date" class="form-control-custom-required" name="date[]" required></td>
+                    <td><input placeholder="Masukkan metode" type="text" class="form-control-custom-required" name="method[]" required></td>
+                    <td><input placeholder="Masukkan jumlah" type="number" class="form-control-custom-required amount" name="amount[]" required></td>
+                    <td><input placeholder="Masukkan sisa" value="${sisa}" type="number" class="form-control-custom remaining" readonly name="remaining[]" required></td>
+                    <td><input placeholder="Masukkan customer" type="text" value="{{$order->customer->store_name}}" readonly class="form-control-custom" name="customer[]"></td>
+                    <td><input placeholder="Masukkan collector" type="text" class="form-control-custom-required" name="collector[]"></td>
+                    <td><input placeholder="Masukkan admin" readonly value="{{auth()->user()->name}}" type="text" class="form-control-custom" name="admin[]"></td>
                     <td><button type="button" class="btn btn-info-custom remove">Hapus</button></td>
                 </tr>
             `);
-            $('.save').show()
+            checkSaveButton();
         });
 
         // Hapus baris
         $(document).on("click", ".remove", function () {
-            $(this).closest("tr").remove();
-        });
-    });
-
-    // Simpan data
-    $(".save").click(function () {
-        const data = {
-            _token: "{{ csrf_token() }}",
-            date: [],
-            method: [],
-            amount: [],
-            remaining: [],
-            customer: [],
-            collector: [],
-            admin: []
-        };
-
-        // Ambil data dari input
-        $("input[name='date[]']").each(function () {
-            data.date.push($(this).val());
-        });
-        $("input[name='method[]']").each(function () {
-            data.method.push($(this).val());
-        });
-        $("input[name='amount[]']").each(function () {
-            data.amount.push($(this).val());
-        });
-        $("input[name='remaining[]']").each(function () {
-            data.remaining.push($(this).val());
-        });
-        $("input[name='customer[]']").each(function () {
-            data.customer.push($(this).val());
-        });
-        $("input[name='collector[]']").each(function () {
-            data.collector.push($(this).val());
-        });
-        $("input[name='admin[]']").each(function () {
-            data.admin.push($(this).val());
+            let row = $(this).closest("tr");
+            let amountValue = parseFloat(row.find(".amount").val()) || 0;
+            totalAmount -= amountValue;
+            row.remove();
+            checkSaveButton();
         });
 
-        // Kirim data ke server
-        $.post("{{ route('admin.order.payment.store',encrypt($order->id)) }}", data)
-            .done(function (response) {
-                window.location.reload();
-            })
-            .fail(function (xhr) {
-                alert("Data gagal disimpan");
+        // Validasi jumlah input
+        $(document).on("input", ".amount", function () {
+            let row = $(this).closest("tr");
+            let amount = parseFloat(row.find(".amount").val()) || 0;
+
+            totalAmount = 0;
+            $(".amount").each(function () {
+                totalAmount += parseFloat($(this).val()) || 0;
             });
+
+            if (totalAmount > maxAmount) {
+                alert(`Jumlah tidak boleh melebihi batas Rp${maxAmount}`);
+                $(this).val("");
+            }
+            $('.remaining').val(maxAmount - totalAmount);
+            checkSaveButton();
+        });
+
+        // Cek apakah tombol simpan harus ditampilkan
+        function checkSaveButton() {
+            if ($("#form tr").length > 0) {
+                $(".save").show();
+            } else {
+                $(".save").hide();
+            }
+        }
+
+        // Simpan data
+        $(".save").click(function () {
+            const data = {
+                _token: "{{ csrf_token() }}",
+                date: [],
+                method: [],
+                amount: [],
+                remaining: [],
+                customer: [],
+                collector: [],
+                admin: []
+            };
+
+            let isValid = true;
+
+            $("input[name='date[]']").each(function () {
+                data.date.push($(this).val());
+            });
+            $("input[name='method[]']").each(function () {
+                data.method.push($(this).val());
+            });
+            $("input[name='amount[]']").each(function () {
+                let value = parseFloat($(this).val()) || 0;
+                data.amount.push(value);
+            });
+            $("input[name='remaining[]']").each(function () {
+                let value = parseFloat($(this).val()) || 0;
+                data.remaining.push(value);
+            });
+            $("input[name='customer[]']").each(function () {
+                data.customer.push($(this).val());
+            });
+            $("input[name='collector[]']").each(function () {
+                data.collector.push($(this).val());
+            });
+            $("input[name='admin[]']").each(function () {
+                data.admin.push($(this).val());
+            });
+
+            // Validasi akhir sebelum submit
+            if (totalAmount > maxAmount) {
+                alert(`Total pembayaran tidak boleh melebihi Rp${maxAmount}`);
+                isValid = false;
+            }
+
+            if (isValid) {
+                $.post("{{ route('admin.order.payment.store', encrypt($order->id)) }}", data)
+                    .done(function (response) {
+                        window.location.reload();
+                    })
+                    .fail(function (xhr) {
+                        alert("Data gagal disimpan");
+                    });
+            }
+        });
     });
-
-
 </script>
+
 </body>
 </html>

@@ -30,7 +30,8 @@
                             </th>
                             <th scope="col">{{ __('app.name') }}</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Nama Perusahaan</th>
+                            <th scope="col">Nama Perusahaan
+                            <th scope="col">Pembayaran</th>
                             <th scope="col">whatsapp</th>
                             <th scope="col">Item</th>
                             <th scope="col">Status</th>
@@ -62,7 +63,6 @@
         tr.return {
             background-color: #22b1c2;
         }
-
         tr.return label,
         tr.return a,
         tr.return span {
@@ -143,7 +143,9 @@
                         </td>
                         <td class="text-body"><span>${value.data.companyEmail}</span></td>
                         <td class="text-body"><span>${value.data.companyName}</span></td>
+                        <td class="text-body"><span class="badge bg-opacity-10 bg-danger py-1 px-2 text-danger fw-medium fs-12">- ${formatRupiah(value.payment)}</span></td>
                         <td class="text-body"><span>${value.data.whatsappNumber}</span></td>
+
                         <td class="text-body">
                             <div class="accordion faq-wrapper" id="accordionExample">
                                 <div class="accordion-item">

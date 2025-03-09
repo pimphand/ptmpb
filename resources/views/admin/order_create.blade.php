@@ -227,10 +227,6 @@
             }
         }
 
-        function formatRupiah(amount) {
-            return `Rp. ${amount.toLocaleString('id-ID')}`;
-        }
-
         $(document).on('change', '.discount', function () {
             let discountValue = $(this).val().trim();
             discountValue = discountValue ? parseFloat(discountValue) : 0;

@@ -25,6 +25,7 @@ class OrderAdminResource extends JsonResource
                 'name' => $this->user->name ?? null,
             ],
             'status' => $this->status,
+            'payment' => $this->payments->first()->remaining,
         ];
     }
 }

@@ -109,7 +109,7 @@
 
                             <div class="d-flex align-items-center mb-4">
                                 <div class="flex-shrink-0">
-                                    <img src="{{ $user->photo ? asset('storage/' . $user->photo) : asset('admin/assets/images/user-42.jpg') }}"
+                                    <img src="{{ $user->photo ? $user->photo : asset('admin/assets/images/user-42.jpg') }}"
                                         class="rounded-circle border border-2 wh-75" alt="user">
                                 </div>
                                 <div class="flex-grow-1 ms-3">

@@ -161,7 +161,7 @@
                     const row = `
                     <tr>
                         <td class="text-body">
-                            <img src="${value.photo ? '{{ asset('storage') }}/'+value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
+                            <img src="${value.photo ? value.photo: '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
                         </td>
                         <td class="text-body"><a href="${detail}?user_id=${value.id}" class="btn btn-outline-primary hover-bg">${value.name}</a></td>
                         <td class="text-body">${value.username ?? "-"}</td>

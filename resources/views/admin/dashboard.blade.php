@@ -59,12 +59,12 @@
                             <div class="flex-shrink-0">
                                 <div class="wh-55 bg-primary bg-opacity-25 text-center rounded-2"
                                      style="line-height: 55px;">
-                                    <i class="ri-cake-3-line fs-22 bg-primary text-white rounded-2 p-2"></i>
+                                    <i class="ri-open-arm-line fs-22 bg-primary text-white rounded-2 p-2"></i>
                                 </div>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h3 class="fs-24 fw-medium mb-0" id="total_order">{{$total_pending }}</h3>
-                                <span>Total Order Pending</span>
+                                <h3 class="fs-24 fw-medium mb-0" id="total_order">Rp. {{number_format($omzet) }}</h3>
+                                <span>Total Omzet</span>
                             </div>
                         </div>
                     </div>
@@ -80,8 +80,8 @@
                                 </div>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h3 class="fs-24 fw-medium mb-0" id="total_order">Rp. {{number_format($omzet) }}</h3>
-                                <span>Total Omzet</span>
+                                <h3 class="fs-24 fw-medium mb-0" id="total_order">Rp. {{number_format($paid) }}</h3>
+                                <span>Total Terbayar</span>
                             </div>
                         </div>
                     </div>
@@ -101,8 +101,8 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Nama</th>
                                             <th scope="col">Total Penjualan</th>
-                                            <th scope="col">Target</th>
-                                            <th scope="col">On Going</th>
+                                            <th scope="col">Omzet Tercapai</th>
+                                            <th scope="col">Terbayar</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -111,8 +111,8 @@
                                                 <td>{{$key+1}}</td>
                                                 <td>{{$sale->name}}</td>
                                                 <td>{{$sale->success_orders_count}} Penjualan</td>
-                                                <td>Rp. {{number_format($sale->target_sales)}}</td>
                                                 <td>Rp. {{number_format($sale->achieved_sales)}}</td>
+                                                <td>Rp. {{number_format($sale->payments_sum_amount)}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
