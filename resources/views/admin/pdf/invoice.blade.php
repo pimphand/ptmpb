@@ -292,9 +292,9 @@
     <tbody class="form">
     <tr>
         <td colspan="7" class="text-center">
-            @if($sisa > 0)
+            {{-- @if($sisa > 0) --}}
                 <button type="button" class="btn btn-info-custom add">Tambah Pembayaran</button>
-            @endif
+            {{-- @endif --}}
             <button type="button" class="btn btn-info-custom save" style="display: none">Simpan</button>
         </td>
     </tr>
