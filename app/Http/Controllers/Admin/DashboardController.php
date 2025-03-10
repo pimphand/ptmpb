@@ -30,12 +30,21 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        $paid = Payment::sum('amount');
+        $paid = Payment::whereHas('order', fn ($query) => $query->where('status', 'success')->whereHas('user', function ($query) {
+            $query->whereNull('deleted_at'); // Ensure the user is not soft deleted
+        })
+        )->sum('amount');
         return view('admin.dashboard', [
             'total_item' => $totalItem,
-            'total_order' => Order::count(),
-            'total_pending' => Order::whereHas('orderItems')->where('status', 'pending')->count(),
-            'omzet' => OrderItem::whereHas('order', fn ($query) => $query->where('status', 'success')
+            'total_order' => Order::whereHas('user', function ($query) {
+                $query->whereNull('deleted_at'); // Ensure the user is not soft deleted
+            })->count(),
+            'total_pending' => Order::whereHas('user', function ($query) {
+                $query->whereNull('deleted_at'); // Ensure the user is not soft deleted
+            })->whereHas('orderItems')->where('status', 'pending')->count(),
+            'omzet' => OrderItem::whereHas('order', fn ($query) => $query->where('status', 'success')->whereHas('user', function ($query) {
+                $query->whereNull('deleted_at'); // Ensure the user is not soft deleted
+            })
             )->sum(DB::raw('price * quantity')),
             'new_orders' => Order::with('orderItems')->withSum(
                 'orderItems',
