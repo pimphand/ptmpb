@@ -153,7 +153,7 @@
                                             <td>#{{$new_order->id}}</td>
                                             <td>
                                                 <div class="ms-2 ps-1">
-                                                    <h6 class="fw-medium fs-14">{{$new_order->customer->name}} ({{$new_order->customer->store_name}})</h6>
+                                                    <h6 class="fw-medium fs-14">{{$new_order->customer->name ?? "Customer Terhapus"}} ({{$new_order?->customer?->store_name}})</h6>
                                                 </div>
                                             </td>
                                             <td>{{date('d M Y', strtotime($new_order->created_at))}}</td>
