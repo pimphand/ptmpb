@@ -62,7 +62,7 @@
                             <p class="mb-4">Tanggal: <span
                                     class="text-secondary">{{date('d M Y',strtotime($order->created_at))}}</span></p>
                             <p class="mb-1">Sales:</p>
-                            <p class="mb-1">{{$order->user->name}} ({{$order->user->phone}})</p>
+                            <p class="mb-1">{{$order->user?->name}} ({{$order->user?->phone}})</p>
 
                             @if($order->driver)
                                 <p class="mb-1">Pengirim: </p>
