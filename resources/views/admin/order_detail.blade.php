@@ -41,10 +41,10 @@
                         <div class="mb-4">
                             <p class="mb-4">Invoice: <span class="text-secondary">#{{$order->id}}</span></p>
                             <p class="mb-1">Invoice Ke:</p>
-                            <p class="mb-1 text-secondary">{{$order->customer->name}} ({{$order->customer->store_name}}
+                            <p class="mb-1 text-secondary">{{$order?->customer?->name}} ({{$order?->customer?->store_name}}
                                 )</p>
-                            <p class="mb-1 text-secondary">{{$order->customer->address}}</p>
-                            <p class="mb-1 text-secondary">{{$order->customer->phone}}</p>
+                            <p class="mb-1 text-secondary">{{$order?->customer?->address}}</p>
+                            <p class="mb-1 text-secondary">{{$order?->customer?->phone}}</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-sm-4 col-md-4">
