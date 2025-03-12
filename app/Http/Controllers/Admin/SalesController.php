@@ -108,13 +108,14 @@ class SalesController extends Controller
     {
         if ($request->omzet) {
             $request->validate([
-                'omzet' => ['required'],
+                'omzet' => ['nullable'],
             ], [
                 'omzet.required' => 'Omzet wajib diisi',
                 'omzet.numeric' => 'Omzet harus berupa angka',
             ]);
 
             $sale->target_sales = (int) $request->target_sales;
+            $sale->omzet_items = (int) $request->omzet_items;
             $sale->save();
 
             return response()->json(['message' => 'Data berhasil diubah']);

@@ -29,7 +29,7 @@
                         </form>
                     </div>
                     <a href="javascript:void(0)" type="button"
-                        class="btn btn-primary text-white py-2 px-4 fw-semibold add">
+                       class="btn btn-primary text-white py-2 px-4 fw-semibold add">
                         {{ __('app.add') }} {{ $title }}
                     </a>
                 </div>
@@ -38,19 +38,19 @@
                     <div class="table-responsive">
                         <table class="table align-middle">
                             <thead>
-                                <tr>
-                                    <th scope="col">
-                                        Foto
-                                    </th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Username</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Total Order</th>
-                                    <th scope="col">Total Customer</th>
-                                    <th scope="col">Target</th>
-                                    <th scope="col">Sedang Berjalan</th>
-                                    <th scope="col">Aksi</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">
+                                    Foto
+                                </th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Total Order</th>
+                                <th scope="col">Total Customer</th>
+                                <th scope="col">Target</th>
+                                <th scope="col">Sedang Berjalan</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
                             </thead>
                             <tbody id="dataTable">
 
@@ -61,7 +61,7 @@
                         <div
                             class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
                             <div id="pagination-container"
-                                class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
+                                 class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
                                 <span id="showing-info" class="fs-12 fw-medium">Showing 0 of 0 Results</span>
                                 <nav aria-label="Page navigation example">
                                     <ul id="pagination" class="pagination mb-0 justify-content-center"></ul>
@@ -74,7 +74,7 @@
         </div>
     </div>
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -89,37 +89,37 @@
                             <div class="mb-2 col-6">
                                 <label for="name" class="form-label">{{ __('app.name') }}</label>
                                 <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="masukan nama">
+                                       placeholder="masukan nama">
                             </div>
                             <div class="mb-2 col-6">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" name="username"
-                                    placeholder="masukan username">
+                                       placeholder="masukan username">
                             </div>
                             <div class="mb-2 col-6">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="masukan email">
+                                       placeholder="masukan email">
                             </div>
                             <div class="mb-2 col-6">
                                 <label for="whatsapp" class="form-label">Nomor Whatsapp</label>
                                 <input type="text" class="form-control" id="phone" name="phone"
-                                    placeholder="masukan nomor whatsapp">
+                                       placeholder="masukan nomor whatsapp">
                             </div>
                             <div class="mb-2 col-6">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="text" class="form-control" id="password" name="password"
-                                    placeholder="masukan password">
+                                       placeholder="masukan password">
                             </div>
                             <div class="mb-2 col-12">
                                 <label for="Alamat" class="form-label">Alamat</label>
                                 <input type="text" class="form-control" id="address" name="address"
-                                    placeholder="masukan Alamat">
+                                       placeholder="masukan Alamat">
                             </div>
                             <div class="mb-2 col-6">
                                 <label for="photo" class="form-label">Foto</label>
                                 <input type="file" class="form-control" id="photo" name="photo"
-                                    placeholder="masukan Photo">
+                                       placeholder="masukan Photo">
                             </div>
                             <div class="mb-2 col-6">
                                 <img src="" width="200px" alt="" id="photo-preview">
@@ -129,9 +129,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger text-white"
-                        data-bs-dismiss="modal">{{ __('app.close') }}</button>
+                            data-bs-dismiss="modal">{{ __('app.close') }}</button>
                     <button type="button" class="btn btn-primary text-white"
-                        id="save">{{ __('app.save') }}</button>
+                            id="save">{{ __('app.save') }}</button>
                 </div>
             </div>
         </div>
@@ -144,7 +144,7 @@
         let table = $('#dataTable');
 
         function getData(page = 1, query = '', role = '') {
-            $.get(`{{ route('admin.sales.data') }}?page=${page}&search=${query}&role=${role}`, function(response) {
+            $.get(`{{ route('admin.sales.data') }}?page=${page}&search=${query}&role=${role}`, function (response) {
                 const {
                     data,
                     meta,
@@ -156,26 +156,33 @@
                 $('#pagination').empty();
 
                 // Render data
-                $.each(data, function(key, value) {
+                $.each(data, function (key, value) {
                     let detail = `{{ route('admin.sales.show', ':id') }}`.replace(':id', value.id);
                     const row = `
                     <tr>
                         <td class="text-body">
-                            <img src="${value.photo ? value.photo: '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
+                            <img src="${value.photo ? value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
                         </td>
                         <td class="text-body"><a href="${detail}?user_id=${value.id}" class="btn btn-outline-primary hover-bg">${value.name}</a></td>
                         <td class="text-body">${value.username ?? "-"}</td>
                         <td class="text-body">${value.phone ?? '-'}</td>
-                        <td class="text-body">${value.orders_count	}</td>
+                        <td class="text-body">${value.orders_count}</td>
                         <td class="text-body">${value.customers_count}</td>
                         <td class="text-body">
                             <span class="btn btn-outline-primary omzet input-${value.id}" data-id="${value.id}">
                                 Rp ${parseInt(value.target_sales).toLocaleString('id-ID')}
                             </span>
-                            <input class="form-control omzet-${value.id}" type="number" value="${value.target_sales}" style="display:none">
+                            <br>
+                             <span class="mt-2 btn btn-outline-primary omzet-item input-item-${value.id}" data-id="${value.id}">
+                                ${parseInt(value.omzet_items)} Item
+                            </span>
+                            <input class="form-control mt-2 omzet-${value.id}" type="number" value="${value.target_sales}" style="display:none">
+                            <input class="form-control mt-2 omzet-item-${value.id}" type="number" value="${value.omzet_items}" style="display:none">
                             <p class="text-danger text-danger-${value.id}"></p>
                             <button style="display:none" data-id="${value.id}" class="omzet-${value.id} btn btn-outline-success">Simpan</button>
                             <button style="display:none" data-id="${value.id}" class="omzet-${value.id} btn btn-outline-danger">Batal</button>
+                            <button style="display:none" data-id="${value.id}" class="omzet-item-${value.id} btn btn-outline-success">Simpan</button>
+                            <button style="display:none" data-id="${value.id}" class="omzet-item-${value.id} btn btn-outline-danger btn-outline-danger-item">Batal</button>
                         </td>
                         <td class="text-body"><span class="badge bg-success bg-opacity-10 text-success p-2 fs-12 fw-normal">${value.achieved_sales}</span></td>
                         <td>
@@ -197,7 +204,7 @@
                 $('#showing-info').text(`Showing ${meta.from} to ${meta.to} of ${meta.total} Results`);
 
                 // Render pagination
-                $.each(meta.links, function(index, link) {
+                $.each(meta.links, function (index, link) {
                     const activeClass = link.active ? 'active' : '';
                     const disabledClass = link.url ? '' : 'disabled';
                     const listItem = `
@@ -211,7 +218,7 @@
                 });
 
                 // Add click event for pagination links
-                $('#pagination .page-link').click(function(e) {
+                $('#pagination .page-link').click(function (e) {
                     e.preventDefault();
                     const page = $(this).data('page');
                     if (page && page !== '#') {
@@ -221,7 +228,7 @@
             });
         }
 
-        $('#search').on('input', function() {
+        $('#search').on('input', function () {
             const query = $(this).val();
             getData(1, query); // Fetch data from page 1 with search query
         });
@@ -229,23 +236,35 @@
         getData();
 
         //edit
-        table.on('click', '.omzet', function() {
+        table.on('click', '.omzet', function () {
             const id = $(this).data('id');
             $('.omzet-' + id).show();
             $(this).hide();
         });
 
-        table.on('click', '.btn-outline-danger', function() {
+        table.on('click', '.omzet-item', function () {
+            const id = $(this).data('id');
+            $('.omzet-item-' + id).show();
+            $(this).hide();
+        });
+
+        table.on('click', '.btn-outline-danger', function () {
             const id = $(this).data('id');
             $('.omzet-' + id).hide();
             $(`.input-${id}`).show();
         });
 
-        table.on('click', '.btn-outline-success', function() {
+        table.on('click', '.btn-outline-danger-item', function () {
+            const id = $(this).data('id');
+            $('.omzet-item-' + id).hide();
+            $(`.input-item-${id}`).show();
+        });
+
+        table.on('click', '.btn-outline-success', function () {
             const id = $(this).data('id');
             const url = `{{ route('admin.sales.update', ':id') }}`.replace(':id', id);
-            const value = parseFloat($(`.omzet-${id}`).val()) || 0; // Konversi ke angka, default 0 jika NaN
-
+            const value = parseFloat($(`.omzet-${id}`).val()) || 0;
+            const valueItem = parseFloat($(`.omzet-item-${id}`).val()) || 0;
             $.ajax({
                 url: url,
                 type: 'post',
@@ -253,20 +272,21 @@
                     _method: 'put',
                     target_sales: value,
                     _token: '{{ csrf_token() }}',
-                    omzet: true
+                    omzet: true,
+                    omzet_items: valueItem
                 },
                 dataType: 'json',
-                success: function(response) {
+                success: function (response) {
                     getData();
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     $('.text-danger-' + id).text(xhr.responseJSON.message);
                 }
             });
         });
 
 
-        $('.btn-role').click(function(e) {
+        $('.btn-role').click(function (e) {
             e.preventDefault();
             const role = $(this).data('value');
             getData(1, $('#search').val(), role);
@@ -274,7 +294,7 @@
 
 
         //edit
-        table.on('click', '.edit', function() {
+        table.on('click', '.edit', function () {
             const id = $(this).data('id');
             const data = dataTable.find(item => item.id === id);
             const form = $('#form');
@@ -296,7 +316,7 @@
         });
 
         //add
-        $('.add').click(function() {
+        $('.add').click(function () {
             const form = $('#form');
             form.attr('action', `{{ route('admin.sales.store') }}`);
             form.trigger('reset');
@@ -307,17 +327,17 @@
         });
 
         //photo-preview
-        $('#photo').change(function() {
+        $('#photo').change(function () {
             const file = this.files[0];
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#photo-preview').attr('src', e.target.result);
             }
             reader.readAsDataURL(file);
         });
 
         //#save
-        $('#save').click(function(e) {
+        $('#save').click(function (e) {
             e.preventDefault();
             formSendData();
         });
