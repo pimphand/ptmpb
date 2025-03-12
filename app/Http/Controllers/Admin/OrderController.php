@@ -50,26 +50,8 @@ class OrderController extends Controller
         $order->driver_id = $request->driver_id;
         $order->date_delivery = $request->delivery_date;
         $order->type_discount = $request->type_discount ?? null;
-        $order->discount = $request->type_discount ? $request->discount * ($request->discount / 100): $request->discount;
+        $order->discount = $request->type_discount ? $request->discount * ($request->discount / 100) : $request->discount;
         $order->save();
-
-        if (! $order->surat_jalan) {
-            $suratJalan = 'SJ.'.str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d').'%')->count() + 1, 3, '0', STR_PAD_LEFT).'/MPB/'.date('m').'/'.date('y');
-            $invoice = 'IN.'.str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d').'%')->count() + 1, 3, '0', STR_PAD_LEFT).'/MPB-GM/'.date('m').'/'.date('y');
-
-            $order->surat_jalan = $suratJalan;
-            $order->invoice = $invoice;
-            $order->save();
-        }
-
-        if (! $order->surat_jalan) {
-            $suratJalan = 'SJ.'.str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d').'%')->count() + 1, 3, '0', STR_PAD_LEFT).'/MPB/'.date('m').'/'.date('y');
-            $invoice = 'IN.'.str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d').'%')->count() + 1, 3, '0', STR_PAD_LEFT).'/MPB-GM/'.date('m').'/'.date('y');
-
-            $order->surat_jalan = $suratJalan;
-            $order->invoice = $invoice;
-            $order->save();
-        }
 
         return response()->json([
             'success' => true,

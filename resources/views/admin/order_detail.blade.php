@@ -39,13 +39,13 @@
                 <div class="row">
                     <div class="col-lg-4 col-sm-4 col-md-4">
                         <div class="mb-4">
-                            <p class="mb-4">Invoice: <span class="text-secondary">#{{$order->id}}</span></p>
+                            <p class="mb-4">Invoice: <span class="text-secondary">#{{ $order->id }}</span></p>
                             <p class="mb-1">Invoice Ke:</p>
-                            <p class="mb-1 text-secondary">{{$order?->customer?->name}}
-                                ({{$order?->customer?->store_name}}
+                            <p class="mb-1 text-secondary">{{ $order?->customer?->name }}
+                                ({{ $order?->customer?->store_name }}
                                 )</p>
-                            <p class="mb-1 text-secondary">{{$order?->customer?->address}}</p>
-                            <p class="mb-1 text-secondary">{{$order?->customer?->phone}}</p>
+                            <p class="mb-1 text-secondary">{{ $order?->customer?->address }}</p>
+                            <p class="mb-1 text-secondary">{{ $order?->customer?->phone }}</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-sm-4 col-md-4">
@@ -53,21 +53,21 @@
                             <br>
                             <br>
                             <br>
-                            @if($order->date_delivery)
-                                <h4>Dikirim : {{date('d M Y', strtotime($order->date_delivery))}}</h4>
+                            @if ($order->date_delivery)
+                                <h4>Dikirim : {{ date('d M Y', strtotime($order->date_delivery)) }}</h4>
                             @endif
                         </div>
                     </div>
                     <div class="col-lg-4 col-sm-4 col-md-4">
                         <div class="mb-4 text-sm-end">
                             <p class="mb-4">Tanggal: <span
-                                    class="text-secondary">{{date('d M Y',strtotime($order->created_at))}}</span></p>
+                                    class="text-secondary">{{ date('d M Y', strtotime($order->created_at)) }}</span></p>
                             <p class="mb-1">Sales:</p>
-                            <p class="mb-1">{{$order->user?->name}} ({{$order->user?->phone}})</p>
+                            <p class="mb-1">{{ $order->user?->name }} ({{ $order->user?->phone }})</p>
 
-                            @if($order->driver)
+                            @if ($order->driver)
                                 <p class="mb-1">Pengirim: </p>
-                                <p class="mb-1">{{$order->driver->name}} ({{$order->driver->phone}})</p>
+                                <p class="mb-1">{{ $order->driver->name }} ({{ $order->driver->phone }})</p>
                             @endif
                         </div>
                     </div>
@@ -77,145 +77,146 @@
                     <div class="table-responsive">
                         <table class="table align-middle">
                             <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Nama Produk</th>
-                                <th scope="col">Jumlah</th>
-                                <th scope="col">Harga</th>
-                                <th scope="col">Total</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Nama Produk</th>
+                                    <th scope="col">Jumlah</th>
+                                    <th scope="col">Harga</th>
+                                    <th scope="col">Total</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @php
-                                $total = 0;
-                            @endphp
-                            <form action="{{route('admin.orders.update',$order->id)}}" method="post" id="form">
-                                @csrf
-                                @method('PUT')
-                                <input hidden class=" form-control" name="id" value="{{$order->id}}">
+                                @php
+                                    $total = 0;
+                                @endphp
+                                <form action="{{ route('admin.orders.update', $order->id) }}" method="post" id="form">
+                                    @csrf
+                                    @method('PUT')
+                                    <input hidden class=" form-control" name="id" value="{{ $order->id }}">
 
-                                @foreach($order->orderItems as $key=>$item)
-                                    @php
-                                        $total += $item->quantity * $item->price;
-                                    @endphp
-                                    <tr class="{{$item->returns ? 'return' : ''}}">
-                                        <td class="text-body"><span>{{$key+1}}</span></td>
-                                        <td class="text-secondary fw-medium">
-                                            <span>{{$item->sku->name}} ({{$item->sku->product->name}})</span>
-                                        </td>
-                                        <td class="text-body"><span class="price">{{$item->quantity}} Item</span>
-                                            <input class="form-control mb-2 form-show" style="display: none"
-                                                   name="quantity[]" value="{{$item->quantity}}">
-                                        </td>
-                                        <td class="text-body">
-                                            <span
-                                                class="price">Rp. {{number_format($item->price,0,',','.')}}</span> <br>
-                                            @if($item->returns>0)
-                                                <span class="price">Retur : {{$item->returns }} @if($item->file)
-                                                        <a href="javascript:viod(0)"
-                                                           data-url="{{asset('storage/'.$item->file)}}"
-                                                           class="text-white fw-semibold" data-bs-toggle="modal"
-                                                           data-bs-target="#exampleModallg"><i
-                                                                class="ri-image-2-fill"></i></a>
-                                                    @endif</span> <br>
-                                                <p class="price">{{$item->return_reason}}</p>
-                                            @endif
-                                            <input class="form-control mb-2 form-show" style="display: none"
-                                                   name="value[]" value="{{$item->price}}">
-                                            <input hidden class=" form-control" name="id[]" value="{{$item->id}}">
-                                            <textarea class="form-control form-show" style="display: none" name="note[]"
-                                                      placeholder="Tambah Catatan">{{$item->note}}</textarea>
-                                            <p class="price">{{$item->note}}</p>
-                                        </td>
-                                        <td class="text-body">
-                                            <p>Rp. {{number_format($item->quantity * $item->price,0,',','.')}}</p>
+                                    @foreach ($order->orderItems as $key => $item)
+                                        @php
+                                            $total += $item->quantity * $item->price;
+                                        @endphp
+                                        <tr class="{{ $item->returns ? 'return' : '' }}">
+                                            <td class="text-body"><span>{{ $key + 1 }}</span></td>
+                                            <td class="text-secondary fw-medium">
+                                                <span>{{ $item->sku->name }} ({{ $item->sku->product->name }})</span>
+                                            </td>
+                                            <td class="text-body"><span class="price">{{ $item->quantity }} Item</span>
+                                                <input class="form-control mb-2 form-show" style="display: none"
+                                                    name="quantity[]" value="{{ $item->quantity }}">
+                                            </td>
+                                            <td class="text-body">
+                                                <span class="price">Rp. {{ number_format($item->price, 0, ',', '.') }}</span>
+                                                <br>
+                                                @if ($item->returns > 0)
+                                                    <span class="price">Retur : {{ $item->returns }} @if ($item->file)
+                                                            <a href="javascript:viod(0)"
+                                                                data-url="{{ asset('storage/' . $item->file) }}"
+                                                                class="text-white fw-semibold" data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModallg"><i
+                                                                    class="ri-image-2-fill"></i></a>
+                                                        @endif
+                                                    </span> <br>
+                                                    <p class="price">{{ $item->return_reason }}</p>
+                                                @endif
+                                                <input class="form-control mb-2 form-show" style="display: none"
+                                                    name="value[]" value="{{ $item->price }}">
+                                                <input hidden class=" form-control" name="id[]"
+                                                    value="{{ $item->id }}">
+                                                <textarea class="form-control form-show" style="display: none" name="note[]" placeholder="Tambah Catatan">{{ $item->note }}</textarea>
+                                                <p class="price">{{ $item->note }}</p>
+                                            </td>
+                                            <td class="text-body">
+                                                <p>Rp. {{ number_format($item->quantity * $item->price, 0, ',', '.') }}</p>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="fw-medium text-secondary">
+                                            <span class="_label_discount">Diskon (-)</span>
+                                            <div class="form-check" id="is_persent" style="display: none">
+                                                <input class="form-check-input" type="checkbox" value="persen"
+                                                    name="type_discount" id="discountPersen">
+                                                <label class="form-check-label" for="discountPersen">
+                                                    Diskon Persen
+                                                </label>
+                                            </div>
+                                        <td class="text-secondary">
+                                            <span class="_label_discount">Rp.
+                                                {{ number_format($order->discount, 0, ',', '.') }}</span>
+                                            <input class="form-control" id="discount" name="discount"
+                                                value="{{ $order->discount }}" style="display: none">
                                         </td>
                                     </tr>
-                                @endforeach
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="fw-medium text-secondary">
-                                        <span class="_label_discount">Diskon (-)</span>
-                                        <div class="form-check" id="is_persent" style="display: none">
-                                            <input class="form-check-input" type="checkbox" value="persen"
-                                                   name="type_discount" id="discountPersen">
-                                            <label class="form-check-label" for="discountPersen">
-                                                Diskon Persen
-                                            </label>
-                                        </div>
-                                    <td class="text-secondary">
-                                        <span
-                                            class="_label_discount">Rp. {{number_format($order->discount,0,',','.')}}</span>
-                                        <input class="form-control" id="discount" name="discount"
-                                               value="{{$order->discount}}" style="display: none">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="fw-medium text-secondary">Grand Total</td>
-                                    <td class="text-secondary">
-                                        <span>Rp. {{number_format($total-$order->discount,0,',','.')}}</span>
-                                    </td>
-                                </tr>
-                                <tr class="form-show" style="display: none;background-color: #fd5812;color: #fff;">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="fw-medium text-white">Pilih Pengirim</td>
-                                    <td>
-                                        <select class="form-select" name="driver_id">
-                                            <option value="">Pilih Pengirim</option>
-                                            @foreach($drivers as $driver)
-                                                <option value="{{$driver->id}}"
-                                                    {{$order->driver_id == $driver->id ? 'selected' : ''}}>
-                                                    {{$driver->name}}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="form-show" style="display: none;background-color: #fd5812;color: #fff;">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="fw-medium text-white">Pilih Tanggal Pengiriman</td>
-                                    <td>
-                                        <input type="date" class="form-control" name="delivery_date"
-                                               value="{{$order->date_delivery}}">
-                                    </td>
-                                </tr>
-                            </form>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="fw-medium text-secondary">Grand Total</td>
+                                        <td class="text-secondary">
+                                            <span>Rp. {{ number_format($total - $order->discount, 0, ',', '.') }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="form-show" style="display: none;background-color: #fd5812;color: #fff;">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="fw-medium text-white">Pilih Pengirim</td>
+                                        <td>
+                                            <select class="form-select" name="driver_id">
+                                                <option value="">Pilih Pengirim</option>
+                                                @foreach ($drivers as $driver)
+                                                    <option value="{{ $driver->id }}"
+                                                        {{ $order->driver_id == $driver->id ? 'selected' : '' }}>
+                                                        {{ $driver->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr class="form-show" style="display: none;background-color: #fd5812;color: #fff;">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="fw-medium text-white">Pilih Tanggal Pengiriman</td>
+                                        <td>
+                                            <input type="date" class="form-control" name="delivery_date"
+                                                value="{{ $order->date_delivery }}">
+                                        </td>
+                                    </tr>
+                                </form>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
-                    @if($order->status != 'cancel')
-                        <a target="_blank" href="{{route('generateSuratJalan', encrypt($order->id))}}"
-                           class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
+                    @if ($order->status != 'cancel')
+                        <a target="_blank" href="{{ route('generateSuratJalan', encrypt($order->id)) }}"
+                            class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
                                 class="ri-truck-fill text-white fw-medium"></i> Surat Jalan
                         </a>
-                        <a target="_blank" href="{{route('invoice', encrypt($order->id))}}"
-                           class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
+                        <a target="_blank" href="{{ route('invoice', encrypt($order->id)) }}"
+                            class="btn btn-success py-2 px-4 fw-medium fs-16 text-white"><i
                                 class="ri-file-paper-2-fill text-white fw-medium"></i> Invoice
                         </a>
 
-                        @if($order->status == 'process' || $order->status == 'pending')
+                        @if ($order->status == 'process' || $order->status == 'pending')
                             <button class="btn btn-success py-2 px-4 fw-medium fs-16 text-white" id="edit"><i
                                     class="ri-pencil-fill text-white fw-medium"></i>Edit
                             </button>
                         @endif
 
                         <button class="btn btn-success py-2 px-4 fw-medium fs-16 text-white" style="display: none"
-                                id="save"><i class="ri-save-2-fill text-white fw-medium"></i>Simpan
+                            id="save"><i class="ri-save-2-fill text-white fw-medium"></i>Simpan
                         </button>
                         <button class="btn btn-danger py-2 px-4 fw-medium fs-16 text-white" style="display: none"
-                                id="cancel"><i class="ri-xrp-line"></i>Cancel
+                            id="cancel"><i class="ri-xrp-line"></i>Cancel
                         </button>
                     @endif
                 </div>
@@ -245,12 +246,12 @@
 
 @push('js')
     <script>
-        $('#save').click(function (e) {
+        $('#save').click(function(e) {
             e.preventDefault();
             formSendData();
         });
 
-        $('#edit').click(function (e) {
+        $('#edit').click(function(e) {
             e.preventDefault();
             $('#save').show();
             $('#cancel').show();
@@ -262,7 +263,7 @@
             $('#is_persent').show()
         });
 
-        $('#cancel').click(function (e) {
+        $('#cancel').click(function(e) {
             e.preventDefault();
             $('#save').hide();
             $('#cancel').hide();
@@ -276,7 +277,7 @@
 
         function getData() {
             //reload halaman delay 1 detik
-            setTimeout(function () {
+            setTimeout(function() {
                 location.reload();
             }, 1000);
         }

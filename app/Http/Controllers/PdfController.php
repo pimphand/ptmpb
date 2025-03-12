@@ -28,11 +28,12 @@ class PdfController extends Controller
     {
         $order = Order::find(decrypt($id));
         $order->load('orderItems');
-        if (!$order->surat_jalan) {
+        if ($order->surat_jalan) {
             $suratJalan = 'SJ.' . str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d') . '%')->count() + 1, 3, '0', STR_PAD_LEFT) . '/MPB/' . date('m') . '/' . date('y');
             $invoice = 'IN.' . str_pad(Order::whereNotNull('surat_jalan')->where('created_at', 'like', date('Y-m-d') . '%')->count() + 1, 3, '0', STR_PAD_LEFT) . '/MPB-GM/' . date('m') . '/' . date('y');
             $order->surat_jalan = $suratJalan;
             $order->invoice = $invoice;
+            $order->invoice_date = now();
             $order->save();
         }
 
