@@ -19,6 +19,7 @@
                 </th>
                 <th scope="col">{{ __('app.name') }}</th>
                 <th scope="col">Merek</th>
+                <th scope="col">Ukuran</th>
                 <th scope="col">{{ __('app.categories') }}</th>
             </tr>
             </thead>
@@ -69,6 +70,7 @@
                         </td>
                         <td class="text-body">${value.name}</td>
                         <td class="text-body">${value.product.name}</td>
+                        <td class="text-body">${value.packaging}</td>
                         <td class="text-body">${value.product.category.name}</td>
                     </tr>
                 `;
