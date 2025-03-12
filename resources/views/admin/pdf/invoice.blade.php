@@ -9,7 +9,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         table {
@@ -51,12 +51,12 @@
 
         .product-table th,
         .product-table td {
-            text-align: center;
+            text-align: left;
         }
 
         .note-section {
             font-size: 12px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .btn-info-custom {
@@ -165,7 +165,7 @@
     <h3>Kepada : {{ $order->customer->store_name }}</h3>
     <table class="product-table">
         <tr>
-            <th>Nama Barang</th>
+            <th class="text-start">Nama Barang</th>
             <th>Qty</th>
             <th>Retur</th>
             <th>@Harga</th>
@@ -218,7 +218,7 @@
         @endphp
         @foreach ($order->orderItems as $item)
             <tr>
-                <td>{{ $item->sku->product->name }} ({{ $item->sku->product->name }})</td>
+                <td class="text-start">{{ $item->sku->product->name }} ({{ $item->sku->name }} {{ $item->sku->packaging }} )</td>
                 <td>{{ $item->quantity }}</td>
                 <td>{{ $item->returns }}</td>
                 <td>Rp. {{ number_format($item->price) }}</td>

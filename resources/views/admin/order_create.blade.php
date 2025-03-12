@@ -58,7 +58,7 @@
                                 <span class="text-secondary label">Diskon</span>
                                 <input type="text" class="form-control h-55 discount" placeholder="0.00">
                             </td>
-                            <td>
+                            <td colspan="2">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="discountPersen" >
                                     <label class="form-check-label" for="discountPersen">
@@ -66,7 +66,6 @@
                                     </label>
                                 </div>
                             </td>
-                            <td></td>
 
                         </tr>
                         <tr>
@@ -75,8 +74,8 @@
                             <td></td>
                             <td></td>
                             <td class="text-body">Sub total:</td>
-                            <td class="text-body" id="subTotal">Rp. 0</td>
-                            <td></td>
+                            <td colspan="2" class="text-body" id="subTotal">Rp. 0</td>
+
                         </tr>
 
                         <tr>
@@ -85,8 +84,7 @@
                             <td></td>
                             <td></td>
                             <td class="text-body">Discount (0%)</td>
-                            <td class="text-body" id="discount">- Rp. 0</td>
-                            <td></td>
+                            <td colspan="2" class="text-body" id="discount">Rp. 0</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -94,8 +92,7 @@
                             <td></td>
                             <td></td>
                             <td class="fw-medium text-secondary">Grand Total</td>
-                            <td class="text-secondary" id="grand_total">Rp. 0</td>
-                            <td></td>
+                            <td colspan="2" class="text-secondary" id="grand_total">Rp. 0</td>
                         </tr>
                         </tbody>
                     </table>
@@ -196,7 +193,7 @@
                         <td>${key + 1}</td>
                         <td> ${value.brand} - ${value.name}</td>
                         <td>
-                            <input type="text" class="form-control ukuran h-55" value="${value.packaging}" id="qty_${value.id}">
+                            <input type="text" class="form-control ukuran h-55" value="${value.packaging}" id="packaging_${value.id}">
                         </td>
                         <td><input type="number" class="form-control input_price h-55" value="${value.price ?? "0"}" id="price_${value.id}"></td>
                         <td>
@@ -213,7 +210,7 @@
             });
             $('#subTotal').text(`${formatRupiah(total)}`);
             let discount = localStorage.getItem('discount') ?? 0;
-            $('#discount').text(`- ${formatRupiah(discount)}`);
+            $('#discount').text(`${formatRupiah("- "+discount)}`);
             $('#grand_total').text(`${formatRupiah(total - discount)}`);
 
             let salesId = localStorage.getItem('sales_id');
@@ -342,6 +339,7 @@
                 formData.append(`items[${index}][product_id]`, item.id);
                 formData.append(`items[${index}][quantity]`, item.qty);
                 formData.append(`items[${index}][price]`, item.price);
+                formData.append(`items[${index}][packaging]`, item.packaging);
                 formData.append(`items[${index}][total]`, item.price * item.qty);
             });
 

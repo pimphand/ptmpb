@@ -273,16 +273,13 @@
                 }
                 let id = $(this).data('id');
                 let url = "{{ route('admin.orders.updateStatus', ':id') }}".replace(':id', id);
-                const {
-                    value: pending,
-                    isConfirmed
-                } = await Swal.fire({
+                const {value: pending, isConfirmed} = await Swal.fire({
                     title: "Pilih Status",
                     input: "select",
                     inputOptions: {
                         "pending": "Pending",
                         "process": "Proses",
-                        // "done": "Selesai",
+                        "success": "Selesai",
                         "cancel": "Batal"
                     },
                     inputPlaceholder: "Pilih Status",

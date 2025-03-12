@@ -17,5 +17,5 @@
             </ol>
         </nav>
     </div>
-    <x-order/>
+    @include('components.order', ['order' => true])
 @endsection

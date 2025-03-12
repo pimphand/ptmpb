@@ -48,7 +48,6 @@ class PdfController extends Controller
                 'method' => $request->method[$key],
                 'date' => Carbon::parse($request->date[$key])->toDateString() . ' ' . now()->toTimeString(),
                 'amount' => $request->amount[$key],
-                'last_payment_date' => Carbon::parse($request->last_payment_date[$key])->toDateString() . ' ' . now()->toTimeString(),
                 'remaining' => $request->remaining[$key],
                 'customer' => $request->customer[$key],
                 'collector' => $request->collector[$key],

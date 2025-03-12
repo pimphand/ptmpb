@@ -35,14 +35,12 @@
                  class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap">
                 <span id="showing-info" class="fs-12 fw-medium">Showing 0 of 0 Results</span>
                 <nav aria-label="Page navigation example">
-                    <ul id="pagination" class="pagination mb-0 justify-content-center"></ul>
+                    <ul id="pagination_" class="pagination mb-0 justify-content-center"></ul>
                 </nav>
             </div>
         </div>
     </div>
 </div>
-
-
 @push('js')
     <script>
         let dataTable = [];
@@ -86,7 +84,7 @@
                     const disabledClass = link.url ? '' : 'disabled';
                     const listItem = `
                         <li class="page-item ${activeClass} ${disabledClass}">
-                            <a class="page-link" href="#" data-page="${link.url ? new URL(link.url).searchParams.get('page') : '#'}">
+                            <a class="page-link" href="#" data-page="${link.url}">
                                 ${link.label}
                             </a>
                         </li>
@@ -155,8 +153,9 @@
                     let errors = error.responseJSON.errors;
                     // Loop untuk menampilkan pesan error
                     $.each(errors, function (key, value) {
-                        $(`[name="${key}"]`).addClass('is-invalid');
-                        $(`[name="${key}"]`).after(
+                        let  input = $(`[name="${key}"]`);
+                        input.addClass('is-invalid');
+                        input.after(
                             `<span class="error-message text-danger">${value[0]}</span>`
                         );
                     });
