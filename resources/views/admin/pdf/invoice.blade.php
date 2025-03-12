@@ -259,6 +259,7 @@
     <tr>
         <th width="10%">Tanggal</th>
         <th width="10%">Kas/Trf</th>
+        <th width="10%">Jatuh Tempo</th>
         <th width="10%">Nominal</th>
         <th width="10%">Sisa (-)</th>
         <th width="10%">Customer</th>
@@ -275,6 +276,8 @@
         <tr>
             <td>{{date('d/m/Y',strtotime($payment->date))}}</td>
             <td>{{$payment->method}}</td>
+            <td>{{$payment->last_payment_date}}</td>
+
             <td>Rp. {{number_format($payment->amount)}}</td>
             <td>Rp. {{number_format($payment->remaining)}}</td>
             <td>{{$payment->customer}}</td>
@@ -315,6 +318,7 @@
                 <tr>
                     <td><input placeholder="Masukkan tanggal" type="date" class="form-control-custom-required" name="date[]" required></td>
                     <td><input placeholder="Masukkan metode" type="text" class="form-control-custom-required" name="method[]" required></td>
+                    <td><input placeholder="Batas Pembayaran" type="date" class="form-control-custom-required" name="last_payment_date[]" required></td>
                     <td><input placeholder="Masukkan jumlah" type="number" class="form-control-custom-required amount" name="amount[]" required></td>
                     <td><input placeholder="Masukkan sisa" value="${sisa}" type="number" class="form-control-custom remaining" readonly name="remaining[]" required></td>
                     <td><input placeholder="Masukkan customer" type="text" value="{{$order->customer->store_name}}" readonly class="form-control-custom" name="customer[]"></td>
@@ -372,6 +376,7 @@
                 remaining: [],
                 customer: [],
                 collector: [],
+                last_payment_date: [],
                 admin: []
             };
 
@@ -396,6 +401,9 @@
             });
             $("input[name='collector[]']").each(function () {
                 data.collector.push($(this).val());
+            });
+            $("input[name='last_payment_date[]']").each(function () {
+                data.last_payment_date.push($(this).val());
             });
             $("input[name='admin[]']").each(function () {
                 data.admin.push($(this).val());
