@@ -35,6 +35,7 @@
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Item Deskripsi</th>
+                            <th scope="col">Ukuran</th>
                             <th scope="col">Harga</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Total</th>
@@ -49,8 +50,9 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td>
-                                <label class="text-secondary label">Diskon</label>
+                                <span class="text-secondary label">Diskon</span>
                                 <input type="text" class="form-control h-55 discount" placeholder="0.00">
                             </td>
                             <td>
@@ -68,6 +70,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td class="text-body">Sub total:</td>
                             <td class="text-body" id="subTotal">Rp. 0</td>
                             <td></td>
@@ -77,11 +80,13 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td class="text-body">Discount (0%)</td>
                             <td class="text-body" id="discount">- Rp. 0</td>
                             <td></td>
                         </tr>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -156,6 +161,7 @@
                         id: data.id,
                         name: data.name,
                         price: price,
+                        packaging: data.packaging,
                         qty: qty,
                         total: price,
                         brand: data.product.name,
@@ -170,6 +176,7 @@
                     id: data.id,
                     name: data.name,
                     price: price,
+                    packaging: data.packaging,
                     qty: qty,
                     total: price,
                     brand: data.product.name,
@@ -191,6 +198,9 @@
                     <tr>
                         <td>${key + 1}</td>
                         <td> ${value.brand} - ${value.name}</td>
+                        <td>
+                            <input type="text" class="form-control ukuran h-55" value="${value.packaging}" id="qty_${value.id}">
+                        </td>
                         <td><input type="number" class="form-control input_price h-55" value="${value.price ?? "0"}" id="price_${value.id}"></td>
                         <td>
                             <input type="number" class="form-control input_qty h-55" value="${value.qty}" id="qty_${value.id}">

@@ -41,7 +41,8 @@
                         <div class="mb-4">
                             <p class="mb-4">Invoice: <span class="text-secondary">#{{$order->id}}</span></p>
                             <p class="mb-1">Invoice Ke:</p>
-                            <p class="mb-1 text-secondary">{{$order?->customer?->name}} ({{$order?->customer?->store_name}}
+                            <p class="mb-1 text-secondary">{{$order?->customer?->name}}
+                                ({{$order?->customer?->store_name}}
                                 )</p>
                             <p class="mb-1 text-secondary">{{$order?->customer?->address}}</p>
                             <p class="mb-1 text-secondary">{{$order?->customer?->phone}}</p>
@@ -135,15 +136,30 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="fw-medium text-secondary">Diskon (-)</td>
-                                    <td class="text-secondary">Rp. {{number_format($order->discount,0,',','.')}}</td>
+                                    <td class="fw-medium text-secondary">
+                                        <span class="_label_discount">Diskon (-)</span>
+                                        <div class="form-check" id="is_persent" style="display: none">
+                                            <input class="form-check-input" type="checkbox" value="persen"
+                                                   name="type_discount" id="discountPersen">
+                                            <label class="form-check-label" for="discountPersen">
+                                                Diskon Persen
+                                            </label>
+                                        </div>
+                                    <td class="text-secondary">
+                                        <span
+                                            class="_label_discount">Rp. {{number_format($order->discount,0,',','.')}}</span>
+                                        <input class="form-control" id="discount" name="discount"
+                                               value="{{$order->discount}}" style="display: none">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td class="fw-medium text-secondary">Grand Total</td>
-                                    <td class="text-secondary">Rp. {{number_format($total-$order->discount,0,',','.')}}</td>
+                                    <td class="text-secondary">
+                                        <span>Rp. {{number_format($total-$order->discount,0,',','.')}}</span>
+                                    </td>
                                 </tr>
                                 <tr class="form-show" style="display: none;background-color: #fd5812;color: #fff;">
                                     <td></td>
@@ -154,8 +170,10 @@
                                         <select class="form-select" name="driver_id">
                                             <option value="">Pilih Pengirim</option>
                                             @foreach($drivers as $driver)
-                                                <option
-                                                    value="{{$driver->id}}" {{$order->driver_id == $driver->id ? 'selected' : ''}}>{{$driver->name}}</option>
+                                                <option value="{{$driver->id}}"
+                                                    {{$order->driver_id == $driver->id ? 'selected' : ''}}>
+                                                    {{$driver->name}}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -236,9 +254,12 @@
             e.preventDefault();
             $('#save').show();
             $('#cancel').show();
+            $('._label_discount').hide();
             $('.form-show').show();
             $('.price').hide();
+            $('#discount').show();
             $(this).hide();
+            $('#is_persent').show()
         });
 
         $('#cancel').click(function (e) {
@@ -247,8 +268,10 @@
             $('#cancel').hide();
             $('.form-show').hide();
             $('.price').show();
-
+            $('#discount').hide();
             $('#edit').show();
+            $('._label_discount').show();
+            $('#is_persent').hide()
         });
 
         function getData() {
