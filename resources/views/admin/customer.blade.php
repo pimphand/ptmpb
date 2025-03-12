@@ -72,7 +72,6 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -113,7 +112,16 @@
                                 <input type="text" class="form-control" id="npwp" name="npwp"
                                        placeholder="masukan alamat lengkap">
                             </div>
+                            <div class="mb-2 col-6">
+                                <label for="state" class="form-label">Provinsi</label>
+                                <select class="form-select form-control" name="state" id="state"></select>
+                            </div>
+                            <div class="mb-2 col-6">
+                                <label for="city" class="form-label">Kota</label>
+                                <select class="form-select form-control" name="city" id="city">
 
+                                </select>
+                            </div>
                             <div class="mb-2 col-6">
                                 <label for="store_photo" class="form-label">Foto Toko</label>
                                 <input type="file" class="form-control" id="store_photo" name="store_photo">
@@ -122,7 +130,7 @@
                                 <img src="" width="200px" alt="" id="store_photo-preview">
                             </div>
                             <div class="mb-2 col-6">
-                                <label for="owner_photo" class="form-label">Foto Pemilik</label>
+                                <label for="owner_photo" class="form-label">Foto KTP</label>
                                 <input type="file" class="form-control" id="owner_photo" name="owner_photo">
                             </div>
                             <div class="mb-2 col-6">
@@ -154,7 +162,7 @@
         let dataTable = [];
 
         function getData(page = 1, query = '') {
-            $.get(`{{ route('admin.customers.data') }}?page=${page}&search=${query}`, function(response) {
+            $.get(`{{ route('admin.customers.data') }}?page=${page}&search=${query}`, function (response) {
                 const {
                     data,
                     meta,
@@ -166,7 +174,7 @@
                 $('#pagination').empty();
 
                 // Render data
-                $.each(data, function(key, value) {
+                $.each(data, function (key, value) {
                     let url = `{{ route('admin.customers.destroy', ':id') }}`.replace(':id', value.id);
                     let urlEdit = `{{ route('admin.customers.edit', ':id') }}`.replace(':id', value.id);
                     const row = `
@@ -174,7 +182,7 @@
                         <td class="text-body">
                             ${key + 1}
                         </td>
-                        <td class="text-body flex"><img src="${value.store_photo ? '{{ asset('storage') }}/'+value.store_photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}"> ${value.name}</td>
+                        <td class="text-body flex"><img src="${value.store_photo ? '{{ asset('storage') }}/' + value.store_photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}"> ${value.name}</td>
                         <td class="text-body">${value.store_name ?? '-'}</td>
                         <td class="text-body">${value.address ?? '-'}</td>
                         <td class="text-body">${value.phone ?? '-'}</td>
@@ -198,7 +206,7 @@
                 $('#showing-info').text(`Showing ${meta.from} to ${meta.to} of ${meta.total} Results`);
 
                 // Render pagination
-                $.each(meta.links, function(index, link) {
+                $.each(meta.links, function (index, link) {
                     const activeClass = link.active ? 'active' : '';
                     const disabledClass = link.url ? '' : 'disabled';
                     const listItem = `
@@ -212,7 +220,7 @@
                 });
 
                 // Add click event for pagination links
-                $('#pagination .page-link').click(function(e) {
+                $('#pagination .page-link').click(function (e) {
                     e.preventDefault();
                     const page = $(this).data('page');
                     if (page && page !== '#') {
@@ -222,7 +230,7 @@
             });
         }
 
-        $('#search').on('input', function() {
+        $('#search').on('input', function () {
             const query = $(this).val();
             getData(1, query); // Fetch data from page 1 with search query
         });
@@ -230,7 +238,7 @@
         getData();
 
         //edit
-        $('#dataTable').on('click', '.edit', function() {
+        $('#dataTable').on('click', '.edit', function () {
             const id = $(this).data('id');
             const data = dataTable.find(item => item.id === id);
             let form = $('#form');
@@ -245,6 +253,8 @@
             $('#store_name').val(data.store_name);
             $('#npwp').val(data.npwp);
             $('#user_id').val(data.user_id);
+            $('#state').val(data.state);
+            $('#city').html('<option value="' + data.city + '">' + data.city + '</option>');
             $('#store_photo-preview').attr('src', data.store_photo ? `{{ asset('storage') }}/${data.store_photo}` : '');
             $('#owner_photo-preview').attr('src', data.owner_photo ? `{{ asset('storage') }}/${data.owner_photo}` : '');
             $('#is_blacklist').val(data.is_blacklist);
@@ -253,11 +263,11 @@
         });
 
         //add
-        $('.add').click(function() {
+        $('.add').click(function () {
             $('#form').attr('action', `{{ route('admin.customers.store') }}`);
             $('#form').trigger('reset');
-            $('#store_photo-preview').attr('src','');
-            $('#owner_photo-preview').attr('src','');
+            $('#store_photo-preview').attr('src', '');
+            $('#owner_photo-preview').attr('src', '');
             //Remove method put
             $('#form [name="_method"]').remove();
             $('#staticBackdropLabel').text('Tambah User');
@@ -265,29 +275,57 @@
         });
 
         //photo-preview
-        $('#store_photo').change(function() {
+        $('#store_photo').change(function () {
             const file = this.files[0];
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#store_photo-preview').attr('src', e.target.result);
             }
             reader.readAsDataURL(file);
         });
 
         //photo-preview
-        $('#owner_photo').change(function() {
+        $('#owner_photo').change(function () {
             const file = this.files[0];
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#owner_photo-preview').attr('src', e.target.result);
             }
             reader.readAsDataURL(file);
         });
 
         //#save
-        $('#save').click(function(e) {
+        $('#save').click(function (e) {
             e.preventDefault();
             formSendData();
         });
+
+        $.get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json', function ($response) {
+            $.each($response, function (key, value) {
+                $('#state').append(`<option data-id="${value.id}" value="${value.name}">${value.name}</option>`);
+            });
+        });
+
+        $('#state').change(function (e) {
+            const stateId = $('#state option:selected').data('id'); // Get selected option's data-id
+            console.log(stateId);
+            // Clear existing options
+            $('#city').empty();
+
+            $.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${stateId}.json`, function ($response) {
+                // Check if there are any cities returned
+                if ($response && $response.length) {
+                    $.each($response, function (key, value) {
+                        $('#city').append(`<option data-id="${value.id}" value="${value.name}">${value.name}</option>`);
+                    });
+                } else {
+                    $('#city').append('<option>No cities available</option>');
+                }
+            }).fail(function () {
+                // Handle request failure
+                $('#city').append('<option>Failed to load cities</option>');
+            });
+        });
+
     </script>
 @endpush

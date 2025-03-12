@@ -148,7 +148,10 @@
         <th width="10%">UNIT</th>
         <th width="35%">KET.</th>
     </tr>
-
+    @php
+        $catatan = '';
+        $total = 0;
+    @endphp
     @foreach($order->orderItems as $item)
         <tr>
             <td>{{ $loop->iteration }}</td>
@@ -158,6 +161,16 @@
             <td>{{ $item->unit }}</td>
             <td>{{ $item->note }}</td>
         </tr>
+
+        @if($item->return_reason)
+            @php
+                $catatan = $item->return_reason;
+            @endphp
+        @endif
+
+        @php
+            $total += $item->quantity;
+        @endphp
     @endforeach
 </table>
 
@@ -168,12 +181,12 @@
             <table style="width: 100%;">
                 <tr>
                     <td style="border:none;text-align: left; ">
-                        <b>Total : </b>
+                        <b>Total : {{$total}} Item</b>
                     </td>
                 </tr>
                 <tr>
                     <td style="border:none;text-align: left; ">
-                        <b>Catatan :</b>
+                        <b>Catatan : {{$catatan}}</b>
                     </td>
                 </tr>
             </table>

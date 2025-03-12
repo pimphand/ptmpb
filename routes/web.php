@@ -27,6 +27,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard-data', [\App\Http\Controllers\Admin\DashboardController::class, 'dashboardData'])->name('dashboard.data');
     Route::get('/order-count', [\App\Http\Controllers\Admin\DashboardController::class, 'order'])->name('order.count');
 
+    Route::get('/report', [\App\Http\Controllers\Admin\DashboardController::class, 'report'])->name('report');
+    Route::get('/report-data', [\App\Http\Controllers\Admin\DashboardController::class, 'reportData'])->name('report.data');
+
+
     // category
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->middleware('permission:categories-read');
     Route::get('categories-data', [\App\Http\Controllers\Admin\CategoryController::class, 'data'])->name('categories.data')->middleware('permission:categories-read');

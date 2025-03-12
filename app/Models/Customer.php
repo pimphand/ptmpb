@@ -23,6 +23,8 @@ class Customer extends Model
         'others',
         'user_id',
         'is_blacklist',
+        'city',
+        'state',
     ];
 
     protected $hidden = [

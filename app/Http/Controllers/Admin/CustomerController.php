@@ -50,6 +50,7 @@ class CustomerController extends Controller
             'npwp' => 'nullable',
             'others' => 'nullable',
             'user_id' => 'required|exists:users,id',
+
         ]);
 
         Customer::create(array_merge($validated->validated(), [
@@ -57,6 +58,8 @@ class CustomerController extends Controller
             'owner_photo' => $request->file('owner_photo')->store('customer/owner_photo', 'public'),
             'user_id' => $request->user_id,
             'is_blacklist' => $request->is_blacklist,
+            'city' => $request->city,
+            'state' => $request->state,
         ]));
 
         return response()->json(['message' => 'Customer created'], 201);
@@ -99,6 +102,8 @@ class CustomerController extends Controller
             'owner_photo' => $request->file('owner_photo') ? $request->file('owner_photo')->store('customer/owner_photo', 'public') : $customer->owner_photo,
             'user_id' => $request->user_id,
             'is_blacklist' => $request->is_blacklist == 1 ? true : false,
+            'city' => $request->city,
+            'state' => $request->state,
         ]));
 
         return [

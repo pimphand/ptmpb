@@ -17,16 +17,22 @@ class DashboardController extends Controller
 {
     public function index(Request $request): View|Factory|Application
     {
-        $totalItem = OrderItem::sum('quantity');
+        $totalItem = OrderItem::whereHas('order', function ($query) {
+            $query->where('status', 'success');
+        })->sum('quantity');
+
         $sales = User::whereHas('roles', function ($query) {
             $query->where('name', 'sales');
         })
             ->withCount(['orders as success_orders_count' => function ($query) {
                 $query->where('status', 'success');
             }])
-            ->withSum('payments', 'amount') // Perbaikan withSum
-            ->whereHas('orders.orderItems')
-            ->orderByDesc('success_orders_count') // Bisa juga pakai 'payments_sum_amount' jika ingin berdasarkan total pembayaran
+
+            ->withSum('payments', 'amount')
+            ->whereHas('orders', function ($query) {
+                $query->where('status', 'success');
+            })
+            ->orderByDesc('success_orders_count')
             ->limit(5)
             ->get();
 
@@ -34,6 +40,7 @@ class DashboardController extends Controller
             $query->whereNull('deleted_at'); // Ensure the user is not soft deleted
         })
         )->sum('amount');
+
         return view('admin.dashboard', [
             'total_item' => $totalItem,
             'total_order' => Order::whereHas('user', function ($query) {
@@ -63,6 +70,16 @@ class DashboardController extends Controller
     public function dashboardData(): \Illuminate\Http\JsonResponse
     {
 
+        return response()->json();
+    }
+
+    public function report(Request $request)
+    {
+        return view('admin.report');
+    }
+
+    public function reportData(Request $request)
+    {
         return response()->json();
     }
 }

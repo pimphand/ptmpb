@@ -8,7 +8,13 @@
                 <span class="material-symbols-outlined menu-icon">dashboard</span>
                 <span class="title">{{ __('app.dashboard') }}</span>
             </a>
+        </li>
 
+        <li class="menu-item">
+            <a href="{{ route('admin.report') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">report</span>
+                <span class="title">Report</span>
+            </a>
         </li>
 
         <li class="menu-title small text-uppercase">
@@ -22,58 +28,58 @@
                 <span class="title">Brand</span>
             </a>
         </li>
-            <li class="menu-item">
-                <a href="{{ route('admin.categories.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">widgets</span>
-                    <span class="title">{{ __('app.categories') }} {{ __('app.product') }}</span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.categories.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">widgets</span>
+                <span class="title">{{ __('app.categories') }} {{ __('app.product') }}</span>
+            </a>
+        </li>
         @endpermission
 
         @permission('products-read')
-            <li class="menu-item">
-                <a href="{{ route('admin.products.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">featured_video</span>
-                    <span class="title">{{ __('app.product') }}</span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.products.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">featured_video</span>
+                <span class="title">{{ __('app.product') }}</span>
+            </a>
+        </li>
         @endpermission
 
         @permission('blog-categories-read')
-            <li class="menu-item">
-                <a href="{{ route('admin.blog-categories.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">widgets</span>
-                    <span class="title">{{ __('app.categories') }} {{ __('app.blog') }}</span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.blog-categories.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">widgets</span>
+                <span class="title">{{ __('app.categories') }} {{ __('app.blog') }}</span>
+            </a>
+        </li>
         @endpermission
 
         @permission('blog-read')
-            <li class="menu-item">
-                <a href="{{ route('admin.blogs.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">auto_stories</span>
-                    <span class="title">{{ __('app.blog') }}</span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.blogs.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">auto_stories</span>
+                <span class="title">{{ __('app.blog') }}</span>
+            </a>
+        </li>
         @endpermission
 
         @permission('order-read')
-            <li class="menu-item">
-                <a href="{{ route('admin.orders.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">shopping_cart</span>
-                    <span class="title">Order </span>
-                    <span class="count" style="display: none"></span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.orders.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">shopping_cart</span>
+                <span class="title">Order </span>
+                <span class="count" style="display: none"></span>
+            </a>
+        </li>
         @endpermission
 
         @permission('users-read')
-            <li class="menu-item">
-                <a href="{{ route('admin.users.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">account_circle</span>
-                    <span class="title">User</span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.users.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">account_circle</span>
+                <span class="title">User</span>
+            </a>
+        </li>
         @endpermission
 
         @role(['developer', 'admin'])
@@ -92,46 +98,46 @@
         @endpermission
 
         @role('developer')
-            <li class="menu-item">
-                <a href="/laratrust/roles-assignment" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">lock</span>
-                    <span class="title">Role & Permission</span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="/laratrust/roles-assignment" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">lock</span>
+                <span class="title">Role & Permission</span>
+            </a>
+        </li>
         @endrole
 
         @role(['developer', 'admin'])
-            <li class="menu-title small text-uppercase">
-                <span class="menu-title-text">{{ __('app.company') }}</span>
-            </li>
+        <li class="menu-title small text-uppercase">
+            <span class="menu-title-text">{{ __('app.company') }}</span>
+        </li>
 
-            <li class="menu-item">
-                <a href="{{ route('admin.about-us.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">real_estate_agent</span>
-                    <span class="title">{{ __('app.about_us') }}</span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.about-us.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">real_estate_agent</span>
+                <span class="title">{{ __('app.about_us') }}</span>
+            </a>
+        </li>
 
-{{--            <li class="menu-item">--}}
-{{--                <a href="{{ route('admin.messages.index') }}" class="menu-link">--}}
-{{--                    <span class="material-symbols-outlined menu-icon">handshake</span>--}}
-{{--                    <span class="title">Pesan</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-            <li class="menu-item">
-                <a href="{{ route('admin.contact.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">map</span>
-                    <span class="title">Kontak</span>
-                </a>
-            </li>
+        {{--            <li class="menu-item">--}}
+        {{--                <a href="{{ route('admin.messages.index') }}" class="menu-link">--}}
+        {{--                    <span class="material-symbols-outlined menu-icon">handshake</span>--}}
+        {{--                    <span class="title">Pesan</span>--}}
+        {{--                </a>--}}
+        {{--            </li>--}}
+        <li class="menu-item">
+            <a href="{{ route('admin.contact.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">map</span>
+                <span class="title">Kontak</span>
+            </a>
+        </li>
         @endrole
         @permission('gallery-read')
-            <li class="menu-item">
-                <a href="{{ route('admin.galleries.index') }}" class="menu-link">
-                    <span class="material-symbols-outlined menu-icon">gallery_thumbnail</span>
-                    <span class="title">{{ __('app.gallery') }}</span>
-                </a>
-            </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.galleries.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">gallery_thumbnail</span>
+                <span class="title">{{ __('app.gallery') }}</span>
+            </a>
+        </li>
         @endpermission
 
         <li class="menu-item">
