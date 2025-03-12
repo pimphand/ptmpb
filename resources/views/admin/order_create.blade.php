@@ -5,20 +5,23 @@
             <form class="mb-4">
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
-                        <div class="mb-0 border p-4 rounded-3 position-relative">
-                            <p class="mb-4 text-secondary fw-medium">Sales:</p>
-                            <ul class="list-group" style="max-height: 300px; overflow-y: auto;" id="sales">
-                                @foreach($sales as $sale)
-                                    <li class="list-group-item cursor sales"
-                                        data-id="{{$sale->id}}">{{$sale->name}}</li>
-                                @endforeach
-                            </ul>
+                        <div class="mb-0 border p-4 rounded-3">
+                            <div class="mb-4 text-secondary fw-medium items-center">
+                                <form class="position-relative table-src-form me-0">
+                                    <input type="text" class="form-control-sm" id="search_sales" placeholder="Cari Customer">
+                                </form>
+                            </div>
+                            <ul class="list-group" style="max-height: 200px; overflow-y: auto;" id="sales"></ul>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <div class="mt-4 mt-md-0 border p-4 rounded-3 position-relative h-md-100">
-                            <p class="mb-4 text-secondary fw-medium">Customer:</p>
-                            <ul class="list-group" style="max-height: 300px; overflow-y: auto;" id="customer"></ul>
+                        <div class="mb-0 border p-4 rounded-3">
+                            <div class="mb-4 text-secondary fw-medium items-center">
+                                <form class="position-relative table-src-form me-0">
+                                    <input type="text" class="form-control-sm" id="search_customer" placeholder="Cari Customer">
+                                </form>
+                            </div>
+                            <ul class="list-group" style="max-height: 200px; overflow-y: auto;" id="customer"></ul>
                         </div>
                     </div>
                 </div>
@@ -111,17 +114,11 @@
 @push('js')
     <script>
         let salesId = 0;
-        $('.sales').click(function (e) {
+        $(document).on('click','.sales',function () {
             let id = $(this).data('id');
             if (salesId !== id) {
                 $('.sales').removeClass('list-group-item-success');
-                let url = '{{ route('admin.orders.customer', ':id') }}'.replace(':id', $(this).data('id'));
-                $('#customer').empty();
-                $.get(url, function (response) {
-                    $.each(response, function (index, value) {
-                        $('#customer').append('<li class="mb-1 list-group-item cursor customer" data-name="' + value.name + '" data-id="' + value.id + '">' + value.name + '</li>');
-                    });
-                });
+                customer(id)
 
                 $(this).addClass('list-group-item-success');
                 salesId = id;
@@ -381,6 +378,33 @@
                 }
             });
         });
+        sales()
+        function sales(search = '') {
+            $.get('{{ route('admin.sales.data') }}', {search: search}, function (response) {
+                $('#sales').empty();
+                $.each(response.data, function (index, value) {
+                    $('#sales').append('<li class="list-group-item cursor sales" data-id="' + value.id + '">' + value.name + '</li>');
+                });
+            });
+        }
 
+        $('#search_sales').on('input', function () {
+            sales($(this).val());
+        });
+
+        $('#search_customer').on('input', function () {
+
+            customer(salesId,$(this).val());
+        });
+
+        function customer(id, search = '') {
+            let url = '{{ route('admin.orders.customer', ':id') }}'.replace(':id', id) + '?search=' + search;
+            $('#customer').empty();
+            $.get(url, function (response) {
+                $.each(response, function (index, value) {
+                    $('#customer').append('<li class="mb-1 list-group-item cursor customer" data-name="' + value.name + '" data-id="' + value.id + '">' + value.name + '</li>');
+                });
+            });
+        }
     </script>
 @endpush

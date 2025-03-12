@@ -105,8 +105,13 @@ class OrderController extends Controller
         return view('admin.order_detail', compact('order', 'drivers'));
     }
 
-    public function customer($id)
+    public function customer(Request $request, $id)
     {
-        return Customer::where('user_id', $id)->get();
+        return Customer::where('user_id', $id)
+            ->where(function ($query) use ($request) {
+                $query->where('name', 'like', "%$request->search%")
+                    ->orWhere('store_name', 'like', "%$request->search%");
+            })
+            ->get();
     }
 }
