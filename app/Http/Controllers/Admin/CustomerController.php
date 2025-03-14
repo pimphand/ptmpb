@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
@@ -128,10 +129,31 @@ class CustomerController extends Controller
                 ->orWhere('phone', 'like', "%{$request->search}%")
                 ->orWhere('store_name', 'like', "%{$request->search}%");
         })
-            ->latest()
+            ->join('orders', 'customers.id', '=', 'orders.customer_id')
+            ->join(DB::raw('(SELECT p1.order_id, p1.amount, p1.remaining
+            FROM payments p1
+            JOIN (
+                SELECT order_id, MAX(date) as latest_date
+                FROM payments
+                GROUP BY order_id
+            ) p2
+            ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
+        ) latest_payments'), 'orders.id', '=', 'latest_payments.order_id')
+            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->leftJoin(DB::raw('(SELECT customer_id, SUM(discount) as total_discount
+                    FROM orders
+                    WHERE status = "success"
+                    GROUP BY customer_id) order_discounts'),
+                'customers.id', '=', 'order_discounts.customer_id')
+            ->select(
+                'customers.*',
+                DB::raw('SUM(order_items.quantity * order_items.price) as total_order_value'),
+                DB::raw('MAX(latest_payments.remaining) as total_remaining'),
+                DB::raw('MAX(IFNULL(order_discounts.total_discount, 0)) as total_discount')
+            )
+            ->groupBy('customers.id')
             ->paginate(10);
 
-        //        dd($customers);
         return CustomerResource::collection($customers);
     }
 }

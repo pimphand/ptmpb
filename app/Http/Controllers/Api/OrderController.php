@@ -109,22 +109,10 @@ class OrderController extends Controller
 
                 $sku->total_order += $value['quantity'];
                 $sku->save();
-
-                $total += $value['quantity'] * ($value['price'] ?? 0);
             }
 
             $order->items = $items;
             $order->save();
-
-            $order->payments()->create([
-                'method' => "System",
-                'date' => now(),
-                'amount' => 0,
-                'remaining' => $total,
-                'customer' => $order->customer->store_name,
-                'collector' => "System",
-                'admin' => "System",
-            ]);
 
             return response()->json([
                 'message' => 'Order created',

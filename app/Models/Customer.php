@@ -28,15 +28,18 @@ class Customer extends Model
     ];
 
     protected $hidden = [
-        //        'is_blacklist',
         'created_at',
         'updated_at',
         'deleted_at',
-        //        'user_id',
     ];
 
     public function scopeIsBlock($query, $bool = false)
     {
         return $query->where('is_blacklist', $bool);
+    }
+
+    public  function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

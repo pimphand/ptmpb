@@ -301,7 +301,6 @@
         </thead>
         <tbody>
             @php
-                $sisa = 0;
                 $paid = 0;
             @endphp
             @foreach ($order->payments as $payment)
@@ -317,7 +316,6 @@
                     <td>{{ $payment->admin }}</td>
                 </tr>
                 @php
-                    $sisa += $payment->remaining;
                     $paid += $payment->amount;
                 @endphp
             @endforeach
@@ -342,7 +340,7 @@
         $(document).ready(function() {
             let maxAmount = {{ $subTotal - $totalRetur - $order->discount - $paid }}; // Batas jumlah maksimal
             let totalAmount = 0;
-            let sisa = {{ $sisa ?? 0 }};
+            let sisa = {{$order->payments->first()->remaining - $totalRetur - $order->discount}};
             // Tambah baris baru
             $(".add").click(function(e) {
                 e.preventDefault();

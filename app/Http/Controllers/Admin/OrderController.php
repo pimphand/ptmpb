@@ -36,22 +36,38 @@ class OrderController extends Controller
 
     public function update(Request $request, Order $order): JsonResponse
     {
+        $total = 0;
         foreach ($request->id as $key => $id) {
             $item = $order->orderItems()->find($id);
             $item->price = $request->value[$key];
             $item->note = $request->note[$key];
             $item->quantity = $request->quantity[$key];
             $item->save();
+
+            $total += $item->price * $item->quantity;
         }
 
         if ($order->status == 'pending') {
             $order->status = 'process';
         }
+
         $order->driver_id = $request->driver_id;
         $order->date_delivery = $request->delivery_date;
         $order->type_discount = $request->type_discount ?? null;
         $order->discount = $request->type_discount ? $request->discount * ($request->discount / 100) : $request->discount;
         $order->save();
+
+        if (!$order->driver_id){
+            $order->payments()->create([
+                'method' => "System",
+                'date' => now(),
+                'amount' => 0,
+                'remaining' => $total,
+                'customer' => $order->customer->store_name,
+                'collector' => "System",
+                'admin' => "System",
+            ]);
+        }
 
         return response()->json([
             'success' => true,
