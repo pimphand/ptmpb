@@ -72,16 +72,31 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
+        $remaining = DB::table('payments as p1')
+            ->selectRaw('SUM(p1.remaining) as total_remaining')
+            ->whereRaw('p1.created_at = (
+        SELECT MAX(p2.created_at)
+        FROM payments p2
+        WHERE p2.order_id = p1.order_id
+    )')
+            ->whereIn('p1.order_id', Order::where('customer_id', $customer->id)->pluck('id'))
+            ->value('total_remaining');
+
         $order = Order::where('customer_id', $customer->id)
-            ->whereIn('orders.status', ['success', 'done']) // Menyebutkan tabel dengan eksplisit
+            ->whereIn('orders.status', ['success', 'done'])
             ->whereBetween('orders.created_at', [now()->startOfYear(), now()->endOfYear()])
             ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
-            ->selectRaw(
-                'orders.status, COALESCE(SUM(order_items.quantity * order_items.price), 0) as total_pembelian')
+            ->selectRaw('orders.status, COALESCE(SUM(order_items.quantity * order_items.price), 0) as total_pembelian')
+            ->selectRaw('orders.status,COALESCE(SUM(order_items.returns * order_items.price), 0) as total_retur')
+            ->selectRaw('orders.status,COALESCE(SUM(order_items.returns), 0) as total_produk_retur')
+            ->selectRaw('orders.status,COALESCE(SUM(order_items.quantity), 0) as total_produk')
+            ->selectRaw('orders.status,COALESCE(SUM(orders.discount), 0) as total_discount')
             ->groupBy('orders.status')
             ->first();
-        dd($order);
-        return view('admin.customer_detail', compact('customer','order','customers'));
+       
+        $order->total_remaining_payment = $remaining;
+
+        return view('admin.customer_detail', compact('customer', 'order',));
     }
 
     /**
@@ -149,8 +164,8 @@ class CustomerController extends Controller
                         GROUP BY order_id
                     ) p2 ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
                 ) latest_payments'), 'orders.id', '=', 'latest_payments.order_id')
-                            ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
-                            ->leftJoin(DB::raw('(
+            ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->leftJoin(DB::raw('(
                     SELECT customer_id, SUM(discount) as total_discount
                     FROM orders
                     WHERE status = "success"

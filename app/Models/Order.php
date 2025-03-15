@@ -28,7 +28,8 @@ class Order extends Model
         'surat_jalan',
         'invoice',
         'bukti_pengiriman',
-        'tanggal_pengiriman'
+        'tanggal_pengiriman',
+        'paid'
     ];
 
     protected $casts = [

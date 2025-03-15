@@ -287,6 +287,11 @@
         <li>Pembayaran dengan CEK DAN GIRO dianggap sah setelah Cek/Giro tersebut dapat diuangkan</li>
     </ol>
 </div>
+@auth
+    <label class="form">
+        <input class="form form-control-custom-required paid" name="paid" value="on" type="checkbox"> Tandai Lunas
+    </label>
+@endauth
 <h4>Rincian</h4>
 <table>
     <thead>
@@ -322,6 +327,7 @@
         @endphp
     @endforeach
     </tbody>
+    @auth
     <tbody class="form" id="form">
     </tbody>
     <tbody class="form">
@@ -334,11 +340,26 @@
         </td>
     </tr>
     </tbody>
+    @endauth
 </table>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    @auth
     $(document).ready(function () {
         let maxAmount = {{ $subTotal - $totalRetur - $order->discount - $paid }}; // Batas jumlah maksimal
         let totalAmount = 0;
@@ -384,7 +405,10 @@
             });
 
             if (totalAmount > maxAmount) {
-                alert(`Jumlah tidak boleh melebihi batas Rp${maxAmount}`);
+                Toast.fire({
+                    icon: "error",
+                    title: `Jumlah tidak boleh melebihi batas Rp${maxAmount}`
+                });
                 $(this).val("");
             }
             $('.remaining').val(maxAmount - totalAmount);
@@ -416,50 +440,79 @@
 
             let isValid = true;
 
-            $("input[name='date[]']").each(function () {
-                data.date.push($(this).val());
+            // Validasi input date
+            const dateInputs = $("input[name='date[]']").toArray();
+            const hasEmptyDate = dateInputs.some(input => {
+                const value = $(input).val();
+                if (!value) {
+                    Toast.fire({
+                        icon: "error",
+                        title: "Tanggal pembayaran wajib diisi."
+                    });
+                    isValid = false;
+                    return true; // Hentikan iterasi jika menemukan yang kosong
+                }
+                data.date.push(value);
+                return false;
             });
+
+            if (hasEmptyDate) return;
+
             $("input[name='method[]']").each(function () {
                 data.method.push($(this).val());
             });
+
             $("input[name='amount[]']").each(function () {
                 let value = parseFloat($(this).val()) || 0;
                 data.amount.push(value);
             });
+
             $("input[name='remaining[]']").each(function () {
                 let value = parseFloat($(this).val()) || 0;
                 data.remaining.push(value);
             });
+
             $("input[name='customer[]']").each(function () {
                 data.customer.push($(this).val());
             });
+
             $("input[name='collector[]']").each(function () {
                 data.collector.push($(this).val());
             });
+
             $("input[name='last_payment_date[]']").each(function () {
                 data.last_payment_date.push($(this).val());
             });
+
             $("input[name='admin[]']").each(function () {
                 data.admin.push($(this).val());
             });
 
-            // Validasi akhir sebelum submit
+            // Validasi total amount
             if (totalAmount > maxAmount) {
-                alert(`Total pembayaran tidak boleh melebihi Rp${maxAmount}`);
+                Toast.fire({
+                    icon: "error",
+                    title: `Total pembayaran tidak boleh melebihi Rp${maxAmount}`
+                });
                 isValid = false;
             }
 
             if (isValid) {
                 $.post("{{ route('admin.order.payment.store', encrypt($order->id)) }}", data)
                     .done(function (response) {
-                        window.location.reload();
+                        // window.location.reload();
                     })
                     .fail(function (xhr) {
-                        alert("Data gagal disimpan");
+                        Toast.fire({
+                            icon: "error",
+                            title: "Data gagal disimpan"
+                        });
                     });
             }
         });
+
     });
+    @endauth
 </script>
 
 </body>

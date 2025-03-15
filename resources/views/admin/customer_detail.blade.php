@@ -16,71 +16,7 @@
             </ol>
         </nav>
     </div>
-{{--    <div class="row justify-content-center">--}}
-{{--        <div class="col-lg-6">--}}
-{{--            <div class="card bg-primary border-0 rounded-3 welcome-box style-two mb-4 position-relative">--}}
-{{--                <div class="card-body py-38 px-4">--}}
-{{--                    <div class="mb-5">--}}
-{{--                        <h3 class="text-white fw-semibold">Selamat Datang, <span--}}
-{{--                                class="text-danger-div">{{ $customer->name }}</span></h3>--}}
-{{--                    </div>--}}
 
-{{--                    <div class="d-flex align-items-center flex-wrap gap-4 gap-xxl-5">--}}
-
-{{--                        <div class="d-flex align-items-center welcome-status-item style-two">--}}
-{{--                            <div class="flex-shrink-0">--}}
-{{--                                <i class="material-symbols-outlined">Target</i>--}}
-{{--                            </div>--}}
-{{--                            <div class="flex-grow-1 ms-3">--}}
-{{--                                <h5 class="text-white fw-semibold mb-0 fs-16">--}}
-{{--                                    Rp.{{ number_format($customer->target_sales) }}</h5>--}}
-{{--                                <p class="text-light">Target Penjualan</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="d-flex align-items-center welcome-status-item style-two">--}}
-{{--                            <div class="flex-shrink-0">--}}
-{{--                                <i class="material-symbols-outlined icon-bg two">local_library</i>--}}
-{{--                            </div>--}}
-{{--                            <div class="flex-grow-1 ms-3">--}}
-{{--                                <h5 class="text-white fw-semibold mb-0 fs-16">Rp.{{ number_format($order->total ?? 0) }}--}}
-{{--                                </h5>--}}
-{{--                                <p class="text-light">Sedang Berjalan</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="d-flex align-items-center welcome-status-item style-two">--}}
-{{--                            <div class="flex-shrink-0">--}}
-{{--                                <i class="material-symbols-outlined icon-bg two">local_library</i>--}}
-{{--                            </div>--}}
-{{--                            <div class="flex-grow-1 ms-3">--}}
-{{--                                <h5 class="text-white fw-semibold mb-0 fs-16">--}}
-
-{{--                                    %--}}
-{{--                                </h5>--}}
-{{--                                <p class="text-light">Pencapaian</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-6">--}}
-{{--            <div class="row justify-content-center">--}}
-{{--                @php--}}
-{{--                    $statusColors = [--}}
-{{--                        'pending' => 'primary',--}}
-{{--                        'process' => 'warning',--}}
-{{--                        'success' => 'success',--}}
-{{--                        'cancel' => 'danger',--}}
-{{--                        'done' => 'success',--}}
-{{--                    ];--}}
-{{--                @endphp--}}
-
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
     <div class="row">
         <div class="col-xxl-3">
             <div class="row">
@@ -90,12 +26,14 @@
                             <h3 class="mb-3 mb-lg-4">Foto Toko</h3>
 
                             <div class="d-flex align-items-center mb-4">
-                                <img src="{{asset('storage/'.$customer->store_photo)}}" alt="" style="max-width: 200px; max-height: 200px;">
+                                <img src="{{asset('storage/'.$customer->store_photo)}}" alt=""
+                                     style="max-width: 200px; max-height: 200px;">
                             </div>
                             <h4 class="fw-semibold fs-14 mb-2 pb-1">KTP</h4>
 
                             <div class="d-flex align-items-center mb-4">
-                                <img src="{{asset('storage/'.$customer->owner_photo)}}" class="align-items-center" alt="" style="max-width: 200px; max-height: 200px;">
+                                <img src="{{asset('storage/'.$customer->owner_photo)}}" class="align-items-center"
+                                     alt="" style="max-width: 200px; max-height: 200px;">
                             </div>
                         </div>
                     </div>
@@ -109,9 +47,31 @@
                                     <span>Nama Lengkap:</span>
                                     <span class="text-secondary fw-medium ms-1">{{ $customer->name }}</span>
                                 </li>
+                                @php
+                                    $phone = $customer->phone;
+
+                                    // Menghapus karakter non-digit
+                                    $phone = preg_replace('/\D/', '', $phone);
+
+                                    // Menangani berbagai format
+                                    if (strpos($phone, '62') === 0) {
+                                        $formattedPhone = $phone; // Sudah diawali dengan 62
+                                    } elseif (strpos($phone, '0') === 0) {
+                                        $formattedPhone = '62' . substr($phone, 1); // Ganti 0 dengan 62
+                                    } elseif (strpos($phone, '8') === 0) {
+                                        $formattedPhone = '62' . $phone; // Tambahkan 62 di depan jika langsung dimulai dengan 8
+                                    } elseif (strpos($phone, '+62') === 0) {
+                                        $formattedPhone = substr($phone, 1); // Hilangkan + dan tetap gunakan 62
+                                    } else {
+                                        $formattedPhone = $phone; // Format lain, biarkan apa adanya
+                                    }
+                                @endphp
+
+
                                 <li class="d-flex align-items-center mb-2 pb-1">
                                     <span>No Whatsapp:</span>
-                                    <span class="text-secondary fw-medium ms-1">{{ $customer->phone }}</span>
+                                    <span class="text-secondary fw-medium ms-1">
+                                        <a target="_blank" href="https://wa.me/{{ $formattedPhone }}">{{ $formattedPhone }}</a></span>
                                 </li>
                                 <li class="d-flex align-items-center">
                                     <span>Alamat:</span>
@@ -126,20 +86,48 @@
         </div>
         <div class="col-xxl-9">
             <div class="card bg-white border-0 rounded-3 mb-4">
-                <div class="card-header bg-white border-0 pb-0">
-                    <h3>{{$customer->store_name}}</h3>
-                    <small>{{$customer->owner_address}}</small>
+                <div class="card-header bg-white border-0 pb-0 d-flex justify-content-between">
+                    <div>
+                        <h3>{{$customer->store_name}}</h3>
+                        <small>{{$customer->owner_address}}</small>
+                    </div>
+                    <div>
+                        <h6 class="hover-bg btn btn-outline-success text-success text-start">{{$order->total_produk_retur}} Total Produk
+                            <br>{{$order->total_produk_retur}} Total Retur
+                        </h6>
+                    </div>
                 </div>
+
                 <div class="row card-body">
-                    <div class="col-lg-3 col-sm-3">
+                    <div class="col-lg-4 col-sm-3">
                         <div class="card bg-primary border-0 rounded-3 mb-4 text-white">
                             <div class="card-body p-4">
-                                <h3 class="mb-0 fs-20 text-white">{{}}</h3>
+                                <h3 class="mb-0 fs-20 text-white">
+                                    Rp. {{number_format($order->total_pembelian- $order->total_discount -$order->total_retur)}}</h3>
                                 <span>Total Pembelian</span>
                             </div>
                         </div>
                     </div>
 
+                    <div class="col-lg-4 col-sm-3">
+                        <div class="card bg-primary border-0 rounded-3 mb-4 text-white">
+                            <div class="card-body p-4">
+                                <h3 class="mb-0 fs-20 text-white">
+                                    Rp. {{number_format($order->total_remaining_payment)}}</h3>
+                                <span>Total Pembayaran</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-sm-3">
+                        <div class="card bg-primary border-0 rounded-3 mb-4 text-white">
+                            <div class="card-body p-4">
+                                <h3 class="mb-0 fs-20 text-white">
+                                    Rp. {{number_format($order->total_pembelian- $order->total_discount -$order->total_retur-$order->total_remaining_payment)}}</h3>
+                                <span>Total Sisa Pembayaran</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card bg-white border-0 rounded-3 mb-4">

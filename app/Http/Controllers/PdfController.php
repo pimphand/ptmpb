@@ -41,17 +41,24 @@ class PdfController extends Controller
     public function paymentOrder(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $order = Order::find(decrypt($id));
-        foreach ($request->date as $key => $date) {
-            $order->payments()->create([
-                'method' => $request->method[$key],
-                'date' => Carbon::parse($request->date[$key])->toDateString() . ' ' . now()->toTimeString(),
-                'amount' => $request->amount[$key],
-                'remaining' => $request->remaining[$key],
-                'customer' => $request->customer[$key],
-                'collector' => $request->collector[$key],
-                'admin' => $request->admin[$key],
-                'user_id' => $order->user_id,
-            ]);
+        if ($order->date) {
+            foreach ($request->date as $key => $date) {
+                $order->payments()->create([
+                    'method' => $request->method[$key],
+                    'date' => Carbon::parse($request->date[$key])->toDateString() . ' ' . now()->toTimeString(),
+                    'amount' => $request->amount[$key],
+                    'remaining' => $request->remaining[$key],
+                    'customer' => $request->customer[$key],
+                    'collector' => $request->collector[$key],
+                    'admin' => $request->admin[$key],
+                    'user_id' => $order->user_id,
+                ]);
+            }
+        }
+
+        if ($request->paid){
+            $order->paid = $request->paid;
+            $order->save();
         }
 
         return redirect()->route('invoice', encrypt($order->id));
