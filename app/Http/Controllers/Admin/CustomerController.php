@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -71,7 +72,36 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        return view('admin.customer_detail', compact('customer'));
+        $order = Order::where('orders.customer_id', $customer->id)
+            ->whereIn('orders.status', ['success', 'done']) // Menyebutkan tabel dengan eksplisit
+            ->whereBetween('orders.created_at', [now()->startOfYear(), now()->endOfYear()])
+            ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->leftJoin(DB::raw('(
+        SELECT p1.order_id, p1.amount, p1.remaining
+        FROM payments p1
+        JOIN (
+            SELECT order_id, MAX(date) as latest_date
+            FROM payments
+            GROUP BY order_id
+        ) p2 ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
+    ) latest_payments'), 'orders.id', '=', 'latest_payments.order_id')
+            ->leftJoin(DB::raw('(
+        SELECT customer_id, SUM(discount) as total_discount
+        FROM orders
+        WHERE status = "success"
+        GROUP BY customer_id
+    ) order_discounts'), 'orders.customer_id', '=', 'order_discounts.customer_id')
+            ->selectRaw('
+        orders.status,
+        COALESCE(SUM(order_items.quantity * order_items.price), 0) as total_pembelian,
+        COALESCE(ANY_VALUE(latest_payments.amount), 0) as latest_payment_amount,
+        COALESCE(ANY_VALUE(latest_payments.remaining), 0) as latest_payment_remaining,
+        COALESCE(order_discounts.total_discount, 0) as total_discount
+    ')
+            ->groupBy('orders.status')
+            ->first();
+
+        return view('admin.customer_detail', compact('customer','order','customers'));
     }
 
     /**
@@ -89,7 +119,7 @@ class CustomerController extends Controller
     {
         $validated = Validator::make($request->all(), [
             'name' => 'required',
-            'phone' => 'required|numeric|digits_between:10,13|unique:customers,phone,'.$customer->id,
+            'phone' => 'required|numeric|digits_between:10,13|unique:customers,phone,' . $customer->id,
             'address' => 'required|',
             'owner_photo' => 'nullable',
             'identity' => 'nullable',
@@ -129,27 +159,28 @@ class CustomerController extends Controller
                 ->orWhere('phone', 'like', "%{$request->search}%")
                 ->orWhere('store_name', 'like', "%{$request->search}%");
         })
-            ->join('orders', 'customers.id', '=', 'orders.customer_id')
-            ->join(DB::raw('(SELECT p1.order_id, p1.amount, p1.remaining
-            FROM payments p1
-            JOIN (
-                SELECT order_id, MAX(date) as latest_date
-                FROM payments
-                GROUP BY order_id
-            ) p2
-            ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
-        ) latest_payments'), 'orders.id', '=', 'latest_payments.order_id')
-            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
-            ->leftJoin(DB::raw('(SELECT customer_id, SUM(discount) as total_discount
+            ->leftJoin('orders', 'customers.id', '=', 'orders.customer_id')
+            ->leftJoin(DB::raw('(
+                    SELECT p1.order_id, p1.amount, p1.remaining
+                    FROM payments p1
+                    JOIN (
+                        SELECT order_id, MAX(date) as latest_date
+                        FROM payments
+                        GROUP BY order_id
+                    ) p2 ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
+                ) latest_payments'), 'orders.id', '=', 'latest_payments.order_id')
+                            ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
+                            ->leftJoin(DB::raw('(
+                    SELECT customer_id, SUM(discount) as total_discount
                     FROM orders
                     WHERE status = "success"
-                    GROUP BY customer_id) order_discounts'),
-                'customers.id', '=', 'order_discounts.customer_id')
+                    GROUP BY customer_id
+                ) order_discounts'), 'customers.id', '=', 'order_discounts.customer_id')
             ->select(
                 'customers.*',
-                DB::raw('SUM(order_items.quantity * order_items.price) as total_order_value'),
-                DB::raw('MAX(latest_payments.remaining) as total_remaining'),
-                DB::raw('MAX(IFNULL(order_discounts.total_discount, 0)) as total_discount')
+                DB::raw('IFNULL(SUM(order_items.quantity * order_items.price), 0) as total_order_value'),
+                DB::raw('IFNULL(MAX(latest_payments.remaining), 0) as total_remaining'),
+                DB::raw('IFNULL(MAX(order_discounts.total_discount), 0) as total_discount')
             )
             ->groupBy('customers.id')
             ->paginate(10);

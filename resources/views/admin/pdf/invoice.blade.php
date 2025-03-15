@@ -346,7 +346,6 @@
     ? $order->payments->first()->remaining - $totalRetur - $order->discount
     : $subTotal - $totalRetur - $order->discount - $paid  }};
 
-        // Tambah baris baru
         $(".add").click(function (e) {
             e.preventDefault();
             $("#form").append(`

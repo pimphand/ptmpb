@@ -185,6 +185,7 @@
         </div>
         <div class="col-xxl-9">
             <div class="card bg-white border-0 rounded-3 mb-4">
+
                 <div class="card-body p-0">
                     <x-order :user_id="$user->id" />
                 </div>
