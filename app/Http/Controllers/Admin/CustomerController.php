@@ -72,35 +72,15 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        $order = Order::where('orders.customer_id', $customer->id)
+        $order = Order::where('customer_id', $customer->id)
             ->whereIn('orders.status', ['success', 'done']) // Menyebutkan tabel dengan eksplisit
             ->whereBetween('orders.created_at', [now()->startOfYear(), now()->endOfYear()])
             ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
-            ->leftJoin(DB::raw('(
-        SELECT p1.order_id, p1.amount, p1.remaining
-        FROM payments p1
-        JOIN (
-            SELECT order_id, MAX(date) as latest_date
-            FROM payments
-            GROUP BY order_id
-        ) p2 ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
-    ) latest_payments'), 'orders.id', '=', 'latest_payments.order_id')
-            ->leftJoin(DB::raw('(
-        SELECT customer_id, SUM(discount) as total_discount
-        FROM orders
-        WHERE status = "success"
-        GROUP BY customer_id
-    ) order_discounts'), 'orders.customer_id', '=', 'order_discounts.customer_id')
-            ->selectRaw('
-        orders.status,
-        COALESCE(SUM(order_items.quantity * order_items.price), 0) as total_pembelian,
-        COALESCE(ANY_VALUE(latest_payments.amount), 0) as latest_payment_amount,
-        COALESCE(ANY_VALUE(latest_payments.remaining), 0) as latest_payment_remaining,
-        COALESCE(order_discounts.total_discount, 0) as total_discount
-    ')
+            ->selectRaw(
+                'orders.status, COALESCE(SUM(order_items.quantity * order_items.price), 0) as total_pembelian')
             ->groupBy('orders.status')
             ->first();
-
+        dd($order);
         return view('admin.customer_detail', compact('customer','order','customers'));
     }
 
