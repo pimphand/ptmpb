@@ -340,7 +340,7 @@
         $(document).ready(function() {
             let maxAmount = {{ $subTotal - $totalRetur - $order->discount - $paid }}; // Batas jumlah maksimal
             let totalAmount = 0;
-            let sisa = {{$order->payments->first()->remaining - $totalRetur - $order->discount}};
+            let sisa = {{isset($order->payments) && $order->payments->first()->remaining ? $order->payments->first()->remaining - $totalRetur - $order->discount : $maxAmount }};
             // Tambah baris baru
             $(".add").click(function(e) {
                 e.preventDefault();
