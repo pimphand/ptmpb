@@ -206,7 +206,7 @@
                                 class="ri-file-paper-2-fill text-white fw-medium"></i> Invoice
                         </a>
 
-                        @if ($order->status == 'process' || $order->status == 'pending')
+                        @if ($order->status == 'process' || $order->status == 'pending' || request()->get('status') == 'pending')
                             <button class="btn btn-success py-2 px-4 fw-medium fs-16 text-white" id="edit"><i
                                     class="ri-pencil-fill text-white fw-medium"></i>Edit
                             </button>
