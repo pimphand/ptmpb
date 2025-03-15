@@ -161,33 +161,29 @@ class CustomerController extends Controller
         })
             ->leftJoin('orders', 'customers.id', '=', 'orders.customer_id')
             ->leftJoin(DB::raw('(
-            SELECT p1.order_id, p1.amount, p1.remaining
-            FROM payments p1
-            JOIN (
-                SELECT order_id, MAX(date) as latest_date
-                FROM payments
-                GROUP BY order_id
-            ) p2 ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
-        ) latest_payments'), 'orders.id', '=', 'latest_payments.order_id')
-            ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
-            ->leftJoin(DB::raw('(
-            SELECT customer_id, SUM(discount) as total_discount
-            FROM orders
-            WHERE status = "success"
-            GROUP BY customer_id
-        ) order_discounts'), 'customers.id', '=', 'order_discounts.customer_id')
+                    SELECT p1.order_id, p1.amount, p1.remaining
+                    FROM payments p1
+                    JOIN (
+                        SELECT order_id, MAX(date) as latest_date
+                        FROM payments
+                        GROUP BY order_id
+                    ) p2 ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
+                ) latest_payments'), 'orders.id', '=', 'latest_payments.order_id')
+                            ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
+                            ->leftJoin(DB::raw('(
+                    SELECT customer_id, SUM(discount) as total_discount
+                    FROM orders
+                    WHERE status = "success"
+                    GROUP BY customer_id
+                ) order_discounts'), 'customers.id', '=', 'order_discounts.customer_id')
             ->select(
-                'customers.id',
-                'customers.name',
-                'customers.phone',
-                'customers.store_name',
+                'customers.*',
                 DB::raw('IFNULL(SUM(order_items.quantity * order_items.price), 0) as total_order_value'),
                 DB::raw('IFNULL(MAX(latest_payments.remaining), 0) as total_remaining'),
                 DB::raw('IFNULL(MAX(order_discounts.total_discount), 0) as total_discount')
             )
             ->groupBy('customers.id')
             ->paginate(10);
-
 
         return CustomerResource::collection($customers);
     }
