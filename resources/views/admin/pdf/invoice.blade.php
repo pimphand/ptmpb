@@ -344,7 +344,7 @@
         let totalAmount = 0;
         let sisa = {{ isset($order->payments) && $order->payments->first() && $order->payments->first()->remaining
     ? $order->payments->first()->remaining - $totalRetur - $order->discount
-    : $maxAmount }};
+    : $subTotal - $totalRetur - $order->discount - $paid  }};
 
         // Tambah baris baru
         $(".add").click(function (e) {
