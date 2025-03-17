@@ -42,7 +42,6 @@
                                 <th scope="col">Alamat</th>
                                 <th scope="col">No Whatsapp</th>
                                 <th scope="col">Total Pembelian</th>
-                                <th scope="col">Total Diskon</th>
                                 <th scope="col">Total Belum Lunas</th>
                                 <th scope="col">{{ __('app.action') }}</th>
                             </tr>
@@ -191,7 +190,6 @@
                         <td class="text-body">${value.address ?? '-'}</td>
                         <td class="text-body">${value.phone ?? '-'}</td>
                         <td class="text-body">${formatRupiah(value.total_order_value)}</td>
-                        <td class="text-body">${formatRupiah(value.total_discount)}</td>
                         <td class="text-body"><span class="badge bg-opacity-10 bg-danger py-1 px-2 text-danger rounded-1 fw-medium fs-12">${formatRupiah(value.total_remaining)}</span></td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
