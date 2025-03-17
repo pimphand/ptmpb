@@ -176,6 +176,7 @@ class CustomerController extends Controller
                 'customers.name',
                 'customers.phone',
                 'customers.store_name',
+                'customers.is_blacklist',
                 'customers.created_at',
                 'customers.updated_at',
                 'customers.deleted_at',
@@ -188,6 +189,7 @@ class CustomerController extends Controller
                 'customers.name',
                 'customers.phone',
                 'customers.store_name',
+                'customers.is_blacklist',
                 'customers.created_at',
                 'customers.updated_at',
                 'customers.deleted_at'
