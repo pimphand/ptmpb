@@ -51,11 +51,9 @@ class OrderController extends Controller
             $order->status = 'process';
         }
 
-        $order->driver_id = $request->driver_id;
         $order->date_delivery = $request->delivery_date;
         $order->type_discount = $request->type_discount ?? null;
         $order->discount = $request->type_discount ? $request->discount * ($request->discount / 100) : $request->discount;
-        $order->save();
 
         if (!$order->driver_id){
             $order->payments()->create([
@@ -68,7 +66,8 @@ class OrderController extends Controller
                 'admin' => "System",
             ]);
         }
-
+        $order->driver_id = $request->driver_id;
+        $order->save();
         return response()->json([
             'success' => true,
             'message' => 'Order berhasil diperbarui',
