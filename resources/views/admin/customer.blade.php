@@ -231,6 +231,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td colspan="">
                             Total  : ${formatRupiah(totalPembelian)}
                         </td>
