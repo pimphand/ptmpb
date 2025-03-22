@@ -89,6 +89,8 @@ class OrderController extends Controller
             })
             ->when($request->user_id, function ($query) use ($request) {
                 $query->where('user_id', $request->user_id);
+            })->when($request->customer_id, function ($query) use ($request) {
+                $query->where('customer_id', $request->customer_id);
             })
             ->with('payment')
             ->whereHas('orderItems')

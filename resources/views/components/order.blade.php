@@ -100,7 +100,7 @@
         });
 
         function getData(page = 1, query = '', status = '') {
-            $.get(`{{ route('admin.orders.data') }}?page=${page}&search=${query}&status=${status}&user_id={{request()->user_id ?? ''}}`, function (response) {
+            $.get(`{{ route('admin.orders.data') }}?page=${page}&search=${query}&status=${status}&user_id={{request()->user_id ?? ''}}&customer_id={{request()->customer_id ?? ''}}`, function (response) {
                 const {
                     data,
                     meta,

@@ -183,7 +183,7 @@
                             ${key + 1}
                         </td>
                         <td class="text-body flex">
-                            <a href="${url}"><img src="${value.store_photo ? '{{ asset('storage') }}/' + value.store_photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}"> ${value.name}
+                            <a href="${url}?customer_id=${value.id}"><img src="${value.store_photo ? '{{ asset('storage') }}/' + value.store_photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}"> ${value.name}
                             <br> (${value.store_name ?? '-'})
                             </a>
                         </td>

@@ -128,7 +128,7 @@
             </div>
             <div class="card bg-white border-0 rounded-3 mb-4">
                 <div class="card-body p-0">
-                    @include('components.order')
+                    <x-order :customer_id="$customer->id" />
                 </div>
             </div>
         </div>
