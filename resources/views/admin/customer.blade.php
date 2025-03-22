@@ -193,8 +193,8 @@
                         </td>
                         <td class="text-body">${value.address ?? '-'}</td>
                         <td class="text-body">${value.phone ?? '-'}</td>
-                        <td class="text-body">${formatRupiah(value.total_order_value)}</td>
-                        <td class="text-body"><span class="badge bg-opacity-10 bg-danger py-1 px-2 text-danger rounded-1 fw-medium fs-12">${formatRupiah(value.total_remaining)}</span></td>
+                        <td class="text-body">${formatRupiah(Number(value.total_order_value))}</td>
+                        <td class="text-body"><span class="badge bg-opacity-10 bg-danger py-1 px-2 text-danger rounded-1 fw-medium fs-12">${formatRupiah(Number(value.total_remaining))}</span></td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
                                 <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="javascript:void(0)" data-url="${urlEdit}" data-id="${value.id}">
