@@ -107,7 +107,12 @@
                         <div class="card bg-primary border-0 rounded-3 mb-4 text-white">
                             <div class="card-body p-4">
                                 <h3 class="mb-0 fs-20 text-white">
-                                    Rp. {{ number_format(optional($order)->total_remaining_payment ?? 0) }}
+                                    @if(isset($order->total_remaining_payment))
+                                        Rp. {{ number_format($order->total_pembelian- $order?->total_remaining_payment) }}
+                                    @else
+                                        Rp. 0
+                                    @endif
+
                                 </h3>
                                 <span>Total Pembayaran</span>
                             </div>
@@ -118,11 +123,7 @@
                         <div class="card bg-primary border-0 rounded-3 mb-4 text-white">
                             <div class="card-body p-4">
                                 <h3 class="mb-0 fs-20 text-white">
-                                    @if(isset($order->total_remaining_payment))
-                                        Rp. {{ number_format($order->total_pembelian- $order?->total_remaining_payment) }}
-                                    @else
-                                        Rp. 0
-                                    @endif
+                                    Rp. {{ number_format(optional($order)->total_remaining_payment ?? 0) }}
                                 </h3>
                                 <span>Total Sisa Pembayaran</span>
                             </div>
