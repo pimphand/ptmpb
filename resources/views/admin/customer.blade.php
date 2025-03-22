@@ -174,9 +174,13 @@
                 $('#pagination').empty();
 
                 // Render data
+                let totalPembelian = 0;
+                let totalBelumLunas = 0;
                 $.each(data, function (key, value) {
                     let url = `{{ route('admin.customers.destroy', ':id') }}`.replace(':id', value.id);
                     let urlEdit = `{{ route('admin.customers.edit', ':id') }}`.replace(':id', value.id);
+                    totalPembelian += Number(value.total_order_value) || 0;
+                    totalBelumLunas += Number(value.total_remaining) || 0;
                     const row = `
                     <tr class="align-middle" style="background-color: ${value.is_blacklist != "0" ? '#f8d7da' : ''}">
                         <td class="text-body">
@@ -184,7 +188,7 @@
                         </td>
                         <td class="text-body flex">
                             <a href="${url}?customer_id=${value.id}"><img src="${value.store_photo ? '{{ asset('storage') }}/' + value.store_photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}"> ${value.name}
-                            <br> (${value.store_name ?? '-'})
+                                <br> (${value.store_name ?? '-'})
                             </a>
                         </td>
                         <td class="text-body">${value.address ?? '-'}</td>
@@ -206,6 +210,21 @@
                     $('#dataTable').append(row);
                 });
 
+                $('#dataTable').append(`
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td colspan="">
+                            Total  : ${formatRupiah(totalPembelian)}
+                        </td>
+                        <td colspan="">
+                            Total  : ${formatRupiah(totalBelumLunas)}
+                        </td>
+                    </tr>
+                `);
+
                 // Update showing info
                 $('#showing-info').text(`Showing ${meta.from} to ${meta.to} of ${meta.total} Results`);
 
@@ -214,12 +233,12 @@
                     const activeClass = link.active ? 'active' : '';
                     const disabledClass = link.url ? '' : 'disabled';
                     const listItem = `
-                <li class="page-item ${activeClass} ${disabledClass}">
-                    <a class="page-link" href="#" data-page="${link.url ? new URL(link.url).searchParams.get('page') : '#'}">
-                        ${link.label}
-                    </a>
-                </li>
-            `;
+                    <li class="page-item ${activeClass} ${disabledClass}">
+                        <a class="page-link" href="#" data-page="${link.url ? new URL(link.url).searchParams.get('page') : '#'}">
+                            ${link.label}
+                        </a>
+                    </li>
+                `;
                     $('#pagination').append(listItem);
                 });
 
