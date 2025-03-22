@@ -93,11 +93,10 @@ class CustomerController extends Controller
             ->selectRaw('orders.status,COALESCE(SUM(orders.discount), 0) as total_discount')
             ->groupBy('orders.status')
             ->first();
-
+//        $order->total_remaining_payment = 0;
         if ($remaining) {
             $order->total_remaining_payment = $remaining;
         }
-
         return view('admin.customer_detail', compact('customer', 'order',));
     }
 
