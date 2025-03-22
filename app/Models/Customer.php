@@ -42,4 +42,9 @@ class Customer extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function sales()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
 }

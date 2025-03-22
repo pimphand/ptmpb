@@ -22,10 +22,18 @@
         <div class="card bg-white border-0 rounded-3 mb-4">
             <div class="card-body p-0">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 p-4">
-                    <form class="position-relative table-src-form me-0">
-                        <input type="text" class="form-control" id="search" placeholder="Search here">
-                        <i class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
-                    </form>
+                    <div class="d-flex">
+                        <form class="position-relative table-src-form me-1">
+                            <input type="text" class="form-control" id="search" placeholder="cari nama/kota/provinsi">
+                        </form>
+                        <select class="form-select" id="sales_search">
+                            <option value="">Pilih Sales</option>
+                            @foreach($sales as $sal)
+                                <option value="{{$sal->id}}">{{$sal->name}}</option>
+
+                            @endforeach
+                        </select>
+                    </div>
                     <a href="javascript:void(0)" type="button"
                        class="btn btn-primary text-white py-2 px-4 fw-semibold add">
                         {{ __('app.add') }} {{ $title }}
@@ -38,6 +46,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Sales</th>
                                 <th scope="col">Nama Pemilik</th>
                                 <th scope="col">Alamat</th>
                                 <th scope="col">No Whatsapp</th>
@@ -161,8 +170,8 @@
     <script>
         let dataTable = [];
 
-        function getData(page = 1, query = '') {
-            $.get(`{{ route('admin.customers.data') }}?page=${page}&search=${query}`, function (response) {
+        function getData(page = 1, query = '', sales = '') {
+            $.get(`{{ route('admin.customers.data') }}?page=${page}&search=${query}&sales=${sales}`, function (response) {
                 const {
                     data,
                     meta,
@@ -181,17 +190,23 @@
                     let urlEdit = `{{ route('admin.customers.edit', ':id') }}`.replace(':id', value.id);
                     totalPembelian += Number(value.total_order_value) || 0;
                     totalBelumLunas += Number(value.total_remaining) || 0;
+                    let sales = `{{ route('admin.sales.show', ':id') }}`.replace(':id', value.sales.id);
                     const row = `
                     <tr class="align-middle" style="background-color: ${value.is_blacklist != "0" ? '#f8d7da' : ''}">
                         <td class="text-body">
                             ${key + 1}
+                        </td>
+                        <td class="text-body">
+                            <a class="badge badge-success text-dark" href="${sales}?user_id=${value.sales.id}">${value.sales.name}</a>
                         </td>
                         <td class="text-body flex">
                             <a href="${url}?customer_id=${value.id}"><img src="${value.store_photo ? '{{ asset('storage') }}/' + value.store_photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}"> ${value.name}
                                 <br> (${value.store_name ?? '-'})
                             </a>
                         </td>
-                        <td class="text-body">${value.address ?? '-'}</td>
+                        <td class="text-body">${value.address ?? '-'} <br>
+                            ${value.city}, ${value.state}
+                        </td>
                         <td class="text-body">${value.phone ?? '-'}</td>
                         <td class="text-body">${formatRupiah(Number(value.total_order_value))}</td>
                         <td class="text-body"><span class="badge bg-opacity-10 bg-danger py-1 px-2 text-danger rounded-1 fw-medium fs-12">${formatRupiah(Number(value.total_remaining))}</span></td>
@@ -349,6 +364,9 @@
                 $('#city').append('<option>Failed to load cities</option>');
             });
         });
-
+        $('#sales_search').change(function () {
+            const sales = $(this).val();
+            getData(1, $('#search').val(), sales);
+        });
     </script>
 @endpush
