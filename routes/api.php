@@ -15,4 +15,7 @@ Route::apiResource('products', App\Http\Controllers\Api\ProductController::class
 Route::group(['middleware' => ['auth:sanctum'], 'as' => 'api.'], function () {
     Route::apiResource('orders', App\Http\Controllers\Api\OrderController::class)->names('orders');
     Route::apiResource('customers', App\Http\Controllers\Api\CustomerController::class)->names('customers');
+
+    Route::get('profile', [App\Http\Controllers\Api\ProfileController::class, 'index']);
+    Route::post('profile', [App\Http\Controllers\Api\ProfileController::class, 'update']);
 });
