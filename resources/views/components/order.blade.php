@@ -29,7 +29,7 @@
                             </th>
                             <th scope="col">{{ __('app.name') }}</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Nama Perusahaan
+                            <th scope="col">Nama Customer</th>
                             <th scope="col">Sisa Pembayaran</th>
                             <th scope="col">whatsapp</th>
                             <th scope="col">Item</th>
@@ -129,6 +129,7 @@
                 $.each(data, function (key, value) {
                     let detail = "{{ route('admin.orders.show', ':id') }}".replace(':id', value.id);
                     let sales = "{{ route('admin.sales.show', ':id') }}?user_id=:userId".replace(':id', value.sales.id).replace(':userId', value.sales.id);
+                    let customer = "{{ route('admin.customers.show', ':id') }}".replace(':id', value.customer_id);
                     const row = `
                     <tr class="${value.is_return ? 'return' : ''}">
                         <td class="text-body">
@@ -141,7 +142,7 @@
                            <a href="${sales}" class="hover-bg btn btn-outline-success text-${value.sales.name ? "success" : ''}"> Sales : ${value.sales.name ?? "-"}</a>
                         </td>
                         <td class="text-body"><span>${value.data.companyEmail}</span></td>
-                        <td class="text-body"><span>${value.data.companyName}</span></td>
+                        <td class="text-body"><a href="${customer}">${value.data.companyName}</a></td>
                         <td class="text-body"><span class="badge bg-opacity-10 bg-danger py-1 px-2 text-danger fw-medium fs-12">- ${formatRupiah(value.payment)}</span></td>
                         <td class="text-body"><span>${value.data.whatsappNumber}</span></td>
 

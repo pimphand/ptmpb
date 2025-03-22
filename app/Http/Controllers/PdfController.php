@@ -38,22 +38,26 @@ class PdfController extends Controller
         return view('admin.pdf.invoice', compact('order'));
     }
 
-    public function paymentOrder(Request $request, $id): \Illuminate\Http\RedirectResponse
+    public function paymentOrder(Request $request, $id)
     {
         $order = Order::find(decrypt($id));
-        if ($order->date) {
-            foreach ($request->date as $key => $date) {
-                $order->payments()->create([
-                    'method' => $request->method[$key],
-                    'date' => Carbon::parse($request->date[$key])->toDateString() . ' ' . now()->toTimeString(),
-                    'amount' => $request->amount[$key],
-                    'remaining' => $request->remaining[$key],
-                    'customer' => $request->customer[$key],
-                    'collector' => $request->collector[$key],
-                    'admin' => $request->admin[$key],
-                    'user_id' => $order->user_id,
-                ]);
-            }
+        if (count($request->date)===0) {
+            return response()->json([
+                "message" => "Data pembayaran tidak boleh kosong"
+            ], 422);
+        }
+
+        foreach ($request->date as $key => $date) {
+            $order->payments()->create([
+                'method' => $request->metode[$key],
+                'date' => Carbon::parse($request->date[$key])->toDateString() . ' ' . now()->toTimeString(),
+                'amount' => $request->amount[$key],
+                'remaining' => $request->remaining[$key],
+                'customer' => $order->customer->name,
+                'collector' => $request->collector[$key],
+                'admin' => auth()->user()->name,
+                'user_id' => $order->user_id,
+            ]);
         }
 
         if ($request->paid){
@@ -61,6 +65,9 @@ class PdfController extends Controller
             $order->save();
         }
 
-        return redirect()->route('invoice', encrypt($order->id));
+
+        return response()->json([
+            "message" => "Data berhasil disimpan"
+        ]);
     }
 }

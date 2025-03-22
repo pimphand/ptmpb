@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+
 @section('content')
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
         <h3 class="mb-0">My Profile</h3>
@@ -24,15 +25,13 @@
                     <div class="card bg-white border-0 rounded-3 mb-4">
                         <div class="card-body p-4">
                             <h3 class="mb-3 mb-lg-4">Foto Toko</h3>
-
                             <div class="d-flex align-items-center mb-4">
-                                <img src="{{asset('storage/'.$customer->store_photo)}}" alt=""
+                                <img src="{{ asset('storage/' . $customer->store_photo) }}" alt=""
                                      style="max-width: 200px; max-height: 200px;">
                             </div>
                             <h4 class="fw-semibold fs-14 mb-2 pb-1">KTP</h4>
-
                             <div class="d-flex align-items-center mb-4">
-                                <img src="{{asset('storage/'.$customer->owner_photo)}}" class="align-items-center"
+                                <img src="{{ asset('storage/' . $customer->owner_photo) }}" class="align-items-center"
                                      alt="" style="max-width: 200px; max-height: 200px;">
                             </div>
                         </div>
@@ -48,30 +47,24 @@
                                     <span class="text-secondary fw-medium ms-1">{{ $customer->name }}</span>
                                 </li>
                                 @php
-                                    $phone = $customer->phone;
-
-                                    // Menghapus karakter non-digit
-                                    $phone = preg_replace('/\D/', '', $phone);
-
-                                    // Menangani berbagai format
+                                    $phone = preg_replace('/\D/', '', $customer->phone);
                                     if (strpos($phone, '62') === 0) {
-                                        $formattedPhone = $phone; // Sudah diawali dengan 62
+                                        $formattedPhone = $phone;
                                     } elseif (strpos($phone, '0') === 0) {
-                                        $formattedPhone = '62' . substr($phone, 1); // Ganti 0 dengan 62
+                                        $formattedPhone = '62' . substr($phone, 1);
                                     } elseif (strpos($phone, '8') === 0) {
-                                        $formattedPhone = '62' . $phone; // Tambahkan 62 di depan jika langsung dimulai dengan 8
+                                        $formattedPhone = '62' . $phone;
                                     } elseif (strpos($phone, '+62') === 0) {
-                                        $formattedPhone = substr($phone, 1); // Hilangkan + dan tetap gunakan 62
+                                        $formattedPhone = substr($phone, 1);
                                     } else {
-                                        $formattedPhone = $phone; // Format lain, biarkan apa adanya
+                                        $formattedPhone = $phone;
                                     }
                                 @endphp
-
-
                                 <li class="d-flex align-items-center mb-2 pb-1">
                                     <span>No Whatsapp:</span>
                                     <span class="text-secondary fw-medium ms-1">
-                                        <a target="_blank" href="https://wa.me/{{ $formattedPhone }}">{{ $formattedPhone }}</a></span>
+                                        <a target="_blank" href="https://wa.me/{{ $formattedPhone }}">{{ $formattedPhone }}</a>
+                                    </span>
                                 </li>
                                 <li class="d-flex align-items-center">
                                     <span>Alamat:</span>
@@ -81,19 +74,19 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="col-xxl-9">
             <div class="card bg-white border-0 rounded-3 mb-4">
                 <div class="card-header bg-white border-0 pb-0 d-flex justify-content-between">
                     <div>
-                        <h3>{{$customer->store_name}}</h3>
-                        <small>{{$customer->owner_address}}</small>
+                        <h3>{{ $customer->store_name }}</h3>
+                        <small>{{ $customer->owner_address }}</small>
                     </div>
                     <div>
-                        <h6 class="hover-bg btn btn-outline-success text-success text-start">{{$order->total_produk_retur}} Total Produk
-                            <br>{{$order->total_produk_retur}} Total Retur
+                        <h6 class="hover-bg btn btn-outline-success text-success text-start">
+                            {{ optional($order)->total_produk_retur ?? 0 }} Total Produk
+                            <br>{{ optional($order)->total_produk_retur ?? 0 }} Total Retur
                         </h6>
                     </div>
                 </div>
@@ -103,7 +96,8 @@
                         <div class="card bg-primary border-0 rounded-3 mb-4 text-white">
                             <div class="card-body p-4">
                                 <h3 class="mb-0 fs-20 text-white">
-                                    Rp. {{number_format($order->total_pembelian- $order->total_discount -$order->total_retur)}}</h3>
+                                    Rp. {{ number_format(optional($order)->total_pembelian ?? 0 - optional($order)->total_discount ?? 0 - optional($order)->total_retur ?? 0) }}
+                                </h3>
                                 <span>Total Pembelian</span>
                             </div>
                         </div>
@@ -113,7 +107,8 @@
                         <div class="card bg-primary border-0 rounded-3 mb-4 text-white">
                             <div class="card-body p-4">
                                 <h3 class="mb-0 fs-20 text-white">
-                                    Rp. {{number_format($order->total_remaining_payment)}}</h3>
+                                    Rp. {{ number_format(optional($order)->total_remaining_payment ?? 0) }}
+                                </h3>
                                 <span>Total Pembayaran</span>
                             </div>
                         </div>
@@ -123,7 +118,8 @@
                         <div class="card bg-primary border-0 rounded-3 mb-4 text-white">
                             <div class="card-body p-4">
                                 <h3 class="mb-0 fs-20 text-white">
-                                    Rp. {{number_format($order->total_pembelian- $order->total_discount -$order->total_retur-$order->total_remaining_payment)}}</h3>
+                                    Rp. {{ number_format(optional($order)->total_pembelian ?? 0 - optional($order)->total_discount ?? 0 - optional($order)->total_retur ?? 0 - optional($order)->total_remaining_payment ?? 0) }}
+                                </h3>
                                 <span>Total Sisa Pembayaran</span>
                             </div>
                         </div>
@@ -131,12 +127,10 @@
                 </div>
             </div>
             <div class="card bg-white border-0 rounded-3 mb-4">
-
                 <div class="card-body p-0">
                     @include('components.order')
                 </div>
             </div>
-
         </div>
     </div>
 @endsection

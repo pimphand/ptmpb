@@ -88,6 +88,9 @@
                             <tbody>
                                 @php
                                     $total = 0;
+                                    $subTotal = 0;
+                                    $totalRetur = 0;
+                                    $paid = 0;
                                 @endphp
                                 <form action="{{ route('admin.orders.update', $order->id) }}" method="post" id="form">
                                     @csrf
@@ -97,6 +100,8 @@
                                     @foreach ($order->orderItems as $key => $item)
                                         @php
                                             $total += $item->quantity * $item->price;
+                                            $subTotal += (int) $item->quantity * (int) $item->price;
+                                            $totalRetur += (int) $item->returns * (int) $item->price;
                                         @endphp
                                         <tr class="{{ $item->returns ? 'return' : '' }}">
                                             <td class="text-body"><span>{{ $key + 1 }}</span></td>
@@ -221,6 +226,67 @@
                     @endif
                 </div>
             </div>
+
+        </div>
+
+        <div class="card bg-white border-0 rounded-3 mb-4" style="font-size: 10px">
+            <div class="card-body p-4">
+                <div class="row">
+                    <h4>Rincian</h4>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                            <tr>
+                                <th width="10%">Tanggal</th>
+                                <th width="10%">Kas/Trf</th>
+                                <th width="10%">Jatuh Tempo</th>
+                                <th width="10%">Nominal</th>
+                                <th width="10%">Sisa (-)</th>
+                                <th width="10%">Customer</th>
+                                <th width="10%">Kolektor</th>
+                                <th width="10%">Admin</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach ($order->payments as $payment)
+                                <tr>
+                                    <td>{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                                    <td>{{ $payment->method }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($order->invoice_date)->addMonth()->format('Y-m-d') }}</td>
+
+                                    <td>Rp. {{ number_format($payment->amount) }}</td>
+                                    <td>Rp. {{ number_format($payment->remaining) }}</td>
+                                    <td>{{ $payment->customer }}</td>
+                                    <td>{{ $payment->collector }}</td>
+                                    <td>{{ $payment->admin }}</td>
+                                </tr>
+                                @php
+                                    $paid += $payment->amount;
+                                @endphp
+                            @endforeach
+                            </tbody>
+
+                            <tbody class="form" id="_form">
+                            </tbody>
+                            <tbody class="form">
+                            <tr>
+                                <td colspan="8" class="text-center">
+                                    {{-- @if ($sisa > 0) --}}
+                                    <button type="button" class="btn btn-info text-white add">Tambah Pembayaran</button>
+                                    {{-- @endif --}}
+                                    <button type="button" class="btn btn-info text-white save" style="display: none">
+                                        Simpan
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Modal -->
@@ -282,4 +348,196 @@
             }, 1000);
         }
     </script>
+
+    <script>
+        $(document).ready(function () {
+            let maxAmount = {{ $subTotal - $totalRetur - $order->discount - $paid }}; // Batas jumlah maksimal
+            let totalAmount = 0;
+            let sisa = {{ isset($order->payments) && $order->payments->first() && $order->payments->first()->remaining
+                ? $order->payments->first()->remaining - $totalRetur - $order->discount
+                : $subTotal - $totalRetur - $order->discount - $paid  }};
+
+            $(".add").click(function (e) {
+                e.preventDefault();
+                $("#_form").append(`
+                <tr>
+                    <td><input placeholder="Masukkan tanggal" type="date" class="form-control-custom-required" name="date[]" required></td>
+                    <td><input placeholder="Masukkan metode" type="text" class="form-control-custom-required" name="method[]" required></td>
+                    <td>{{ \Carbon\Carbon::parse($order->invoice_date)->addMonth()->format('Y-m-d') }}</td>
+                    <td><input placeholder="Masukkan jumlah" type="number" class="form-control-custom-required amount" name="amount[]" required></td>
+                    <td><span class="sisa">${formatRupiah(sisa)}</span>
+                    <input placeholder="Masukkan sisa" value="${sisa}" type="number" class="form-control-custom remaining" readonly name="remaining[]" hidden></td>
+                    <td>{{ $order->customer->store_name }}</td>
+                    <td><input placeholder="Masukkan collector" type="text" class="form-control-custom-required" name="collector[]"></td>
+                    <td>{{ auth()->user()->name }}</td>
+                    <td><button type="button" class="btn btn-danger text-white remove">Hapus</button></td>
+                </tr>
+            `);
+                checkSaveButton();
+            });
+
+            // Hapus baris
+            $(document).on("click", ".remove", function () {
+                let row = $(this).closest("tr");
+                let amountValue = parseFloat(row.find(".amount").val()) || 0;
+                totalAmount -= amountValue;
+                row.remove();
+                checkSaveButton();
+            });
+
+            // Validasi jumlah input
+            $(document).on("change", ".amount", function () {
+
+                let row = $(this).closest("tr");
+                let amount = parseFloat(row.find(".amount").val()) || 0;
+
+                totalAmount = 0;
+                $(".amount").each(function () {
+                    totalAmount += parseFloat($(this).val()) || 0;
+                });
+
+                if (totalAmount > maxAmount) {
+                    Toast.fire({
+                        icon: "error",
+                        title: `Jumlah tidak boleh melebihi batas Rp${maxAmount}`
+                    });
+                    $(this).val("");
+                }
+                $('.remaining').val(maxAmount - totalAmount);
+                $('.sisa').text(formatRupiah(maxAmount - totalAmount));
+                if (totalAmount > maxAmount) {
+                    Toast.fire({
+                        icon: "error",
+                        title: `Jumlah tidak boleh melebihi batas Rp${maxAmount}`
+                    });
+                    $(this).val("");
+                    $('.sisa').text(formatRupiah(maxAmount));
+                }
+                checkSaveButton();
+            });
+
+            // Cek apakah tombol simpan harus ditampilkan
+            function checkSaveButton() {
+                if ($("#_form tr").length > 0) {
+                    $(".save").show();
+                    $(".add").hide();
+                } else {
+                    $(".save").hide();
+                    $(".add").show();
+                }
+            }
+
+            // Simpan data
+            $(".save").click(function () {
+                const data = {
+                    _token: "{{ csrf_token() }}",
+                    date: [],
+                    metode: [],
+                    amount: [],
+                    remaining: [],
+                    collector: [],
+                };
+
+                let isValid = true;
+
+                // Validasi input date
+                $("input[name='date[]']").each(function () {
+                    const value = $(this).val();
+                    if (!value) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Tanggal pembayaran wajib diisi."
+                        });
+                        isValid = false;
+                        return false; // Hentikan iterasi
+                    }
+                    data.date.push(value);
+                });
+
+                // Validasi input metode pembayaran
+                $("input[name='method[]']").each(function () {
+                    const value = $(this).val();
+                    if (!value) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Metode pembayaran wajib diisi."
+                        });
+                        isValid = false;
+                        return false;
+                    }
+                    data.metode.push(value);
+                });
+
+                // Validasi input jumlah pembayaran
+                $("input[name='amount[]']").each(function () {
+                    const value = parseFloat($(this).val()) || 0;
+                    if (value <= 0) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Jumlah pembayaran wajib diisi dan lebih dari 0."
+                        });
+                        isValid = false;
+                        return false;
+                    }
+                    data.amount.push(value);
+                });
+
+                // Validasi input sisa pembayaran
+                $("input[name='remaining[]']").each(function () {
+                    const value = parseFloat($(this).val()) || 0;
+                    if (value < 0) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Sisa pembayaran tidak boleh negatif."
+                        });
+                        isValid = false;
+                        return false;
+                    }
+                    data.remaining.push(value);
+                });
+
+                // Validasi input collector
+                $("input[name='collector[]']").each(function () {
+                    const value = $(this).val();
+                    if (!value) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Collector wajib diisi."
+                        });
+                        isValid = false;
+                        return false;
+                    }
+                    data.collector.push(value);
+                });
+
+
+                // Validasi total amount agar tidak melebihi batas
+                const totalAmount = data.amount.reduce((acc, val) => acc + val, 0);
+                if (totalAmount > maxAmount) {
+                    Toast.fire({
+                        icon: "error",
+                        title: `Total pembayaran tidak boleh melebihi Rp${maxAmount}`
+                    });
+                    isValid = false;
+                }
+
+                // Jika semua valid, kirim data ke server
+                if (isValid) {
+                    $.post("{{ route('admin.order.payment.store', encrypt($order->id)) }}", data)
+                        .done(function (response) {
+                            window.location.reload();
+                        })
+                        .fail(function (xhr) {
+                            Toast.fire({
+                                icon: "error",
+                                title: "Data gagal disimpan"
+                            });
+                        });
+                }
+            });
+
+
+        });
+    </script>
+
 @endpush
