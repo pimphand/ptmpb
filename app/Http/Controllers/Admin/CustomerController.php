@@ -150,77 +150,7 @@ class CustomerController extends Controller
 
     public function data(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $customers = Customer::when($request->search, function ($query) use ($request) {
-            $query->where('name', 'like', "%{$request->search}%")
-                ->orWhere('phone', 'like', "%{$request->search}%")
-                ->orWhere('state', 'like', "%{$request->search}%")
-                ->orWhere('city', 'like', "%{$request->search}%")
-                ->orWhere('address', 'like', "%{$request->search}%")
-                ->orWhere('store_name', 'like', "%{$request->search}%");
-        })
-            ->when($request->sales,function ($query) use ($request){
-                $query->where('user_id', $request->sales);
-            })
-            ->with('sales:id,name')
-            ->leftJoin(DB::raw('(
-        SELECT id, customer_id
-        FROM orders
-        WHERE status != "cancel"
-    ) valid_orders'), 'customers.id', '=', 'valid_orders.customer_id')
-            ->leftJoin(DB::raw('(
-        SELECT p1.order_id, p1.amount, p1.remaining
-        FROM payments p1
-        JOIN (
-            SELECT order_id, MAX(date) as latest_date
-            FROM payments
-            GROUP BY order_id
-        ) p2 ON p1.order_id = p2.order_id AND p1.date = p2.latest_date
-    ) latest_payments'), 'valid_orders.id', '=', 'latest_payments.order_id')
-            ->leftJoin(DB::raw('(
-        SELECT order_id, SUM(quantity * price) as total_value
-        FROM order_items
-        WHERE order_id IN (SELECT id FROM orders WHERE status != "cancel")
-        GROUP BY order_id
-    ) order_values'), 'valid_orders.id', '=', 'order_values.order_id')
-            ->leftJoin(DB::raw('(
-        SELECT customer_id, SUM(discount) as total_discount
-        FROM orders
-        WHERE status != "cancel" AND status = "success"
-        GROUP BY customer_id
-    ) order_discounts'), 'customers.id', '=', 'order_discounts.customer_id')
-            ->select(
-                'customers.id',
-                'customers.user_id',
-                'customers.name',
-                'customers.phone',
-                'customers.store_name',
-                'customers.city',
-                'customers.state',
-                'customers.address',
-                'customers.is_blacklist',
-                'customers.created_at',
-                'customers.updated_at',
-                'customers.deleted_at',
-                DB::raw('IFNULL(SUM(order_values.total_value), 0) as total_order_value'),
-                DB::raw('IFNULL(MAX(latest_payments.remaining), 0) as total_remaining'),
-                DB::raw('IFNULL(MAX(order_discounts.total_discount), 0) as total_discount')
-            )
-            ->groupBy(
-                'customers.id',
-                'customers.user_id',
-                'customers.name',
-                'customers.phone',
-                'customers.city',
-                'customers.state',
-                'customers.address',
-                'customers.store_name',
-                'customers.is_blacklist',
-                'customers.created_at',
-                'customers.updated_at',
-                'customers.deleted_at'
-            )
-            ->paginate(10)
-            ->appends($request->query());
+        $customers = Customer::data($request);
 
         return CustomerResource::collection($customers);
     }

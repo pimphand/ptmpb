@@ -135,7 +135,10 @@ class SalesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['message' => 'Data berhasil dihapus']);
     }
 
     /**

@@ -36,11 +36,13 @@ class CustomerController extends Controller
             'identity' => 'nullable',
             'npwp' => 'nullable',
             'others' => 'nullable',
+            'city' => 'required',
+            'state' => 'required',
         ]);
 
         Auth::user()->customers()->create(array_merge($validated->validated(), [
-            'store_photo' => $request->file('store_photo')->store('customer/store_photo', 'public'), // store file
-            'owner_photo' => $request->file('owner_photo')->store('customer/owner_photo', 'public'), // store file
+            'store_photo' => asset('storage') . '/' . $request->file('store_photo')->store('customer/store_photo', 'public'),
+            'owner_photo' => asset('storage') . '/' . $request->file('owner_photo')->store('customer/owner_photo', 'public'),
         ]));
 
         return response()->json(['message' => 'Customer created'], 201);

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\User;
+use DateTime;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -88,7 +90,8 @@ class DashboardController extends Controller
                 'today' => $this->reportSales($request, 'today'),
                 'week' => $this->reportSales($request, 'week'),
                 'month' => $this->reportSales($request, 'month'),
-            ]
+            ],
+            'customers' => $this->customerReport($request)
         ]);
     }
 
@@ -146,21 +149,21 @@ class DashboardController extends Controller
                 'success' => 'Selesai',
                 'cancel' => 'Batal',
                 'done' => 'Selesai'
-            ]
+            ],
         ];
     }
 
     public function reportWeek(Request $request): array
     {
         return $this->generateReport($request, function ($query) {
-            $query->whereDate('created_at', '>=', now()->subWeek());
+            $query->where('created_at', '>=', now()->subWeek());
         });
     }
 
     public function reportMonth(Request $request): array
     {
         return $this->generateReport($request, function ($query) {
-            $query->whereDate('created_at', '>=', now()->subMonth());
+            $query->where('created_at', '>=', now()->subMonth());
         });
     }
 
@@ -225,4 +228,10 @@ class DashboardController extends Controller
             'sales_summary' => $salesSummary
         ];
     }
+
+    public function customerReport(Request $request)
+    {
+        return Customer::data($request);
+    }
+
 }

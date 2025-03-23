@@ -26,12 +26,16 @@
                         <form class="position-relative table-src-form me-1">
                             <input type="text" class="form-control" id="search" placeholder="cari nama/kota/provinsi">
                         </form>
-                        <select class="form-select" id="sales_search">
+                        <select class="form-select me-1 w-100" style="width: 100%" id="sales_search">
                             <option value="">Pilih Sales</option>
                             @foreach($sales as $sal)
                                 <option value="{{$sal->id}}">{{$sal->name}}</option>
-
                             @endforeach
+                        </select>
+                        <select class="form-select" id="is_blacklist">
+                            <option value="">Blacklist</option>
+                            <option value="1">Ya</option>
+                            <option value="0">Tidak</option>
                         </select>
                     </div>
                     <a href="javascript:void(0)" type="button"
@@ -170,8 +174,8 @@
     <script>
         let dataTable = [];
 
-        function getData(page = 1, query = '', sales = '') {
-            $.get(`{{ route('admin.customers.data') }}?page=${page}&search=${query}&sales=${sales}`, function (response) {
+        function getData(page = 1, query = '', sales = '', is_blacklist = '') {
+            $.get(`{{ route('admin.customers.data') }}?page=${page}&search=${query}&sales=${sales}&is_blacklist=${is_blacklist}`, function (response) {
                 const {
                     data,
                     meta,
@@ -365,9 +369,15 @@
                 $('#city').append('<option>Failed to load cities</option>');
             });
         });
+
         $('#sales_search').change(function () {
             const sales = $(this).val();
-            getData(1, $('#search').val(), sales);
+            getData(1, $('#search').val(), sales,$('#is_blacklist').val());
+        });
+
+        $('#is_blacklist').change(function () {
+            const is_blacklist = $(this).val();
+            getData(1, $('#search').val(), $('#sales_search').val(), is_blacklist);
         });
     </script>
 @endpush
