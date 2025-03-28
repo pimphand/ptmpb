@@ -41,7 +41,7 @@ class PdfController extends Controller
     public function paymentOrder(Request $request, $id)
     {
         $order = Order::find(decrypt($id));
-        if (count($request->date)===0) {
+        if (count($request->date) === 0) {
             return response()->json([
                 "message" => "Data pembayaran tidak boleh kosong"
             ], 422);
@@ -57,10 +57,11 @@ class PdfController extends Controller
                 'collector' => $request->collector[$key],
                 'admin' => auth()->user()->name,
                 'user_id' => $order->user_id,
+                'customer_id' => $order->customer_id,
             ]);
         }
 
-        if ($request->paid){
+        if ($request->paid) {
             $order->paid = $request->paid;
             $order->save();
         }

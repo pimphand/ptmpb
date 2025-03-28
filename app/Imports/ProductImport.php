@@ -22,6 +22,9 @@ class ProductImport implements ToCollection, WithHeadingRow
                 continue; // Skip this iteration
             }
             $category = Category::updateOrCreate([
+                "name" => $row['kategori_produk'],
+            ],
+                [
                 'name' => $row['kategori_produk'],
             ]);
 
@@ -35,10 +38,9 @@ class ProductImport implements ToCollection, WithHeadingRow
             Sku::updateOrCreate([
                 'product_id' => $product->id,
                 'name' => $row['nama_produk'],
+                'packaging' => $row['kemasan'],
             ], [
                 'performance' => $row['kinerja'],
-
-                'packaging' => $row['kemasan'],
             ]);
         }
     }
@@ -47,4 +49,5 @@ class ProductImport implements ToCollection, WithHeadingRow
     {
         return 1;
     }
+
 }

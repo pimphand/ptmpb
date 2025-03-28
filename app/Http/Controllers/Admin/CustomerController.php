@@ -47,7 +47,7 @@ class CustomerController extends Controller
             'address' => 'required|',
             'store_name' => 'required',
             'store_photo' => 'required',
-            'owner_photo' => 'nullable',
+            'owner_photo' => 'required',
             'identity' => 'nullable',
             'npwp' => 'nullable',
             'others' => 'nullable',

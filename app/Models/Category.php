@@ -19,11 +19,11 @@ class Category extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->slug = Str::slug($model->name);
+            $model->slug = Str::slug($model->name).'-'.Str::random(6);
         });
 
         static::updating(function ($model) {
-            $model->slug = Str::slug($model->name);
+            $model->slug = Str::slug($model->name).'-'.Str::random(6);
         });
     }
 

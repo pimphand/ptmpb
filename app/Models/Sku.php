@@ -41,7 +41,21 @@ class Sku extends Model implements CanVisit
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->code = 'SKU'.$model->product_id.'-'.time();
+            $model->code = 'SKU-' . self::singkatan($model->name) . microtime(true);
         });
+    }
+
+    public static function singkatan($text): string
+    {
+        $words = explode(' ', trim($text)); // Hilangkan spasi ekstra di awal & akhir
+        $initials = '';
+
+        foreach ($words as $word) {
+            if (!empty($word)) { // Cek apakah kata tidak kosong
+                $initials .= strtoupper($word[0]); // Ambil huruf pertama
+            }
+        }
+
+        return $initials;
     }
 }

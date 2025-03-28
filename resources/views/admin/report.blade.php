@@ -17,6 +17,11 @@
                 </div>
             </div>
             <div class="position-relative">
+                <input type="text" name="text" class="form-control"
+                       style="width: 230px; height: 36px; padding-left: 35px;" placeholder="cari nama/kota/provinsi" />
+                <i class="ri-search-2-line position-absolute top-50 start-0 translate-middle-y ps-3"></i>
+            </div>
+            <div class="position-relative">
                 <input type="text" name="dates" class="form-control" id="range_datepicker"
                     style="width: 230px; height: 36px; padding-left: 35px;" placeholder="29/10/2024 - 28/11/2024" />
                 <i class="ri-calendar-line position-absolute top-50 start-0 translate-middle-y ps-3"></i>
@@ -193,7 +198,7 @@
                     .total_sales);
                 renderReport("chartSalesDay", "#chartSalesDay", data.sales.today.chart, data.sales.today
                     .total_sales);
-
+                $('#customers').html('')
                 $.each(data.customers.data, function(key, value) {
                     let dueDateText = "";
 

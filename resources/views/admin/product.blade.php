@@ -42,7 +42,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger text-white" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary text-white" id="uploadBtn">Simapan</button>
+                    <button type="button" class="btn btn-primary text-white" id="uploadBtn">Simpan</button>
                 </div>
             </div>
         </div>

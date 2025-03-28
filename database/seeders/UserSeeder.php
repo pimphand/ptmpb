@@ -11,6 +11,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $user = (new \App\Models\User)->create([
+            'name' => 'developer',
+            'username' => 'developer',
+            'email' => 'developer@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $user->addRole('developer');
+
         for ($i = 0; $i < 12; $i++) {
             $content = (new \App\Models\User)->create([
                 'name' => 'sales-'.$i,
@@ -19,7 +27,6 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]);
             $content->addRole('sales');
-            $i++;
         }
     }
 }
