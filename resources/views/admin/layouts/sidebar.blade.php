@@ -90,6 +90,12 @@
             </a>
         </li>
         <li class="menu-item">
+            <a href="{{ route('admin.collectors.index') }}" class="menu-link">
+                <span class="material-symbols-outlined menu-icon">account_circle</span>
+                <span class="title">Collector</span>
+            </a>
+        </li>
+        <li class="menu-item">
             <a href="{{ route('admin.customers.index') }}" class="menu-link">
                 <span class="material-symbols-outlined menu-icon">account_circle</span>
                 <span class="title">Customer</span>
@@ -117,13 +123,6 @@
                 <span class="title">{{ __('app.about_us') }}</span>
             </a>
         </li>
-
-        {{--            <li class="menu-item">--}}
-        {{--                <a href="{{ route('admin.messages.index') }}" class="menu-link">--}}
-        {{--                    <span class="material-symbols-outlined menu-icon">handshake</span>--}}
-        {{--                    <span class="title">Pesan</span>--}}
-        {{--                </a>--}}
-        {{--            </li>--}}
         <li class="menu-item">
             <a href="{{ route('admin.contact.index') }}" class="menu-link">
                 <span class="material-symbols-outlined menu-icon">map</span>

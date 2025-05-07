@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-        <h3 class="mb-0">List Sales </h3>
+        <h3 class="mb-0">List Collector </h3>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb align-items-center mb-0 lh-1">
                 <li class="breadcrumb-item">
@@ -38,16 +38,12 @@
                         <table class="table align-middle">
                             <thead>
                                 <tr>
-                                    <th scope="col">
-                                        Foto
-                                    </th>
+                                    <th scope="col">Foto</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">Phone</th>
-                                    <th scope="col">Total Order</th>
                                     <th scope="col">Total Customer</th>
                                     <th scope="col">Target</th>
-                                    <th scope="col">Sedang Berjalan</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -139,7 +135,7 @@
         let table = $('#dataTable');
 
         function getData(page = 1, query = '', role = '') {
-            $.get(`{{ route('admin.sales.data') }}?page=${page}&search=${query}&role=${role}`, function (response) {
+            $.get(`{{ route('admin.collectors.data') }}?page=${page}&search=${query}&role=${role}`, function (response) {
                 const {
                     data,
                     meta,
@@ -152,46 +148,29 @@
 
                 // Render data
                 $.each(data, function (key, value) {
-                    let detail = `{{ route('admin.sales.show', ':id') }}`.replace(':id', value.id);
+                    let detail = `{{ route('admin.collectors.show', ':id') }}`.replace(':id', value.id);
                     const row = `
-                        <tr>
-                            <td class="text-body">
-                                <img src="${value.photo ? value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
-                            </td>
-                            <td class="text-body"><a href="${detail}?user_id=${value.id}" class="btn btn-outline-primary hover-bg">${value.name}</a></td>
-                            <td class="text-body">${value.username ?? "-"}</td>
-                            <td class="text-body">${value.phone ?? '-'}</td>
-                            <td class="text-body">${value.orders_count}</td>
-                            <td class="text-body">${value.customers_count}</td>
-                            <td class="text-body">
-                                <span class="btn btn-outline-primary omzet input-${value.id}" data-id="${value.id}">
-                                    Rp ${parseInt(value.target_sales).toLocaleString('id-ID')}
-                                </span>
-                                <br>
-                                 <span class="mt-2 btn btn-outline-primary omzet-item input-item-${value.id}" data-id="${value.id}">
-                                    ${parseInt(value.omzet_items)} Item
-                                </span>
-                                <input class="form-control mt-2 omzet-${value.id}" type="number" value="${value.target_sales}" style="display:none">
-                                <input class="form-control mt-2 omzet-item-${value.id}" type="number" value="${value.omzet_items}" style="display:none">
-                                <p class="text-danger text-danger-${value.id}"></p>
-                                <button style="display:none" data-id="${value.id}" class="omzet-${value.id} btn btn-outline-success">Simpan</button>
-                                <button style="display:none" data-id="${value.id}" class="omzet-${value.id} btn btn-outline-danger">Batal</button>
-                                <button style="display:none" data-id="${value.id}" class="omzet-item-${value.id} btn btn-outline-success">Simpan</button>
-                                <button style="display:none" data-id="${value.id}" class="omzet-item-${value.id} btn btn-outline-danger btn-outline-danger-item">Batal</button>
-                            </td>
-                            <td class="text-body"><span class="badge bg-success bg-opacity-10 text-success p-2 fs-12 fw-normal">${value.achieved_sales}</span></td>
-                            <td>
-                                <div class="d-flex align-items-center gap-1">
-                                    <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="javascript:void(0)" data-url="${detail}" data-id="${value.id}">
-                                        <i class="material-symbols-outlined fs-16 text-body">edit</i>
-                                    </a>
-                                    <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" onclick="deleteData('${detail}','${value.name}')">
-                                        <i class="material-symbols-outlined fs-16 text-danger">delete</i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+     <tr>
+         <td class="text-body">
+             <img src="${value.photo ? value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
+         </td>
+         <td class="text-body"><a href="${detail}?user_id=${value.id}" class="btn btn-outline-primary hover-bg">${value.name}</a></td>
+         <td class="text-body">${value.username ?? "-"}</td>
+         <td class="text-body">${value.phone ?? '-'}</td>
+         <td class="text-body">${value.customers_count}</td>
+         <td class="text-body"><span class="badge bg-success bg-opacity-10 text-success p-2 fs-12 fw-normal">${value.achieved_collector ?? 0}</span></td>
+         <td>
+             <div class="d-flex align-items-center gap-1">
+                 <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="javascript:void(0)" data-url="${detail}" data-id="${value.id}">
+                     <i class="material-symbols-outlined fs-16 text-body">edit</i>
+                 </a>
+                 <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" onclick="deleteData('${detail}','${value.name}')">
+                     <i class="material-symbols-outlined fs-16 text-danger">delete</i>
+                 </button>
+             </div>
+         </td>
+     </tr>
+                 `;
                     table.append(row);
                 });
 
@@ -203,12 +182,12 @@
                     const activeClass = link.active ? 'active' : '';
                     const disabledClass = link.url ? '' : 'disabled';
                     const listItem = `
-                    <li class="page-item ${activeClass} ${disabledClass}">
-                        <a class="page-link" href="#" data-page="${link.url ? new URL(link.url).searchParams.get('page') : '#'}">
-                            ${link.label}
-                        </a>
-                    </li>
-                `;
+                 <li class="page-item ${activeClass} ${disabledClass}">
+     <a class="page-link" href="#" data-page="${link.url ? new URL(link.url).searchParams.get('page') : '#'}">
+         ${link.label}
+     </a>
+                 </li>
+             `;
                     $('#pagination').append(listItem);
                 });
 
@@ -257,7 +236,7 @@
 
         table.on('click', '.btn-outline-success', function () {
             const id = $(this).data('id');
-            const url = `{{ route('admin.sales.update', ':id') }}`.replace(':id', id);
+            const url = `{{ route('admin.collectors.update', ':id') }}`.replace(':id', id);
             const value = parseFloat($(`.omzet-${id}`).val()) || 0;
             const valueItem = parseFloat($(`.omzet-item-${id}`).val()) || 0;
             $.ajax({
@@ -265,7 +244,7 @@
                 type: 'post',
                 data: {
                     _method: 'put',
-                    target_sales: value,
+                    target_collector: value,
                     _token: '{{ csrf_token() }}',
                     omzet: true,
                     omzet_items: valueItem
@@ -293,7 +272,7 @@
             const id = $(this).data('id');
             const data = dataTable.find(item => item.id === id);
             const form = $('#form');
-            form.attr('action', `{{ route('admin.sales.update', ':id') }}`.replace(':id', id));
+            form.attr('action', `{{ route('admin.collectors.update', ':id') }}`.replace(':id', id));
             //add method put
             form.append('<input type="hidden" name="_method" value="PUT">');
 
@@ -313,7 +292,7 @@
         //add
         $('.add').click(function () {
             const form = $('#form');
-            form.attr('action', `{{ route('admin.sales.store') }}`);
+            form.attr('action', `{{ route('admin.collectors.store') }}`);
             form.trigger('reset');
             //Remove method put
             $('input[name="_method"]').remove();

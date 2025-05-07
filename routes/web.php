@@ -87,9 +87,11 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('sales', \App\Http\Controllers\Admin\SalesController::class)->middleware('role:developer|admin');
     Route::get('sales-data', [\App\Http\Controllers\Admin\SalesController::class, 'data'])->name('sales.data')->middleware('role:developer|admin');
 
+    Route::resource('collectors', \App\Http\Controllers\Admin\CollectorController::class)->middleware('role:developer|admin');
+    Route::get('collectors-data', [\App\Http\Controllers\Admin\CollectorController::class, 'data'])->name('collectors.data')->middleware('role:developer|admin');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 // set locale
 Route::get('/lang/{locale}', function ($locale) {
