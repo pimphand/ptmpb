@@ -150,27 +150,27 @@
                 $.each(data, function (key, value) {
                     let detail = `{{ route('admin.collectors.show', ':id') }}`.replace(':id', value.id);
                     const row = `
-     <tr>
-         <td class="text-body">
-             <img src="${value.photo ? value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
-         </td>
-         <td class="text-body"><a href="${detail}?user_id=${value.id}" class="btn btn-outline-primary hover-bg">${value.name}</a></td>
-         <td class="text-body">${value.username ?? "-"}</td>
-         <td class="text-body">${value.phone ?? '-'}</td>
-         <td class="text-body">${value.customers_count}</td>
-         <td class="text-body"><span class="badge bg-success bg-opacity-10 text-success p-2 fs-12 fw-normal">${value.achieved_collector ?? 0}</span></td>
-         <td>
-             <div class="d-flex align-items-center gap-1">
-                 <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="javascript:void(0)" data-url="${detail}" data-id="${value.id}">
-                     <i class="material-symbols-outlined fs-16 text-body">edit</i>
-                 </a>
-                 <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" onclick="deleteData('${detail}','${value.name}')">
-                     <i class="material-symbols-outlined fs-16 text-danger">delete</i>
-                 </button>
-             </div>
-         </td>
-     </tr>
-                 `;
+         <tr>
+             <td class="text-body">
+                 <img src="${value.photo ? value.photo : '{{ asset('admin/assets/images/user-42.jpg') }}'}" class="wh-34 rounded-circle" alt="${value.name}">
+             </td>
+             <td class="text-body"><a class="btn btn-outline-primary hover-bg">${value.name}</a></td>
+             <td class="text-body">${value.username ?? "-"}</td>
+             <td class="text-body">${value.phone ?? '-'}</td>
+             <td class="text-body">${value.customers_count}</td>
+             <td class="text-body"><span class="badge bg-success bg-opacity-10 text-success p-2 fs-12 fw-normal">${value.achieved_collector ?? 0}</span></td>
+             <td>
+                 <div class="d-flex align-items-center gap-1">
+                     <a class="ps-0 border-0 bg-transparent lh-1 position-relative top-2 edit" href="javascript:void(0)" data-url="${detail}" data-id="${value.id}">
+                         <i class="material-symbols-outlined fs-16 text-body">edit</i>
+                     </a>
+                     <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" onclick="deleteData('${detail}','${value.name}')">
+                         <i class="material-symbols-outlined fs-16 text-danger">delete</i>
+                     </button>
+                 </div>
+             </td>
+         </tr>
+                     `;
                     table.append(row);
                 });
 
@@ -182,12 +182,12 @@
                     const activeClass = link.active ? 'active' : '';
                     const disabledClass = link.url ? '' : 'disabled';
                     const listItem = `
-                 <li class="page-item ${activeClass} ${disabledClass}">
-     <a class="page-link" href="#" data-page="${link.url ? new URL(link.url).searchParams.get('page') : '#'}">
-         ${link.label}
-     </a>
-                 </li>
-             `;
+                     <li class="page-item ${activeClass} ${disabledClass}">
+         <a class="page-link" href="#" data-page="${link.url ? new URL(link.url).searchParams.get('page') : '#'}">
+             ${link.label}
+         </a>
+                     </li>
+                 `;
                     $('#pagination').append(listItem);
                 });
 
