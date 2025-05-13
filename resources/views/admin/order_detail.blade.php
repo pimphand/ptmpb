@@ -188,6 +188,23 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td class="fw-medium text-white">Pilih Kolektor</td>
+                                        <td>
+                                            <select class="form-select" name="collector_id">
+                                                <option value="">Pilih Kolektor</option>
+                                                @foreach ($collectors as $collector)
+                                                    <option value="{{ $collector->id }}"
+                                                        {{ $order->collector_id === $collector->id ? 'selected' : '' }}>
+                                                        {{ $collector->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr class="form-show" style="display: none;background-color: #fd5812;color: #fff;">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                         <td class="fw-medium text-white">Pilih Tanggal Pengiriman</td>
                                         <td>
                                             <input type="date" class="form-control" name="delivery_date"

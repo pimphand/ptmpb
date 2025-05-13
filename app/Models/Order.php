@@ -29,7 +29,8 @@ class Order extends Model
         'invoice',
         'bukti_pengiriman',
         'tanggal_pengiriman',
-        'paid'
+        'paid',
+        'collector_id',
     ];
 
     protected $casts = [

@@ -31,6 +31,7 @@ class OrderController extends Controller
             'title' => 'Order',
             'sales' => User::whereHasRole('sales')->get(),
             'drivers' => User::whereHasRole('driver')->get(),
+            'collectors' => User::whereHasRole('debt-collector')->get(),
         ]);
     }
 
@@ -54,7 +55,7 @@ class OrderController extends Controller
         $order->date_delivery = $request->delivery_date;
         $order->type_discount = $request->type_discount ?? null;
         $order->discount = $request->type_discount ? $request->discount * ($request->discount / 100) : $request->discount;
-
+        $order->collector_id = $request->collector_id;
         if (!$order->driver_id){
             $order->payments()->create([
                 'method' => "System",
@@ -68,6 +69,7 @@ class OrderController extends Controller
         }
         $order->driver_id = $request->driver_id;
         $order->save();
+
         return response()->json([
             'success' => true,
             'message' => 'Order berhasil diperbarui',
@@ -118,8 +120,8 @@ class OrderController extends Controller
         $order->load('customer', 'user', 'orderItems.sku.product', 'driver');
 
         $drivers = User::whereHasRole('driver')->get();
-
-        return view('admin.order_detail', compact('order', 'drivers'));
+        $collectors = User::whereHasRole('debt-collector')->get();
+        return view('admin.order_detail', compact('order', 'drivers','collectors'));
     }
 
     public function customer(Request $request, $id)

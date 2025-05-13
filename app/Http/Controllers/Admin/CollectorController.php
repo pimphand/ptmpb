@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 
 class CollectorController extends Controller
 {
@@ -43,18 +44,28 @@ class CollectorController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'phone' => 'nullable|numeric|min:10',
             'address' => 'nullable|string',
+        ],[
+            'phone.min' => 'Nomor telepon minimal 10 digit',
+            'phone.numeric' => 'Nomor telepon harus berupa angka',
+            'phone.digits_between' => 'Nomor telepon harus antara 10 hingga 13 digit',
+            'name.required' => 'Nama wajib diisi',
+            'username.required' => 'Username wajib diisi',
+            'username.unique' => 'Username sudah terdaftar',
+
         ]);
 
-        $user = User::create($request->only('name', 'username', 'email', 'phone', 'address')
-            + ['password' => bcrypt($request->password)]);
+        return DB::transaction(function () use ($request) {
+            $user = User::create($request->only('name', 'username', 'email', 'phone', 'address')
+                + ['password' => bcrypt($request->password)]);
 
-        if ($request->hasFile('photo')) {
-            $user->photo = asset('storage') . "/" . $request->file('photo')->store('photos', 'public');
-            $user->save();
-        }
-        $user->addRole('debt-collector');
+            if ($request->hasFile('photo')) {
+                $user->photo = asset('storage') . "/" . $request->file('photo')->store('photos', 'public');
+                $user->save();
+            }
+            $user->addRole('debt-collector');
 
-        return response()->json(['message' => 'Data berhasil disimpan']);
+            return response()->json(['message' => 'Data berhasil disimpan']);
+        });
     }
 
     /**
