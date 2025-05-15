@@ -18,4 +18,6 @@ Route::group(['middleware' => ['auth:sanctum'], 'as' => 'api.'], function () {
 
     Route::get('profile', [App\Http\Controllers\Api\ProfileController::class, 'index']);
     Route::post('profile', [App\Http\Controllers\Api\ProfileController::class, 'update']);
+
+    Route::post('orders-payment/{order}', [App\Http\Controllers\Api\OrderController::class, 'payment']);
 });

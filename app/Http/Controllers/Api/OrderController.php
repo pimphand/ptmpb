@@ -7,6 +7,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Sku;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,8 @@ class OrderController extends Controller
         $order = Order::query();
         if (Auth::user()->roles()->first()->name == 'driver') {
             $order->where('driver_id', Auth::id());
+        } elseif (Auth::user()->roles()->first()->name == 'debt-collector') {
+            $order->where('collector_id', Auth::id());
         } else {
             $order->where('user_id', Auth::id());
         }
@@ -42,7 +45,7 @@ class OrderController extends Controller
                         ->orWhere('address', 'like', "%$customer%")
                         ->orWhere('phone', 'like', "%$customer%");
                 });
-            })->with(['customer', 'driver', 'orderItems.sku.product'])
+            })->with(['customer', 'driver', 'orderItems.sku.product','payments'])
             ->whereHas('orderItems')
             ->orderBy('updated_at', 'desc');
         $data = $order->paginate(10);
@@ -192,7 +195,31 @@ class OrderController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * save order payment
      */
-    public function dataDriver() {}
+    public function payment(Request $request, Order $order)//: \Illuminate\Http\JsonResponse
+    {
+        return DB::transaction(function () use ($request, $order) {
+            $order->payments()->create([
+                'method' => $request->method,
+                'date' => Carbon::parse($request->date)->toDateString() . ' ' . now()->toTimeString(),
+                'amount' => $request->amount,
+                'remaining' => $order->payment()->first()->remaining - $request->amount,
+                'customer' => $order->customer->name,
+                'collector' => Auth::user()->name,
+                'user_id' => $order->user_id,
+                'customer_id' => $order->customer_id,
+            ]);
+
+            if ($request->paid) {
+                $order->paid = $request->paid;
+                $order->status = 'success';
+                $order->save();
+            }
+
+            return response()->json([
+                'message' => 'Payment created',
+            ]);
+        });
+    }
 }
