@@ -174,11 +174,10 @@ class ImageUploadService
      */
     protected function generateFileName(UploadedFile $file, bool $preserveFormat = false): string
     {
-        $timestamp = now()->format('YmdHis');
-        $random = Str::random(12);
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $extension = $preserveFormat ? $file->getClientOriginalExtension() : 'webp';
 
-        return "{$timestamp}_{$random}.{$extension}";
+        return "{$originalName}.{$extension}";
     }
 
     /**
