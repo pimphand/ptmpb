@@ -10,12 +10,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "aws/aws-sdk-php": "^3.343",
         "barryvdh/laravel-dompdf": "^3.1",
         "coderflexx/laravisit": "^2.0",
-        "intervention/image": "^3.10",
+        "intervention/image": "^3.11",
+        "intervention/image-laravel": "^1.5",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "league/flysystem-aws-s3-v3": "^3.29",
         "maatwebsite/excel": "^3.1",
         "santigarcor/laratrust": "^8.3"
     },
